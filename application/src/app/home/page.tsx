@@ -3,6 +3,6 @@
 export default function Home() {
 
   return (
-    <p>Home page</p>
+    <p>Voici la page first, ceci va être mis a jour plus tard</p>
   );
 }
