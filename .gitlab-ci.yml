@@ -1,6 +1,20 @@
 default:
   image: node:23.7.0
 
+stages:
+  - check
+  - deploy
+
+tsc_check:
+  stage: check
+  script:
+    - npm install
+    - npx tsc --noEmit
+  only:
+    - merge_requests
+  except:
+    - main
+
 deploy_preview:
   stage: deploy
   except:
