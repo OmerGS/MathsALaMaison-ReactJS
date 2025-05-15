@@ -3,22 +3,36 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function ResetPassword() {
   const [identifier, setIdentifier] = useState("");
-  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Gère l'état : 0 = envoyer code, 1 = valider code, 2 = changer mdp
+  const [step, setStep] = useState(0);
 
   const router = useRouter();
 
-  const onLogin = async () => {
+  const onSubmit = async () => {
     setLoading(true);
-    // Ici, appelle ta fonction handleLogin (à adapter au web)
-    // await handleLoginWeb(identifier, password);
-    // Simulons un délai pour exemple :
+
+    // Simule appels API selon étape
     await new Promise((res) => setTimeout(res, 1500));
+
+    if (step === 0) {
+      // Envoyer code
+      setStep(1);
+    } else if (step === 1) {
+      // Valider code
+      setStep(2);
+    } else if (step === 2) {
+      // Changer mdp
+      alert("Mot de passe changé avec succès !");
+      router.push("/auth/login");
+    }
+
     setLoading(false);
-    // Rediriger après login (exemple)
-    router.push("/");
   };
 
   return (
@@ -35,41 +49,56 @@ export default function Login() {
         />
       </div>
 
-      {/* Right Side with Login Form */}
+      {/* Right Side with Reset Password Form */}
       <div style={styles.formContainer}>
-        <h1 style={styles.title}>Connexion</h1>
+        <h1 style={styles.title}>Mot de passe oublié</h1>
 
-        <input
-          type="text"
-          placeholder="Email ou Pseudonyme"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          style={styles.input}
-          autoComplete="username"
-        />
+        {(step === 0 || step > 0) && (
+          <input
+            type="email"
+            placeholder="Email ou Pseudonyme"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            style={styles.input}
+            disabled={step > 0}
+            autoComplete="username"
+          />
+        )}
 
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-          autoComplete="current-password"
-        />
+        {step === 1 && (
+          <input
+            type="text"
+            placeholder="Code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            style={styles.input}
+            autoComplete="one-time-code"
+          />
+        )}
 
-        <button
-          style={styles.forgotPasswordText}
-          onClick={() => router.push("/auth/reset")}
-        >
-          Mot de passe oublié
-        </button>
+        {step === 2 && (
+          <input
+            type="password"
+            placeholder="Nouveau mot de passe"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            style={styles.input}
+            autoComplete="new-password"
+          />
+        )}
 
         <button
           style={{ ...styles.button, opacity: loading ? 0.7 : 1 }}
-          onClick={onLogin}
-          disabled={loading}
+          onClick={onSubmit}
+          disabled={loading || (step === 0 && !identifier) || (step === 1 && !code) || (step === 2 && !newPassword)}
         >
-          {loading ? "Chargement..." : "Se Connecter"}
+          {loading
+            ? "Chargement..."
+            : step === 0
+            ? "Recevoir le code"
+            : step === 1
+            ? "Valider le code"
+            : "Changer le mot de passe"}
         </button>
 
         <button
@@ -143,16 +172,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 10,
     backgroundColor: "#fff",
     fontSize: "1rem",
-  },
-  forgotPasswordText: {
-    alignSelf: "flex-end",
-    marginRight: "10%",
-    color: "red",
-    fontSize: 14,
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    marginBottom: 20,
   },
   button: {
     backgroundColor: "#000",
