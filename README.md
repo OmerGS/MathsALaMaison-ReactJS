@@ -9,7 +9,7 @@
 <p align="center"><img src="https://img.shields.io/badge/contributors-4-00BFFF?style=flat-square" alt="shields"></p>
 
 <h2>🚀 Demo</h2>
-La demo de l'application se trouve sur : https://mathsalamaison.omergs.com
+La demo de l'application se trouve sur : [https://mathsalamaison.omergs.com](https://mathsalamaison.omergs.com)
 
 <h2>📸 Captures d'écrans du projet :</h2>
 
