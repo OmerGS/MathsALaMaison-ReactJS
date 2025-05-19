@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { handleLogin } from "./login";
 
 export default function Login() {
   const [identifier, setIdentifier] = useState("");
@@ -12,13 +13,10 @@ export default function Login() {
 
   const onLogin = async () => {
     setLoading(true);
-    // Ici, appelle ta fonction handleLogin (à adapter au web)
-    // await handleLoginWeb(identifier, password);
-    // Simulons un délai pour exemple :
-    await new Promise((res) => setTimeout(res, 1500));
+    if (await handleLogin(identifier, password)) {
+      router.push("/home");
+    }
     setLoading(false);
-    // Rediriger après login (exemple)
-    router.push("/");
   };
 
   return (
