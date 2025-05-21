@@ -1,43 +1,27 @@
 import { PasswordUtil } from "@/utils/PasswordUtil";
 import { login, getSaltByIdentifier } from "@/services/authAPI";
+import { User } from "@/Type/User";
 
-export async function handleLogin(identifier: string, password: string): Promise<boolean> {
-    if (!identifier || !password) {
-        alert("Veuillez remplir tous les champs !");
-        return false;
+export async function handleLogin(identifier: string, password: string): Promise<User | null> { 
+    if(!identifier || !password) {
+        alert("Veuillez remplir tous les champs.");
+        return null;
     }
 
-    try {
-        const response = await getSaltByIdentifier(identifier);
-        const data = response.data;
+    let response = await getSaltByIdentifier(identifier);
 
-        if (!data.success) {
-            alert(data.message);
-            return false;
+    if(!response.data.success) {
+        alert(response.data.message);
+    } else {
+        let hashedPassword = PasswordUtil.hashPassword(password, response.data.salt);
+        let loginResponse = await login(identifier, hashedPassword);
+
+        if(!loginResponse.data.success){
+            alert(loginResponse.data.message);
+        } else {
+            return loginResponse.data.user;
         }
-
-        const hashedPassword = PasswordUtil.hashPassword(password, data.salt);
-
-        try {
-            const loginResponse = await login(identifier, hashedPassword);
-            const loginData = loginResponse.data;
-
-            if (!loginData.success) {
-                alert(loginData.message);
-                return false;
-            }
-
-            return true;
-
-        } catch (error: any) {
-            const message = error?.response?.data?.message || "Erreur lors de la connexion.";
-            alert(message);
-            return false;
-        }
-
-    } catch (error: any) {
-        const message = error?.response?.data?.message || "Erreur lors de la récupération du sel.";
-        alert(message);
-        return false;
     }
+
+    return null;
 }
