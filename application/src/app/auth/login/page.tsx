@@ -1,24 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { handleLogin } from "./login";
+import { useUser } from "@/context/UserContext";
 
 export default function Login() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const { user, loading, setUser } = useUser();
   const router = useRouter();
+    
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/home');
+    }
+  }, [user, loading, router]);
 
   const onLogin = async () => {
-    setLoading(true);
-    // Ici, appelle ta fonction handleLogin (à adapter au web)
-    // await handleLoginWeb(identifier, password);
-    // Simulons un délai pour exemple :
-    await new Promise((res) => setTimeout(res, 1500));
-    setLoading(false);
-    // Rediriger après login (exemple)
-    router.push("/");
+    const userInfo = await handleLogin(identifier, password);
+    if (userInfo) {
+      setUser(userInfo);
+      router.push('/home');
+    }
   };
 
   return (
@@ -69,7 +73,7 @@ export default function Login() {
           onClick={onLogin}
           disabled={loading}
         >
-          {loading ? "Chargement..." : "Se Connecter"}
+          {loading ? <Spinner /> : "Se Connecter"}
         </button>
 
         <button
@@ -83,6 +87,14 @@ export default function Login() {
   );
 }
 
+// === Spinner Component ===
+function Spinner() {
+  return (
+    <div style={spinnerStyles.spinner} />
+  );
+}
+
+// === Styles ===
 const styles: Record<string, React.CSSProperties> = {
   outerContainer: {
     display: "flex",
@@ -165,6 +177,9 @@ const styles: Record<string, React.CSSProperties> = {
     border: "none",
     cursor: "pointer",
     marginBottom: 20,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   signupText: {
     background: "none",
@@ -173,4 +188,15 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     cursor: "pointer",
   },
+};
+
+const spinnerStyles = {
+  spinner: {
+    width: 20,
+    height: 20,
+    border: "3px solid #f3f3f3",
+    borderTop: "3px solid #000",
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite",
+  } as React.CSSProperties,
 };
