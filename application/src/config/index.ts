@@ -1,5 +1,5 @@
 export const BACKEND_API = {
-  baseURL: 'http://omergs.com:50000/v2',
+  baseURL: 'https://mathsalamaison-backend.omergs.com/v2',
 };
 
 export const API_KEY = {
@@ -7,5 +7,5 @@ export const API_KEY = {
 };
 
 const WEBSOCKET_API = {
-    baseURL: 'ws://omergs.com:50000',
+    baseURL: 'ws://mathsalamaison-backend.omergs.com',
 };
