@@ -1,24 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
+import { handleSignUp } from "./signup";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const { user, loading, setUser } = useUser();
   const router = useRouter();
 
-  const onSignUp = async () => {
-    setLoading(true);
-    // Simule un appel API
-    await new Promise((res) => setTimeout(res, 1500));
-    setLoading(false);
-    router.push("/");
-  };
+  useEffect(() => {
+      if (!loading && user) {
+        router.replace('/home');
+      }
+    }, [user, loading, router]);
+  
+    const onSignUp = async () => {
+      const userInfo = await handleSignUp(email, pseudo, password, confirmPassword);
+      if (userInfo) {
+        router.push(`/auth/signup/success?pseudo=${encodeURIComponent(userInfo)}`);
+      }
+    };
 
   return (
     <div style={styles.outerContainer}>
