@@ -12,13 +12,16 @@ export default function UsersList() {
   const [page, setPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
 
+  const [limit, setLimit] = useState(USERS_PER_PAGE);
+
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const data = await getAllUsers(page, USERS_PER_PAGE);
+        const data = await getAllUsers(page);
         setUsers(data.users.filter((u: { isPremium: any; }) => u.isPremium));
         setTotalUsers(data.total);
+        setLimit(data.limit);
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs :", error);
       } finally {
@@ -29,7 +32,8 @@ export default function UsersList() {
     fetchUsers();
   }, [page]);
 
-  const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE);
+  const totalPages = Math.ceil(totalUsers / limit);
+
 
   return (
     <div>

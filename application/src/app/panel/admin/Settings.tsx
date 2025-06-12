@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
+import PaginationSettings from "./SettingsChild/PaginationSettings";
 
 export default function Settings() {
   return (
-    <section>
-      <p className="text-lg text-gray-600">Paramètres à venir...</p>
-    </section>
+    <>
+      <PaginationSettings />
+    </>
+
   );
 }
