@@ -35,7 +35,6 @@ export const handleSignUp = async (
       alert(response.data.message || "Erreur lors de l'inscription.");
       return null;
     } else {
-      alert("Inscription réussie !");
       return response.data.pseudo;
     }
   } catch (error: any) {

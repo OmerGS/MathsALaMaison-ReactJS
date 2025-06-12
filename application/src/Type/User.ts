@@ -9,4 +9,5 @@ export type User = {
   nombrePartie: number;
   nombreVictoire: number;
   photoDeProfil: number;
+  specialRole: string,
 };
