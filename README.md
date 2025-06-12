@@ -54,7 +54,7 @@ Voici quelques-unes des meilleures fonctionnalités du projet :
 
 Technologies utilisées dans le projet :
 
-*   React  
+*   ReactJS
 *   TypeScript  
 *   JavaScript (NodeJS)  
 *   MySQL  
@@ -67,7 +67,7 @@ Technologies utilisées dans le projet :
 
 <ul>
   <li><strong><a href="https://github.com/OmerGS" target="_blank">GUNES Omer</a></strong> </li>
-  <li><strong><a href="https://github.com/Patrique29" target="_blank">MELLAH Rayanne</a></strong></li>
+  <li><strong><a href="https://github.com/Patrique29" target="_blank"><del>MELLAH Rayanne</del></a></strong></li>
   <li><strong><a href="https://github.com/Delecons" target="_blank">PARCOLLET Noé</a></strong></li>
   <li><strong><a href="https://github.com/RomainPERON" target="_blank">PERON Romain</a></strong></li>
 </ul>
