@@ -9,10 +9,21 @@ export const getNonPremiumUser = async () => {
     return response.data; 
 };
 
-export const getAllUsers = async (page = 1) => {
-  const response = await http.get('/admin/getAllUsers', {
-    params: { page }
+export const getAllUsers = async (page = 1, searchTerm = "", premiumFilter: "all" | "premium" | "nonpremium" = "all" ) => {
+  const params: any = { page };
+
+  if (searchTerm.trim() !== "") {
+    params.search = searchTerm.trim();
+  }
+
+  if (premiumFilter !== "all") {
+    params.premium = premiumFilter === "premium" ? "true" : "false";
+  }
+
+  const response = await http.get("/admin/getAllUsers", {
+    params,
   });
+  
   return response.data;
 };
 

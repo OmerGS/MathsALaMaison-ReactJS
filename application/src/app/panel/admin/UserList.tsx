@@ -13,11 +13,14 @@ export default function UsersList() {
   const [limit, setLimit] = useState(USERS_PER_PAGE);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [premiumFilter, setPremiumFilter] = useState<"all" | "premium" | "nonpremium">("all");
+
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const data = await getAllUsers(page);
+        const data = await getAllUsers(page, searchTerm, premiumFilter);
         setUsers(data.users);
         setTotalUsers(data.total);
         setLimit(data.limit);
@@ -29,7 +32,11 @@ export default function UsersList() {
     };
 
     fetchUsers();
-  }, [page]);
+  }, [page, searchTerm, premiumFilter]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, premiumFilter]);
 
   const totalPages = Math.ceil(totalUsers / limit);
 
@@ -61,8 +68,28 @@ export default function UsersList() {
 
   return (
     <div className="px-2">
+      {/* Barre de recherche et filtres */}
+      <div className="mb-4 flex flex-col md:flex-row gap-4 items-center">
+        <input
+          type="text"
+          placeholder="Rechercher par pseudo ou email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 flex-grow"
+        />
+        <select
+          value={premiumFilter}
+          onChange={(e) => setPremiumFilter(e.target.value as any)}
+          className="border border-gray-300 rounded px-3 py-2"
+        >
+          <option value="all">Tous</option>
+          <option value="premium">Premium</option>
+          <option value="nonpremium">Non Premium</option>
+        </select>
+      </div>
+
       {loading && <p>Chargement des utilisateurs...</p>}
-      {!loading && users.length === 0 && <p>Aucun utilisateur validé trouvé.</p>}
+      {!loading && users.length === 0 && <p>Aucun utilisateur trouvé.</p>}
 
       {!loading && users.length > 0 && (
         <>
