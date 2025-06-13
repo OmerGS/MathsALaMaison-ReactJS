@@ -36,6 +36,11 @@ export const updateUserPerPageNumber = async (page: number) => {
     return response.data; 
 }
 
+export const updatePremiumState = async (email: string, newPremiumState: boolean) => {
+    const response = await http.post('/admin/update-premium', { email, newPremiumState });
+    return response.data; 
+}
+
 /*export const getAllQuestion = () => {
     return http.get('/admin/getAllQuestion');
 };
