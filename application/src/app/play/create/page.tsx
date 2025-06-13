@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import '../../globals.css'
 
 const MAX_PLAYERS = 4;
 const MIN_PLAYERS = 2;
@@ -35,31 +36,34 @@ export default function CreateGame() {
   const startGame = () => {
     if (players.length >= MIN_PLAYERS) {
       alert("Partie lancée avec " + players.length + " joueurs.");
-      // router.push("/game"); // à activer selon ton routing
+      // router.push("/game");
     } else {
       alert(`Il faut au moins ${MIN_PLAYERS} joueurs pour commencer.`);
     }
   };
 
   return (
-    <div style={styles.outerContainer(isMobile)}>
-      <div style={styles.leftColumn(isMobile)}>
-        <h1 style={styles.title}>Création Partie</h1>
+    <div className="flex flex-col md:flex-row h-screen p-5 bg-purple-100 box-border">
+      <div className="flex flex-col flex-1 p-5 bg-purple-700 text-white rounded-2xl mb-5 md:mb-0 md:mr-5">
+        <h1 className="text-3xl font-bold text-center mb-5">Création Partie</h1>
 
         {players.length === 0 && (
-          <p style={styles.noPlayersText}>Aucun joueur ajouté</p>
+          <p className="text-gray-200 text-center mb-3">Aucun joueur ajouté</p>
         )}
 
-        <div style={styles.playersList}>
+        <div className="flex-grow overflow-y-auto mb-5">
           {players.map((player, index) => (
-            <div key={index} style={styles.playerRow}>
-              <span style={styles.playerIndex}>{index + 1}</span>
-              <span style={styles.playerName}>{player}</span>
+            <div
+              key={index}
+              className="flex items-center justify-between bg-purple-900 px-4 py-2 rounded-lg mb-2"
+            >
+              <span className="font-bold w-8">{index + 1}</span>
+              <span className="flex-grow text-center">{player}</span>
               {players.length > MIN_PLAYERS && (
                 <button
-                  style={styles.removeButton}
                   onClick={() => removePlayer(index)}
                   aria-label={`Supprimer joueur ${player}`}
+                  className="text-red-400 font-bold text-lg hover:text-red-600"
                 >
                   ✕
                 </button>
@@ -69,7 +73,7 @@ export default function CreateGame() {
         </div>
 
         {players.length < MAX_PLAYERS && (
-          <div style={styles.addPlayerRow}>
+          <div className="flex items-center gap-3">
             <input
               type="text"
               placeholder="Nom du Joueur"
@@ -78,12 +82,12 @@ export default function CreateGame() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") addPlayer();
               }}
-              style={styles.input}
+              className="flex-grow p-2 text-base rounded-lg border border-gray-300 text-black"
             />
             <button
-              style={styles.addButton}
               onClick={addPlayer}
               aria-label="Ajouter un joueur"
+              className="text-2xl bg-yellow-400 font-bold px-4 py-2 rounded-lg hover:bg-yellow-300"
             >
               +
             </button>
@@ -91,111 +95,14 @@ export default function CreateGame() {
         )}
       </div>
 
-      <div style={styles.rightColumn(isMobile)}>
-        <button style={styles.startButton} onClick={startGame}>
+      <div className="flex md:basis-[30%] items-center justify-center">
+        <button
+          onClick={startGame}
+          className="bg-yellow-400 text-black font-bold text-2xl px-8 py-4 rounded-xl hover:bg-yellow-300 transition-colors"
+        >
           LANCER
         </button>
       </div>
     </div>
   );
 }
-
-const styles = {
-  outerContainer: (isMobile: boolean): React.CSSProperties => ({
-    display: "flex",
-    flexDirection: isMobile ? "column" : "row",
-    padding: "20px",
-    height: "100vh",
-    backgroundColor: "#F3EBFF",
-    boxSizing: "border-box",
-  }),
-  leftColumn: (isMobile: boolean): React.CSSProperties => ({
-    flex: 1,
-    padding: "20px",
-    backgroundColor: "#6D5B97",
-    borderRadius: "16px",
-    color: "#fff",
-    display: "flex",
-    flexDirection: "column",
-    marginBottom: "20px",
-  }),
-  rightColumn: (isMobile: boolean): React.CSSProperties => ({
-    flexBasis: isMobile ? "auto" : "30%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }),
-  title: {
-    fontSize: "28px",
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: "20px",
-  },
-  noPlayersText: {
-    color: "#EEE",
-    textAlign: "center",
-    marginBottom: "10px",
-  },
-  playersList: {
-    flexGrow: 1,
-    marginBottom: "20px",
-    overflowY: "auto",
-  },
-  playerRow: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#4B3B6A",
-    padding: "10px",
-    borderRadius: "10px",
-    marginBottom: "10px",
-    color: "#fff",
-  },
-  playerIndex: {
-    fontWeight: "bold",
-    width: "30px",
-  },
-  playerName: {
-    flexGrow: 1,
-    textAlign: "center",
-  },
-  removeButton: {
-    backgroundColor: "transparent",
-    border: "none",
-    color: "#FF6B6B",
-    fontSize: "18px",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
-  addPlayerRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-  },
-  input: {
-    flexGrow: 1,
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "10px",
-    border: "1px solid #ccc",
-  },
-  addButton: {
-    fontSize: "24px",
-    backgroundColor: "#FFD700",
-    border: "none",
-    cursor: "pointer",
-    padding: "10px 15px",
-    borderRadius: "10px",
-    fontWeight: "bold",
-  },
-  startButton: {
-    backgroundColor: "#FFD700",
-    padding: "15px 30px",
-    borderRadius: "12px",
-    border: "none",
-    fontSize: "24px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-  },
-};

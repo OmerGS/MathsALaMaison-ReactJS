@@ -1,1 +1,68 @@
 @import 'tailwindcss';
+
+/* Couleurs personnalisées pour "Math à la maison" */
+@layer base {
+  :root {
+    --color-primary: #4F46E5;     /* Indigo */
+    --color-secondary: #06B6D4;   /* Cyan doux */
+    --color-accent: #f9e29c;      /* Jaune clair */
+    --color-bg: #F8FAFC;          /* Fond très clair */
+    --color-surface: #FFFFFF;     /* Fond surface (cartes, modales) */
+    --color-text: #1F2937;        /* Texte foncé */
+    --color-muted: #9CA3AF;       /* Texte secondaire */
+    --dark-gray: #161c24;
+    --blue-sign: #95DCC7;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Exemple de classes personnalisées */
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
+  .bg-dark {
+    background-color: var(--dark-gray);
+  }
+  .bg-signup {
+    background-color: var(--blue-sign);
+  }
+
+
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .text-muted {
+    color: var(--color-muted);
+  }
+
+  .card {
+    background-color: var(--color-surface);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+}
