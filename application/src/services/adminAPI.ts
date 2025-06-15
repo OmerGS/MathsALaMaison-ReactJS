@@ -1,3 +1,4 @@
+import { sub } from 'framer-motion/client';
 import http from './http';
 
 export const checkAdminAccess = async () => {
@@ -98,5 +99,10 @@ export const updatePremiumState = async (email: string, newPremiumState: boolean
 
 export const getStatistics = async () => {
     const response = await http.get('/stats/server-stats');
+    return response.data; 
+}
+
+export const sendEmailToEveryone = async (subject: string, content: string) => {
+    const response = await http.post('/admin/send-email', { subject, content });
     return response.data; 
 }

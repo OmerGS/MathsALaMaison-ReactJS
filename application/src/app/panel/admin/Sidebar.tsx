@@ -12,6 +12,7 @@ const sidebarItems = [
   { id: "users", label: "Utilisateurs" },
   { id: "pending", label: "En attente" },
   { id: "question", label: "Question" },
+  { id: "send-mail", label: "Mail" },
   { id: "settings", label: "Paramètres" },
 ];
 

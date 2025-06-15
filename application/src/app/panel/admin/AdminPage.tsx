@@ -12,6 +12,7 @@ import UsersList from "./UserList";
 import PendingList from "./PendingList";
 import Question from "./Question";
 import Settings from "./Settings";
+import SendMail from "./SendMail";
 
 export default function AdminPageContainer() {
   const [active, setActive] = useState("dashboard");
@@ -63,6 +64,8 @@ export default function AdminPageContainer() {
                   return "En attente";
                 case "question":
                   return "Liste des questions";
+                case "send-mail":
+                  return "Envoie de mail aux joueurs";
                 case "settings":
                   return "Paramètres";
                 default:
@@ -79,6 +82,7 @@ export default function AdminPageContainer() {
           <PendingList />
         )}
         {active === "question" && <Question />}
+        {active === "send-mail" && <SendMail />}
         {active === "settings" && <Settings />}
       </main>
     </>
