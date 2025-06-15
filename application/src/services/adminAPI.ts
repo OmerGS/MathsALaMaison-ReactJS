@@ -52,6 +52,11 @@ export const updatePremiumState = async (email: string, newPremiumState: boolean
     return response.data; 
 }
 
+export const getStatistics = async () => {
+    const response = await http.get('/stats/server-stats');
+    return response.data; 
+}
+
 /*export const getAllQuestion = () => {
     return http.get('/admin/getAllQuestion');
 };

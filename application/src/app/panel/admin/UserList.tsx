@@ -51,36 +51,33 @@ export default function UsersList() {
 
   if (selectedUser) {
     return (
-      <div>
+      <div className="p-4">
         <button
           onClick={handleCloseProfile}
-          className="mb-4 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          className="mb-6 px-4 py-2 bg-white/50 backdrop-blur-md text-gray-700 font-semibold rounded-full hover:bg-white/70 transition cursor-pointer"
         >
           ← Retour à la liste
         </button>
-        <UserProfileView
-          user={selectedUser}
-          onUpdateUser={handleUpdateUser}
-        />
+        <UserProfileView user={selectedUser} onUpdateUser={handleUpdateUser} />
       </div>
     );
   }
 
   return (
-    <div className="px-2">
+    <div className="px-4 py-6 bg-gradient-to-b from-white to-blue-50 min-h-screen">
       {/* Barre de recherche et filtres */}
-      <div className="mb-4 flex flex-col md:flex-row gap-4 items-center">
+      <div className="mb-6 flex flex-col md:flex-row gap-4 items-center">
         <input
           type="text"
           placeholder="Rechercher par pseudo ou email"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 flex-grow"
+          className="w-full md:w-1/2 border border-gray-300 rounded-full px-4 py-2 shadow-md bg-white/50 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
         <select
           value={premiumFilter}
           onChange={(e) => setPremiumFilter(e.target.value as any)}
-          className="border border-gray-300 rounded px-3 py-2"
+          className="border border-gray-300 rounded-full px-4 py-2 shadow-md bg-white/50 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         >
           <option value="all">Tous</option>
           <option value="premium">Premium</option>
@@ -88,33 +85,33 @@ export default function UsersList() {
         </select>
       </div>
 
-      {loading && <p>Chargement des utilisateurs...</p>}
-      {!loading && users.length === 0 && <p>Aucun utilisateur trouvé.</p>}
+      {loading && <p className="text-center text-gray-600">Chargement des utilisateurs...</p>}
+      {!loading && users.length === 0 && <p className="text-center text-gray-500">Aucun utilisateur trouvé.</p>}
 
       {!loading && users.length > 0 && (
         <>
-
-          <div className="hidden md:block">
+          {/* TABLEAU DESKTOP */}
+          <div className="hidden md:block rounded-2xl overflow-hidden shadow-xl bg-white/40 backdrop-blur-md">
             <table className="w-full border-collapse">
-              <thead className="bg-gray-100 font-semibold text-gray-700">
+              <thead className="bg-white/60 text-gray-700 font-semibold">
                 <tr>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left">ID</th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left">Pseudo</th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-left">Email</th>
-                  <th className="border-b border-gray-300 px-4 py-3 text-center">Premium</th>
+                  <th className="border-b border-gray-300 px-6 py-4 text-left">ID</th>
+                  <th className="border-b border-gray-300 px-6 py-4 text-left">Pseudo</th>
+                  <th className="border-b border-gray-300 px-6 py-4 text-left">Email</th>
+                  <th className="border-b border-gray-300 px-6 py-4 text-center">Premium</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr
                     key={user.id}
-                    className="bg-white hover:bg-blue-50 cursor-pointer"
+                    className="hover:bg-blue-100 cursor-pointer transition"
                     onClick={() => setSelectedUser(user)}
                   >
-                    <td className="border-b border-gray-200 px-4 py-3">{user.id}</td>
-                    <td className="border-b border-gray-200 px-4 py-3">{user.pseudo}</td>
-                    <td className="border-b border-gray-200 px-4 py-3 break-all">{user.email}</td>
-                    <td className="border-b border-gray-200 px-4 py-3 text-center">
+                    <td className="px-6 py-4 border-b border-gray-200">{user.id}</td>
+                    <td className="px-6 py-4 border-b border-gray-200">{user.pseudo}</td>
+                    <td className="px-6 py-4 border-b border-gray-200 break-all">{user.email}</td>
+                    <td className="px-6 py-4 border-b border-gray-200 text-center">
                       {user.isPremium ? "Oui" : "Non"}
                     </td>
                   </tr>
@@ -123,15 +120,15 @@ export default function UsersList() {
             </table>
           </div>
 
-
-          <div className="md:hidden space-y-4">
+          {/* VERSION MOBILE */}
+          <div className="md:hidden space-y-6 mt-4">
             {users.map((user) => (
               <div
                 key={user.id}
                 onClick={() => setSelectedUser(user)}
-                className="bg-white p-4 rounded-xl shadow hover:bg-blue-50 transition cursor-pointer"
+                className="bg-white/40 p-5 rounded-2xl shadow-xl backdrop-blur-md hover:bg-white/60 transition cursor-pointer"
               >
-                <div className="text-sm text-gray-500">ID: {user.id}</div>
+                <div className="text-xs text-gray-500">ID: {user.id}</div>
                 <div className="font-semibold text-lg text-gray-800">{user.pseudo}</div>
                 <div className="text-sm text-gray-700 break-words">{user.email}</div>
                 <div className={`mt-2 font-bold ${user.isPremium ? "text-green-600" : "text-red-600"}`}>
@@ -141,22 +138,28 @@ export default function UsersList() {
             ))}
           </div>
 
-
-          <div className="mt-6 flex justify-center gap-4">
+          {/* PAGINATION */}
+          <div className="mt-8 flex justify-center items-center gap-6">
             <button
               onClick={() => setPage((p) => Math.max(p - 1, 1))}
               disabled={page === 1}
-              className="rounded-md bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400"
+              className={`rounded-full bg-white/60 px-5 py-2 backdrop-blur-md text-gray-700 border border-gray-300 font-semibold transition hover:bg-white/80 ${
+                page === 1 ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
-              Précédent
+              ⬅ Précédent
             </button>
-            <span className="self-center">Page {page} / {totalPages}</span>
+            <span className="text-gray-700 font-medium">
+              {page} / {totalPages}
+            </span>
             <button
               onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
               disabled={page === totalPages}
-              className="rounded-md bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400"
+              className={`rounded-full bg-white/60 px-5 py-2 backdrop-blur-md text-gray-700 border border-gray-300 font-semibold transition hover:bg-white/80 ${
+                page === totalPages ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
-              Suivant
+              Suivant ➡
             </button>
           </div>
         </>

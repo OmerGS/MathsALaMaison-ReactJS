@@ -44,83 +44,138 @@ export default function UserProfileView({ user, onUpdateUser }: UserProfileViewP
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="max-w-lg mx-auto bg-white rounded-3xl shadow-lg p-8 mt-10"
+      className="
+        max-w-md mx-auto
+        p-6
+        bg-white/20 backdrop-blur-md
+        border border-white/30
+        rounded-3xl
+        shadow-lg shadow-black/25
+        text-gray-900 font-sans
+        flex flex-col items-center
+        space-y-6
+        md:max-w-4xl md:flex-row md:items-start md:space-y-0 md:space-x-10
+      "
     >
-      <motion.h2
-        initial={{ scale: 0.8, opacity: 0 }}
+      {/* Photo profil */}
+      <motion.img
+        src={profileImageSrc}
+        alt="Photo de profil"
+        className="
+          w-28 h-28 rounded-full
+          border-8 border-gradient-to-tr from-indigo-400 via-purple-500 to-pink-500
+          object-cover
+          shadow-lg shadow-pink-400/50
+          transition-transform
+          hover:scale-105
+          md:w-40 md:h-40
+        "
+        initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.3, type: "spring", stiffness: 150 }}
-        className="text-3xl font-extrabold text-gray-900 mb-6 text-center"
-      >
-        Profil Utilisateur
-      </motion.h2>
+        transition={{ delay: 0.2 }}
+      />
 
-      <div className="mb-8 grid grid-cols-2 gap-6 text-gray-700">
-        <img
-          src={profileImageSrc}
-          alt="Photo de profil"
-          className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-gray-200 object-cover"
-        />
-
-        <InfoItem label="Pseudo" value={user.pseudo} />
-        <InfoItem label="Email" value={user.email} />
-        <InfoItem
-          label="Statut Premium"
-          value={
-            <span className={`font-semibold ${user.isPremium ? "text-green-600" : "text-red-600"}`}>
-              {user.isPremium ? "Oui" : "Non"}
-            </span>
-          }
-        />
-      </div>
-
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-200"
-      >
-        <h3 className="text-xl font-semibold mb-3 text-gray-800">Statistiques</h3>
-        <StatsItem label="Digits" value={user.point.toString()} />
-        <StatsItem label="Victoire" value={user.nombreVictoire.toString()} />
-        <StatsItem label="Partie joué" value={user.nombrePartie.toString()} />
-      </motion.div>
-
-      {user.isPremium ? (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleRemovePremium}
-          disabled={loading}
-          className="w-full py-3 bg-red-600 text-white rounded-xl font-semibold shadow-md hover:bg-red-700 disabled:opacity-50 transition"
+      {/* Contenu infos */}
+      <div className="flex-1 w-full md:w-auto">
+        <motion.h2
+          initial={{ scale: 0.85, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3, type: "spring", stiffness: 160 }}
+          className="
+            text-3xl font-extrabold text-center mb-6
+            text-gradient bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 bg-clip-text text-transparent
+            md:text-left
+          "
         >
-          {loading ? "Suppression en cours..." : "Enlever le statut Premium"}
-        </motion.button>
-      ) : (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleAddPremium}
-          disabled={loading}
-          className="w-full py-3 bg-green-600 text-white rounded-xl font-semibold shadow-md hover:bg-green-700 disabled:opacity-50 transition"
-        >
-          {loading ? "Activation en cours..." : "Activer le statut Premium"}
-        </motion.button>
-      )}
+          Profil de {user.pseudo}
+        </motion.h2>
 
-      {error && (
-        <motion.p
+        <div className="grid grid-cols-1 gap-4 text-gray-800 mb-8 md:grid-cols-2 md:gap-6">
+          <InfoItem label="Pseudo" value={user.pseudo} />
+          <InfoItem label="Email" value={user.email} />
+          <InfoItem
+            label="Statut Premium"
+            value={
+              <span className={`font-semibold ${user.isPremium ? "text-green-600" : "text-red-600"}`}>
+                {user.isPremium ? "Oui" : "Non"}
+              </span>
+            }
+          />
+        </div>
+
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-5 text-center text-red-600 font-medium"
+          transition={{ delay: 0.5 }}
+          className="
+            mb-8
+            p-5
+            bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100
+            rounded-2xl
+            border border-white/40
+            shadow-inner shadow-purple-300/50
+            text-gray-800 font-semibold
+            select-none
+          "
         >
-          {error}
-        </motion.p>
-      )}
+          <h3 className="text-2xl mb-4 text-center md:text-left">Statistiques</h3>
+          <StatsItem label="Points" value={user.point.toString()} />
+          <StatsItem label="Victoires" value={user.nombreVictoire.toString()} />
+          <StatsItem label="Parties jouées" value={user.nombrePartie.toString()} />
+        </motion.div>
+
+        {/* Boutons */}
+        {user.isPremium ? (
+          <motion.button
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRemovePremium}
+            disabled={loading}
+            className="
+              w-full py-3
+              bg-red-600 hover:bg-red-700
+              text-white font-semibold
+              rounded-2xl
+              shadow-lg shadow-red-500/60
+              transition
+              disabled:opacity-50 disabled:cursor-not-allowed
+            "
+          >
+            {loading ? "Suppression en cours..." : "Enlever le statut Premium"}
+          </motion.button>
+        ) : (
+          <motion.button
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleAddPremium}
+            disabled={loading}
+            className="
+              w-full py-3
+              bg-green-600 hover:bg-green-700
+              text-white font-semibold
+              rounded-2xl
+              shadow-lg shadow-green-500/60
+              transition
+              disabled:opacity-50 disabled:cursor-not-allowed
+            "
+          >
+            {loading ? "Activation en cours..." : "Activer le statut Premium"}
+          </motion.button>
+        )}
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-6 text-center text-red-600 font-medium"
+          >
+            {error}
+          </motion.p>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -128,15 +183,15 @@ export default function UserProfileView({ user, onUpdateUser }: UserProfileViewP
 function InfoItem({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="break-words min-w-0">
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="text-lg font-medium break-words">{value}</p>
+      <p className="text-sm text-gray-500 mb-1">{label}</p>
+      <p className="text-lg font-semibold break-words">{value}</p>
     </div>
   );
 }
 
 function StatsItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between border-b border-gray-200 py-2 text-gray-700 last:border-b-0">
+    <div className="flex justify-between border-b border-gray-300 py-2 last:border-b-0">
       <span>{label}</span>
       <span className="font-semibold">{value}</span>
     </div>
