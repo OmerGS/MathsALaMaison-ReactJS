@@ -11,7 +11,7 @@ const sidebarItems = [
   { id: "dashboard", label: "Tableau de bord" },
   { id: "users", label: "Utilisateurs" },
   { id: "pending", label: "En attente" },
-  { id: "question", label: "Ajouter une question" },
+  { id: "question", label: "Question" },
   { id: "settings", label: "Paramètres" },
 ];
 

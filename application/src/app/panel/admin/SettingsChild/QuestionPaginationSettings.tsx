@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { getUserPerPage, updateUserPerPageNumber } from "@/services/adminAPI";
+import { getQuestionPerPage, updateQuestionPerPageNumber } from "@/services/adminAPI";
 import ToastContainer from "@/components/ToastContainer";
 import { motion, useAnimation } from "framer-motion";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
+import Spinner from "@/components/ui/Spinner";
 
-export default function PaginationSettings() {
-  const [usersPerPage, setUsersPerPage] = useState<number>(1);
+export default function QuestionPaginationSettings() {
+  const [questionsPerPage, setQuestionsPerPage] = useState<number>(1);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -18,8 +19,8 @@ export default function PaginationSettings() {
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const res = await getUserPerPage();
-        setUsersPerPage(res.users_per_page);
+        const res = await getQuestionPerPage();
+        setQuestionsPerPage(res.questions_per_page);
       } catch {
         setError("Erreur lors du chargement");
       } finally {
@@ -35,7 +36,7 @@ export default function PaginationSettings() {
   };
 
   const handleIncrement = () => {
-    setUsersPerPage((prev) => {
+    setQuestionsPerPage((prev) => {
       const next = Math.min(100, prev + 1);
       bounce();
       return next;
@@ -43,7 +44,7 @@ export default function PaginationSettings() {
   };
 
   const handleDecrement = () => {
-    setUsersPerPage((prev) => {
+    setQuestionsPerPage((prev) => {
       const next = Math.max(1, prev - 1);
       bounce();
       return next;
@@ -51,14 +52,14 @@ export default function PaginationSettings() {
   };
 
   const handleSave = async () => {
-    if (usersPerPage <= 0) {
+    if (questionsPerPage <= 0) {
       toastRef.current?.addToast("error", "Valeur invalide");
       return;
     }
     setError("");
     setSaving(true);
     try {
-      await updateUserPerPageNumber(usersPerPage);
+      await updateQuestionPerPageNumber(questionsPerPage);
       toastRef.current?.addToast("success", "Paramètre mis à jour !");
     } catch {
       toastRef.current?.addToast("error", "Erreur lors de la sauvegarde !");
@@ -66,9 +67,9 @@ export default function PaginationSettings() {
       setSaving(false);
     }
   };
-
-  if (loading) return <p className="text-left text-gray-500">Chargement...</p>;
-
+  
+  if (loading) return <div className="text-left text-gray-500"><Spinner></Spinner></div>;
+  
   return (
     <>
       <div className="p-6 border rounded-2xl bg-white shadow-md w-full max-w-xs mx-auto">
@@ -80,13 +81,13 @@ export default function PaginationSettings() {
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={handleDecrement}
-            disabled={usersPerPage <= 1}
+            disabled={questionsPerPage <= 1}
             className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-xl font-light text-gray-800 transition disabled:opacity-50"
           >
             −
           </motion.button>
 
-          <AnimatedNumber value={usersPerPage} />
+          <AnimatedNumber value={questionsPerPage} />
 
           <motion.button
             whileTap={{ scale: 0.85 }}

@@ -62,7 +62,7 @@ export default function AdminPageContainer() {
                 case "pending":
                   return "En attente";
                 case "question":
-                  return "Ajouter une question";
+                  return "Liste des questions";
                 case "settings":
                   return "Paramètres";
                 default:

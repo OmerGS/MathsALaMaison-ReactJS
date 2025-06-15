@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User } from "@/Type/User";
 import { getAllUsers } from "@/services/adminAPI";
 import UserProfileView from "./UserListChild/UserProfileView";
+import Spinner from "@/components/ui/Spinner";
 
 const USERS_PER_PAGE = 10;
 
@@ -85,7 +86,7 @@ export default function UsersList() {
         </select>
       </div>
 
-      {loading && <p className="text-center text-gray-600">Chargement des utilisateurs...</p>}
+      {loading && <div className="flex items-center justify-center"><Spinner /> </div> }
       {!loading && users.length === 0 && <p className="text-center text-gray-500">Aucun utilisateur trouvé.</p>}
 
       {!loading && users.length > 0 && (

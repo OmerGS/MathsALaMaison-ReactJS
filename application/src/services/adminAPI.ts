@@ -47,6 +47,50 @@ export const updateUserPerPageNumber = async (page: number) => {
     return response.data; 
 }
 
+export const getAllQuestion = async (page = 1) => {
+  const params = { page };
+
+  const response = await http.get("/admin/getAllQuestions", { params });
+  return response.data;
+};
+
+export const getQuestionPerPage = async () => {
+    const response = await http.get('/admin/settings/questions_per_page');
+    return response.data; 
+}
+
+export const updateQuestionPerPageNumber = async (page: number) => {
+    const response = await http.post('/admin/settings/questions_per_page', { questions_per_page: page });
+    return response.data; 
+}
+
+export const addNewQuestion = async ({
+  typeQuestion,
+  question,
+  typeReponse,
+  reponse,
+  correction,
+  image_data,
+}: {
+  typeQuestion: string;
+  question: string;
+  typeReponse: string;
+  reponse: string;
+  correction?: string;
+  image_data?: string | null;
+}) => {
+  const response = await http.post('/admin/question', {
+    typeQuestion,
+    question,
+    typeReponse,
+    reponse,
+    correction: correction || '',
+    image_data: image_data || null,
+  });
+
+  return response.data;
+};
+
 export const updatePremiumState = async (email: string, newPremiumState: boolean) => {
     const response = await http.post('/admin/update-premium', { email, newPremiumState });
     return response.data; 
@@ -56,12 +100,3 @@ export const getStatistics = async () => {
     const response = await http.get('/stats/server-stats');
     return response.data; 
 }
-
-/*export const getAllQuestion = () => {
-    return http.get('/admin/getAllQuestion');
-};
-
-export const createQuestion = (question: Question) => {
-    return http.post('/admin/createQuestion', question);
-};
-*/

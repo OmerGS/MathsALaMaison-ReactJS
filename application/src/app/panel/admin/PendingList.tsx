@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { User } from "@/Type/User";
 import { getNonPremiumUser, approveUser, rejectUser } from "@/services/adminAPI";
+import Spinner from "@/components/ui/Spinner";
+import EmptyStateAnimated from "@/components/ui/EmptyState";
 
 export default function PendingList() {
   const [pendingUsers, setPendingUsers] = useState<User[]>([]);
@@ -52,15 +54,11 @@ export default function PendingList() {
 
   if (loading)
     return (
-      <p className="text-center mt-8 text-gray-600 font-medium tracking-wide">
-        Chargement des utilisateurs non premium...
-      </p>
+      <div className="flex items-center justify-center"><Spinner /> </div>
     );
   if (pendingUsers.length === 0)
     return (
-      <p className="text-center mt-8 text-gray-500 font-medium tracking-wide">
-        Aucun utilisateur non premium trouvé.
-      </p>
+      <EmptyStateAnimated />
     );
 
   return (
