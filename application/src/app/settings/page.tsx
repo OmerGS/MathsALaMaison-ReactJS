@@ -12,7 +12,7 @@ import BackButton from "@/components/ui/BackButton";
 export default function Settings() {
   const router = useRouter();
   const { user, loading } = useUser();
-  const [selectedSection, setSelectedSection] = useState("CGU");
+  const [selectedSection, setSelectedSection] = useState("COMPTE");
 
   useEffect(() => {
     if (!loading && !user) {
