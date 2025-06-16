@@ -75,7 +75,7 @@ export default function QuestionPaginationSettings() {
       <div className="p-6 border rounded-2xl bg-white shadow-md w-full max-w-xs mx-auto">
         <h2 className="text-lg font-semibold text-gray-800 mb-4">Pagination</h2>
 
-        <p className="text-sm text-gray-600 mb-1">Utilisateurs par page</p>
+        <p className="text-sm text-gray-600 mb-1">Questions par page</p>
 
         <div className="flex items-center justify-center space-x-4 my-4">
           <motion.button

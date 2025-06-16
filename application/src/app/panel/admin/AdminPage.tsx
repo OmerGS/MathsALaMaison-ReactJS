@@ -6,13 +6,35 @@ import { User } from "@/Type/User";
 import { getAllUsers } from "@/services/adminAPI";
 import { useUser } from "@/context/UserContext";
 
+// Composants enfants
 import Sidebar from "./Sidebar";
 import Dashboard from "./Dashboard";
 import UsersList from "./UserList";
 import PendingList from "./PendingList";
 import Question from "./Question";
-import Settings from "./Settings";
+import Setting from "./Settings";
 import SendMail from "./SendMail";
+
+import {
+  LayoutDashboard,
+  Users,
+  Clock,
+  HelpCircle,
+  Mail,
+  Settings,
+} from "lucide-react";
+
+const tabConfig: Record<
+  string,
+  { label: string; icon: React.ElementType }
+> = {
+  dashboard: { label: "Tableau de bord", icon: LayoutDashboard },
+  users: { label: "Utilisateurs", icon: Users },
+  pending: { label: "En attente", icon: Clock },
+  question: { label: "Liste des questions", icon: HelpCircle },
+  "send-mail": { label: "Envoie de mail aux joueurs", icon: Mail },
+  settings: { label: "Paramètres", icon: Settings },
+};
 
 export default function AdminPageContainer() {
   const [active, setActive] = useState("dashboard");
@@ -53,37 +75,23 @@ export default function AdminPageContainer() {
         onClick={() => sidebarOpen && setSidebarOpen(false)}
       >
         <header className="mb-8">
-          <h2 className="mb-1 text-4xl font-semibold tracking-tight">
-            {(() => {
-              switch (active) {
-                case "dashboard":
-                  return "Tableau de bord";
-                case "users":
-                  return "Utilisateurs";
-                case "pending":
-                  return "En attente";
-                case "question":
-                  return "Liste des questions";
-                case "send-mail":
-                  return "Envoie de mail aux joueurs";
-                case "settings":
-                  return "Paramètres";
-                default:
-                  return "";
-              }
-            })()}
-          </h2>
-          <hr className="border-gray-300" />
+          {tabConfig[active] && (
+            <h2 className="mb-1 flex items-center gap-3 text-4xl font-semibold tracking-tight">
+              {React.createElement(tabConfig[active].icon, {
+                className: "w-8 h-8 text-black-700",
+              })}
+              {tabConfig[active].label}
+            </h2>
+          )}
+          <hr className="border-gray-300 mt-2" />
         </header>
 
         {active === "dashboard" && <Dashboard />}
         {active === "users" && <UsersList />}
-        {active === "pending" && (
-          <PendingList />
-        )}
+        {active === "pending" && <PendingList />}
         {active === "question" && <Question />}
         {active === "send-mail" && <SendMail />}
-        {active === "settings" && <Settings />}
+        {active === "settings" && <Setting />}
       </main>
     </>
   );

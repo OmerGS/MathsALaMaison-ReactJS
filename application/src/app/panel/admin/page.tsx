@@ -6,6 +6,9 @@ import AdminDashboard from "./AdminPage";
 
 export default function AdminPage() {
   return (
+    <AdminAccessControl>
       <AdminDashboard />
+    </AdminAccessControl>
+
   );
 }

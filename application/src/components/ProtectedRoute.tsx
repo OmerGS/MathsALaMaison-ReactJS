@@ -1,24 +1,39 @@
 "use client";
 
-import { useUser } from "@/context/UserContext";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useUser } from "@/context/UserContext";
+import Spinner from "@/components/ui/Spinner";
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+export default function UserAccessControl({ children }: { children: React.ReactNode }) {
   const { user, loading } = useUser();
   const router = useRouter();
-  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
-      setRedirecting(true);
-      router.push("/auth/login");
+      router.replace("/auth/login");
     }
   }, [loading, user, router]);
 
-  if (loading || redirecting) return <p>Chargement...</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-neutral-100 px-4">
+        <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-3xl shadow-2xl border border-neutral-200 animate-fade-in">
+          <Spinner />
+          <div className="text-center">
+            <h2 className="text-lg md:text-xl font-semibold text-neutral-900 tracking-tight">
+              Connexion sécurisée
+            </h2>
+            <p className="text-sm text-neutral-500 mt-2">
+              Vérification de votre session...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) return null;
-
+  
   return <>{children}</>;
 }

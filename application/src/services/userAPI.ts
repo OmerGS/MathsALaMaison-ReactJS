@@ -1,5 +1,9 @@
 import http from './http';
 
+export const checkUserAccess = async () => {
+  return (await http.get('/user/check-access'));
+}
+
 export const getUserInformation = () => {
   return http.post('/user/me');
 };

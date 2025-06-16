@@ -1,3 +1,4 @@
+import { sendEmailToEveryone } from "@/services/adminAPI";
 import React, { useState, useRef } from "react";
 
 type User = {
@@ -138,7 +139,7 @@ export default function EmailGenerator() {
     : generateEmailHTML(content, replacePlaceholdersWithRandom(content));
 
 
-  function handleSend() {
+  async function handleSend() {
     if (!subject.trim()) {
       alert("Le sujet est requis.");
       return;
@@ -148,7 +149,17 @@ export default function EmailGenerator() {
       return;
     }
 
-    alert(`Simulation d'envoi :\nSujet : ${subject}\nNombre de mails : ${users.length}`);
+    const emailSend = await sendEmailToEveryone(subject, content);
+
+    if(emailSend){
+      alert("Email envoyé avec succès à tous les utilisateurs !");
+      setSubject("");
+      setContent("");
+      setPreviewUserId(users[0]?.id || 0);
+      setIsSidebarOpen(false);
+    } else {
+      alert("Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer plus tard.");
+    }
   }
 
   return (
