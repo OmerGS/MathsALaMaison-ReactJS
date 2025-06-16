@@ -118,13 +118,15 @@ export default function EmailGenerator() {
         : replacePlaceholders(text, user).replace(/\n/g, "<br>");
 
     return `
-      <div class="bg-gray-50 p-6 min-h-[40vh] font-sans">
-        <div class="relative max-w-xl mx-auto bg-white rounded-3xl shadow-lg p-6 text-gray-900">
-          <h1 class="text-3xl font-semibold mb-6 text-blue-600 tracking-wide">MathsALaMaison</h1>
-          <div class="text-lg leading-relaxed whitespace-pre-line">
+      <div style="background-color: #f9fafb; padding: 24px; min-height: 40vh; font-family: sans-serif;">
+        <div style="position: relative; max-width: 600px; margin: 0 auto; background-color: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 24px; color: #1f2937;">
+          <h1 style="font-size: 28px; font-weight: 600; margin-bottom: 24px; color: #2563eb; letter-spacing: 0.05em;">
+            MathsALaMaison
+          </h1>
+          <div style="font-size: 18px; line-height: 1.6; white-space: pre-line;">
             ${contentHtml}
           </div>
-          <p class="mt-10 border-t border-gray-200 pt-4 text-gray-500 text-sm font-light tracking-wide">
+          <p style="margin-top: 40px; border-top: 1px solid #e5e7eb; padding-top: 16px; color: #6b7280; font-size: 14px; font-weight: 300; letter-spacing: 0.05em;">
             Cordialement,<br />
             L'équipe <strong>MathsALaMaison</strong>
           </p>
@@ -133,11 +135,11 @@ export default function EmailGenerator() {
     `;
   }
 
+
   const previewUser = users.find((u) => u.id === previewUserId);
   const previewHtml = previewUser
     ? generateEmailHTML(content, previewUser)
     : generateEmailHTML(content, replacePlaceholdersWithRandom(content));
-
 
   async function handleSend() {
     if (!subject.trim()) {
@@ -149,7 +151,8 @@ export default function EmailGenerator() {
       return;
     }
 
-    const emailSend = await sendEmailToEveryone(subject, content);
+    const rawHtmlWithPlaceholders = generateEmailHTML(content, content);
+    const emailSend = await sendEmailToEveryone(subject, rawHtmlWithPlaceholders);
 
     if(emailSend){
       alert("Email envoyé avec succès à tous les utilisateurs !");
