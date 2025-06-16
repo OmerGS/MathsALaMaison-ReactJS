@@ -2,7 +2,7 @@ import { PasswordUtil } from "@/utils/PasswordUtil";
 import { login, getSaltByIdentifier } from "@/services/authAPI";
 import { User } from "@/Type/User";
 
-export async function handleLogin(identifier: string, password: string): Promise<User | null> {
+export async function handleLogin(identifier: string, password: string): Promise<any | null> {
   if (!identifier || !password) {
     alert("Veuillez remplir tous les champs.");
     return null;
@@ -25,7 +25,7 @@ export async function handleLogin(identifier: string, password: string): Promise
       return null;
     }
 
-    return loginResponse.data.user;
+    return loginResponse.data;
   } catch (error: any) {
     const message =
       error.response?.data?.message ||

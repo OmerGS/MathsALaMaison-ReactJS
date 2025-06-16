@@ -8,10 +8,11 @@ import "../globals.css";
 import SectionButton from "@/components/ui/SectionButton";
 import ActionButton from "@/components/ui/ActionButton";
 import BackButton from "@/components/ui/BackButton";
+import { logoutUser } from "@/services/authAPI";
 
 export default function Settings() {
   const router = useRouter();
-  const { user, loading } = useUser();
+  const { user, loading, setUser } = useUser();
   const [selectedSection, setSelectedSection] = useState("COMPTE");
 
   useEffect(() => {
@@ -19,6 +20,17 @@ export default function Settings() {
       router.replace("/auth/login");
     }
   }, [user, loading, router]);
+
+  const disconnect = async () => {
+    const response = await logoutUser();
+    if (response.status === 200) {
+      setUser(null);
+      router.push("/auth/login");
+    } else {
+      alert("Échec de la déconnexion. Veuillez réessayer.");
+      console.error("Failed to disconnect user");
+    }
+  }
 
   const renderContent = () => {
     switch (selectedSection) {
@@ -50,8 +62,8 @@ export default function Settings() {
             </ActionButton>
             <ActionButton
               danger
-              onClick={() => {
-                /* await disconnectUser(); setUser(null); router.push('/'); */
+              onClick={async () => {
+                await disconnect();
               }}
             >
               Déconnexion

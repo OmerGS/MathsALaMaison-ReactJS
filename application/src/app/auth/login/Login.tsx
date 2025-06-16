@@ -26,11 +26,17 @@ export default function LoginPage() {
   }, [user, loading]);
 
   const onLogin = async () => {
-    const userInfo = await handleLogin(identifier, password);
-    if (userInfo) {
-      setUser(userInfo);
-      router.push("/");
-    }
+    const responseData = await handleLogin(identifier, password);
+    if(responseData) {
+      if(responseData.authorized) {
+        if (responseData.user) {
+          setUser(responseData.user);
+          router.push("/");
+        }
+      } else {
+        alert(responseData.message || "Votre compte est en attente de validation par un administrateur.");
+      }
+    } 
   };
 
   return (
