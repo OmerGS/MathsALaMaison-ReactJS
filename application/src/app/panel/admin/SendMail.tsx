@@ -1,4 +1,3 @@
-import { sendEmailToEveryone } from "@/services/adminAPI";
 import React, { useState, useRef } from "react";
 
 type User = {
@@ -52,7 +51,7 @@ export default function EmailGenerator() {
   );
   const [previewUserId, setPreviewUserId] = useState(users[0]?.id || 0);
   const [showPlaceholderMenu, setShowPlaceholderMenu] = useState(false);
-  const [previewRandom, setPreviewRandom] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -118,70 +117,28 @@ export default function EmailGenerator() {
         : replacePlaceholders(text, user).replace(/\n/g, "<br>");
 
     return `
-      <div style="
-        background: #f7f9fc;
-        padding: 40px 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        min-height: 40vh;
-      ">
-        <div style="
-          position: relative;
-          max-width: 600px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 16px;
-          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-          padding: 32px 36px;
-          color: #1a1a1a;
-          z-index: 1;
-        ">
-
-          <h1 style="
-            font-weight: 700;
-            font-size: 28px;
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #1769aa;
-          ">MathsALaMaison</h1>
-
-          <div style="font-size: 17px; line-height: 1.6;">
+      <div class="bg-gray-50 p-6 min-h-[40vh] font-sans">
+        <div class="relative max-w-xl mx-auto bg-white rounded-3xl shadow-lg p-6 text-gray-900">
+          <h1 class="text-3xl font-semibold mb-6 text-blue-600 tracking-wide">MathsALaMaison</h1>
+          <div class="text-lg leading-relaxed whitespace-pre-line">
             ${contentHtml}
           </div>
-
-          <p style="
-            margin-top: 36px;
-            font-style: italic;
-            color: #666666;
-            font-size: 15px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 20px;
-          ">
+          <p class="mt-10 border-t border-gray-200 pt-4 text-gray-500 text-sm font-light tracking-wide">
             Cordialement,<br />
             L'équipe <strong>MathsALaMaison</strong>
           </p>
         </div>
-
-        <!-- Fond géométrique léger -->
-        <svg style="
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          width: 180px;
-          height: 180px;
-          opacity: 0.12;
-          pointer-events: none;
-          z-index: 0;
-        " viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="30" cy="30" r="20" fill="#1769aa"/>
-          <rect x="110" y="40" width="40" height="40" fill="#64b5f6" />
-          <polygon points="60,140 90,100 120,140" fill="#90caf9" />
-          <circle cx="140" cy="130" r="15" fill="#bbdefb" />
-        </svg>
       </div>
     `;
   }
 
-  async function handleSend() {
+  const previewUser = users.find((u) => u.id === previewUserId);
+  const previewHtml = previewUser
+    ? generateEmailHTML(content, previewUser)
+    : generateEmailHTML(content, replacePlaceholdersWithRandom(content));
+
+
+  function handleSend() {
     if (!subject.trim()) {
       alert("Le sujet est requis.");
       return;
@@ -191,219 +148,178 @@ export default function EmailGenerator() {
       return;
     }
 
-    const mailsByUserId: { [key: number]: string } = {};
-    users.forEach((user) => {
-      mailsByUserId[user.id] = generateEmailHTML(content, user);
-    });
-
-    const htmlWithPlaceholders = generateEmailHTML(content, content);
-    await sendEmailToEveryone(subject, htmlWithPlaceholders);
-
     alert(`Simulation d'envoi :\nSujet : ${subject}\nNombre de mails : ${users.length}`);
-    console.log("Mails générés :", mailsByUserId);
   }
 
-  const previewUser = users.find((u) => u.id === previewUserId);
-  const previewHtml = previewRandom
-    ? generateEmailHTML(content, replacePlaceholdersWithRandom(content))
-    : previewUser
-    ? generateEmailHTML(content, previewUser)
-    : "";
-
   return (
-    <div
-      style={{
-        maxWidth: 900,
-        margin: "40px auto",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        backgroundColor: "#f9fafb",
-        padding: 32,
-        borderRadius: 12,
-        boxShadow: "0 6px 30px rgba(0,0,0,0.05)",
-        color: "#222",
-      }}
-    >
-      <label style={{ fontWeight: 600, display: "block", marginBottom: 8 }}>Sujet :</label>
-      <input
-        type="text"
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
-        placeholder="Sujet du mail"
-        style={{
-          width: "100%",
-          padding: 14,
-          fontSize: 16,
-          borderRadius: 6,
-          border: "1px solid #ccc",
-          marginBottom: 24,
-          boxSizing: "border-box",
-          outlineColor: "#0070f3",
-        }}
-      />
+    <>
+      <div className="max-w-4xl mx-auto my-12 p-6 sm:p-10 bg-white rounded-3xl shadow-xl select-none font-sans text-gray-900">
+        <label className="block mb-3 font-semibold text-lg tracking-wide text-gray-700">
+          Sujet :
+        </label>
+        <input
+          type="text"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          placeholder="Sujet du mail"
+          className="w-full p-4 text-lg rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-10 font-medium transition-colors"
+        />
 
-      <label style={{ fontWeight: 600, display: "block", marginBottom: 8 }}>
-        Contenu (placeholders supportés)
-      </label>
+        <label className="block mb-3 font-semibold text-lg tracking-wide text-gray-700">
+          Contenu (placeholders supportés)
+        </label>
 
-      <div style={{ position: "relative", marginBottom: 12 }}>
+        <div className="relative mb-5">
+          <button
+            type="button"
+            onClick={() => setShowPlaceholderMenu((v) => !v)}
+            className="bg-blue-600 text-white rounded-lg py-2 px-5 font-semibold shadow-md hover:bg-blue-700 transition-colors select-none"
+          >
+            Insérer un placeholder
+          </button>
+
+          {showPlaceholderMenu && (
+            <div className="absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-30 w-60 max-h-56 overflow-y-auto">
+              {placeholders.map(({ label, value }) => (
+                <div
+                  key={value}
+                  onClick={() => insertPlaceholder(value)}
+                  className="cursor-pointer px-4 py-3 hover:bg-blue-50 font-medium text-gray-900 select-none"
+                  title={`Insérer le placeholder {${value}}`}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  {label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <textarea
+          ref={textareaRef}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={12}
+          className="w-full p-5 rounded-3xl border border-gray-300 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-lg leading-relaxed text-gray-900"
+        />
+
+        <div className="mt-8 mb-6 flex flex-wrap items-center gap-5 text-gray-600 font-semibold select-none">
+          {(
+            <>
+              <span className="font-normal">Choisir un utilisateur pour aperçu :</span>
+              <select
+                value={previewUserId}
+                onChange={(e) => setPreviewUserId(Number(e.target.value))}
+                className="text-gray-900 font-semibold px-3 py-1 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {users.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.pseudo} ({user.email})
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+        </div>
+
         <button
-          type="button"
-          onClick={() => setShowPlaceholderMenu((v) => !v)}
-          style={{
-            backgroundColor: "#0070f3",
-            border: "none",
-            color: "white",
-            padding: "8px 14px",
-            borderRadius: 6,
-            cursor: "pointer",
-            fontWeight: "600",
-            marginBottom: 8,
-          }}
+          onClick={handleSend}
+          className="w-full py-5 mt-4 bg-blue-600 text-white text-xl font-bold rounded-2xl shadow-lg hover:bg-blue-700 transition-colors select-none"
         >
-          Insérer un placeholder
+          Envoyer à tous les utilisateurs
         </button>
 
-        {showPlaceholderMenu && (
-          <div
-            style={{
-              position: "absolute",
-              backgroundColor: "white",
-              border: "1px solid #ddd",
-              borderRadius: 6,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              zIndex: 20,
-              width: 220,
-              maxHeight: 180,
-              overflowY: "auto",
-            }}
-          >
-            {placeholders.map(({ label, value }) => (
-              <div
-                key={value}
-                onClick={() => insertPlaceholder(value)}
-                style={{
-                  padding: "10px 14px",
-                  cursor: "pointer",
-                  fontSize: 14,
-                  borderBottom: "1px solid #eee",
-                  userSelect: "none",
-                }}
-                onMouseDown={(e) => e.preventDefault()}
-                title={`Insérer le placeholder {${value}}`}
-              >
-                {label}
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Bouton mobile pour modal */}
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="mt-12 w-full md:hidden bg-gray-100 text-gray-900 py-4 rounded-3xl font-semibold shadow-md hover:bg-gray-200 transition-colors select-none"
+          aria-label="Afficher la prévisualisation du mail"
+        >
+          Voir l’aperçu du mail
+        </button>
       </div>
 
-      <textarea
-        ref={textareaRef}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows={10}
-        style={{
-          width: "100%",
-          fontSize: 16,
-          fontFamily: "monospace, Consolas, 'Courier New', Courier, monospace",
-          padding: 16,
-          borderRadius: 8,
-          border: "1px solid #ccc",
-          resize: "vertical",
-          boxSizing: "border-box",
-          color: "#222",
-          backgroundColor: "white",
-        }}
+      {/* Overlay */}
+      <div
+        className={`fixed inset-0 bg-gradient-to-tr from-white/20 via-white/20 to-white/3 backdrop-blur-sm border border-white/30 shadow-lg rounded-2xl transition-opacity duration-300 ease-in-out flex items-center justify-center p-6
+          ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={() => setIsSidebarOpen(false)}
+        aria-hidden="true"
       />
 
-      <div
-        style={{
-          marginTop: 24,
-          marginBottom: 16,
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-          flexWrap: "wrap",
-        }}
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-0 right-0 h-full bg-white shadow-xl p-8 overflow-y-auto transition-transform duration-300 ease-in-out
+          w-full max-w-md md:w-1/3
+          ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sidebar-title"
       >
-        <label style={{ fontWeight: 600 }}>
-          Aperçu pour :
-          <select
-            value={previewUserId}
-            onChange={(e) => setPreviewUserId(Number(e.target.value))}
-            disabled={previewRandom}
-            style={{
-              marginLeft: 12,
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: "1px solid #ccc",
-              fontSize: 15,
-              cursor: "pointer",
-            }}
+        <h2 id="sidebar-title" className="text-2xl font-extrabold mb-6 text-blue-600 select-none">
+          Aperçu du mail
+        </h2>
+        <div
+          className="prose prose-blue max-w-none whitespace-pre-line"
+          dangerouslySetInnerHTML={{ __html: previewHtml }}
+        />
+        <button
+          onClick={() => setIsSidebarOpen(false)}
+          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+          aria-label="Fermer l’aperçu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.pseudo} ({user.email})
-              </option>
-            ))}
-          </select>
-        </label>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </aside>
 
-        <label style={{ fontWeight: 600, cursor: "pointer" }}>
-          <input
-            type="checkbox"
-            checked={previewRandom}
-            onChange={(e) => setPreviewRandom(e.target.checked)}
-            style={{ marginRight: 6, cursor: "pointer" }}
-          />
-          Valeurs aléatoires
-        </label>
-      </div>
-
-      <h3 style={{ fontWeight: 700, fontSize: 20, marginBottom: 12 }}>Aperçu du mail</h3>
-
-      <div
-        style={{
-          backgroundColor: "#fff",
-          border: "1px solid #ddd",
-          borderRadius: 8,
-          minHeight: 250,
-          padding: 24,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-          overflowY: "auto",
-          maxWidth: 600,
-          margin: "auto",
-          fontSize: 16,
-          color: "#222",
-          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-          lineHeight: 1.5,
-        }}
-        dangerouslySetInnerHTML={{ __html: previewHtml }}
-      />
-
+      {/* Bouton flottant desktop */}
       <button
-        onClick={handleSend}
-        style={{
-          marginTop: 36,
-          backgroundColor: "#0070f3",
-          color: "white",
-          padding: "14px 28px",
-          fontSize: 17,
-          border: "none",
-          borderRadius: 8,
-          cursor: "pointer",
-          fontWeight: "700",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-          transition: "background-color 0.3s ease",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#005bb5")}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0070f3")}
+        onClick={() => setIsSidebarOpen((v) => !v)}
+        aria-label={isSidebarOpen ? "Fermer l’aperçu" : "Afficher l’aperçu"}
+        className="hidden md:flex fixed bottom-8 right-8 items-center justify-center w-14 h-14 bg-blue-600 rounded-full shadow-lg text-white hover:bg-blue-700 transition-colors focus:outline-none z-50"
       >
-        Envoyer à tous les joueurs
+        {isSidebarOpen ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+        )}
       </button>
-    </div>
+    </>
   );
 }
