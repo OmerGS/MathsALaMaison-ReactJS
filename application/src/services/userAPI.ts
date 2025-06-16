@@ -4,8 +4,8 @@ export const getUserInformation = () => {
   return http.post('/user/me');
 };
 
-export const getUserIp = (email: string) => {
-  return http.post('/user/ip', { email: email });
+export const getUserIp = () => {
+  return http.post('/user/ip');
 };
 
 export const updateProfilePicture = (idPicture: number) => {

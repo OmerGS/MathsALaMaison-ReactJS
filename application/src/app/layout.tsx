@@ -1,6 +1,7 @@
 import React from "react";
 import { UserProvider } from "@/context/UserContext";
 import ServiceWorker from "@/components/reusable/ServiceWorker";
+import ToastContainer from "@/components/ToastContainer";
 
 export const metadata = {
   title: "MathsALaMaison",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <ServiceWorker />
         </UserProvider>
+        <ToastContainer/>
       </body>
     </html>
   );
