@@ -13,6 +13,7 @@ import ModeSelector from "@/components/ui/ModeSelector";
 import PlayButton from "@/components/ui/PlayButton";
 import ModeChoiceModal from "@/components/ui/ModeChoiceModal";
 import ClassementButton from "@/components/ui/ClassementButton";
+import AdminButtton from "@/components/ui/AdminButton"
 
 export default function LoggedInHomePage() {
   return (
@@ -83,7 +84,7 @@ function DashboardContent() {
         alt=""
         aria-hidden="true"
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                  opacity-30 z-0 pointer-events-none
+                  opacity-40 z-0 pointer-events-none
                   w-[40vw] max-w-[500px] h-auto select-none
                   animate-pulse-slow"
       />
@@ -98,6 +99,11 @@ function DashboardContent() {
       <div className="relative z-10 row-start-1 col-start-3 flex flex-col gap-2 items-end">
         <SettingsButton />
         <ClassementButton />
+        {user.specialRole === "admin" ? (
+          <AdminButtton />
+        ):(
+          <></>
+        )}
       </div>
 
       {/* BOUTON MODE (digit) — plus petit */}
