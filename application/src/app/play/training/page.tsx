@@ -1,14 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Training from "./training";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-export default function Training() {
-  const router = useRouter();
 
+export default function AdminPage() {
   return (
-    <div>
-      <p>Bonjour !</p>
-      <button onClick={() => router.push('/')}>Aller vers /home</button>
-    </div>
+    <ProtectedRoute>
+      <Training />
+    </ProtectedRoute>
   );
 }

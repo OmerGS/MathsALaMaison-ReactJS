@@ -71,6 +71,9 @@
   .bg-gradient-home {
     background: linear-gradient(270deg, var(--bg-from), var(--bg-to), #C4E3F8);
   }
+  .bg-gradient-div {
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+  }
 
   /* Exemple de classes personnalisées */
   .bg-primary {
@@ -137,6 +140,28 @@
     transform: scale(1.05);
     box-shadow: 0 6px 14px rgba(79, 70, 229, 0.75);
   }
+
+  .btn-primary-large {
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    font-weight: 600;
+    border-radius: 1.5rem; 
+    padding: 1rem 3rem; 
+    box-shadow: 0 6px 12px rgba(79, 70, 229, 0.6); 
+    font-size: 1.75rem; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-primary-large:hover {
+    box-shadow: 0 8px 16px rgba(79, 70, 229, 0.8);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary-large:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.5);
+  }
+
 
   @keyframes modalFadeIn {
     from {
