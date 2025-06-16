@@ -8,6 +8,7 @@ import FormInput from "@/components/ui/FormInput";
 import FormButton from "@/components/ui/FormButton";
 import BackButton from "@/components/ui/BackButton";
 import LinkButton from "@/components/ui/LinkButton";
+import { askValidation } from "@/services/validationAPI";
 
 export default function ResetPassword() {
   const [identifier, setIdentifier] = useState("");
@@ -15,7 +16,6 @@ export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Étapes: 0 = envoyer code, 1 = valider code, 2 = changer mdp
   const [step, setStep] = useState(0);
 
   const router = useRouter();
@@ -23,10 +23,31 @@ export default function ResetPassword() {
   const onSubmit = async () => {
     setLoading(true);
 
-    await new Promise((res) => setTimeout(res, 1500));
+    if (step === 0) {
+      if(!identifier) {
+        alert("Veuillez entrer votre email ou pseudonyme.");
+        setLoading(false);
+        return;
+      } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(identifier)) {
+        alert("Veuillez entrer un email valide.");
+        setLoading(false);
+        return;
+      } else {
+        const response = await askValidation(identifier);
+        
+        if(response.status === 200) {
+          alert("Un code de validation a été envoyé à votre adresse email.");
+          setStep(1);
+        } else {
+          alert("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
+        }
+      }
+    } 
+    
+    else if (step === 1) {
+      
+    }
 
-    if (step === 0) setStep(1);
-    else if (step === 1) setStep(2);
     else if (step === 2) {
       alert("Mot de passe changé avec succès !");
       router.push("/auth/login");
