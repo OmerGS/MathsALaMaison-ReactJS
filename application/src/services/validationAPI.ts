@@ -9,3 +9,8 @@ export const validateCode = async (identifier: string, code: string) => {
     const response = await http.post("/validation/check-code", { email: identifier, code });
     return response;
 }
+
+export const resetPassword = async (identifier: string, token: string, password: string) => {
+    const response = await http.post("/validation/reset-password", { email: identifier, token, password });
+    return response;
+}

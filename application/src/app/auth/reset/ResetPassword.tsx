@@ -8,11 +8,12 @@ import FormInput from "@/components/ui/FormInput";
 import FormButton from "@/components/ui/FormButton";
 import BackButton from "@/components/ui/BackButton";
 import LinkButton from "@/components/ui/LinkButton";
-import { askValidation } from "@/services/validationAPI";
+import { askValidation, resetPassword, validateCode } from "@/services/validationAPI";
 
 export default function ResetPassword() {
   const [identifier, setIdentifier] = useState("");
   const [code, setCode] = useState("");
+  const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -28,29 +29,69 @@ export default function ResetPassword() {
         alert("Veuillez entrer votre email ou pseudonyme.");
         setLoading(false);
         return;
-      } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(identifier)) {
+      } 
+      
+      if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(identifier)) {
         alert("Veuillez entrer un email valide.");
         setLoading(false);
         return;
+      }
+
+      const response = await askValidation(identifier);
+      
+      if(response.status === 200) {
+        alert("Un code de validation a été envoyé à votre adresse email.");
+        setStep(1);
       } else {
-        const response = await askValidation(identifier);
-        
-        if(response.status === 200) {
-          alert("Un code de validation a été envoyé à votre adresse email.");
-          setStep(1);
-        } else {
-          alert("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
-        }
+        alert("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
       }
     } 
     
     else if (step === 1) {
-      
+      if(!code) {
+        alert("Veuillez entrer le code reçu par email.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await validateCode(identifier, code);
+
+        if (response.status === 200 && response.data.success) {
+          setToken(response.data.token);
+          alert("Code validé avec succès. Vous pouvez maintenant changer votre mot de passe.");
+          setStep(2);
+        } else if (response.data && response.data.message) {
+          alert(response.data.message);
+        } else {
+          alert("Code incorrect ou expiré. Veuillez réessayer.");
+        }
+      } catch (error: any) {
+        alert("Code incorrect ou expiré. Veuillez réessayer.");
+      }
     }
 
     else if (step === 2) {
-      alert("Mot de passe changé avec succès !");
-      router.push("/auth/login");
+      if (!newPassword) {
+        alert("Veuillez entrer un nouveau mot de passe.");
+        setLoading(false);
+        return;
+      }
+
+      if (newPassword.length < 8) {
+        alert("Le mot de passe doit contenir au moins 8 caractères.");
+        setLoading(false);
+        return;
+      }
+
+      const response = await resetPassword(identifier, token, newPassword);
+      if (response.status === 200) {
+        alert("Mot de passe changé avec succès. Vous pouvez maintenant vous connecter.");
+        router.push("/auth/login");
+      } else {
+        alert("Une erreur s'est produite lors du changement de mot de passe. Veuillez réessayer.");
+        setLoading(false);
+      }      
     }
 
     setLoading(false);
