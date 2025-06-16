@@ -1,8 +1,10 @@
 import React from "react";
+import { UserProvider } from "@/context/UserContext";
 import ServiceWorker from "@/components/reusable/ServiceWorker";
+import ToastContainer from "@/components/ToastContainer";
 
 export const metadata = {
-  title: "MAthsALaMaison",
+  title: "MathsALaMaison",
   description: "Apprendre les maths en t'amusant !",
   icons: {
     icon: "/icons/icon-192x192.png",
@@ -24,8 +26,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png" />
       </head>
       <body style={{ margin: 0, padding: 0, width: "100%", height: "100%", boxSizing: "border-box" }}>
-        {children}
-        <ServiceWorker />
+        <UserProvider>
+          {children}
+          <ServiceWorker />
+        </UserProvider>
+        <ToastContainer/>
       </body>
     </html>
   );
