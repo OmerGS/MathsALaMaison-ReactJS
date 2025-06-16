@@ -8,3 +8,7 @@ export const getUserIp = (email: string) => {
   return http.post('/user/ip', { email: email });
 };
 
+export const updateProfilePicture = (idPicture: number) => {
+  return http.post('/user/updatePicture', {idPicture: idPicture})
+}
+

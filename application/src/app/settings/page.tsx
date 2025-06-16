@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import "../globals.css";
 
 import SectionButton from "@/components/ui/SectionButton";
 import ActionButton from "@/components/ui/ActionButton";
+import BackButton from "@/components/ui/BackButton";
 
 export default function Settings() {
   const router = useRouter();
@@ -72,13 +74,10 @@ export default function Settings() {
   const sections = user ? ["COMPTE", "CGU", "CONTACT"] : ["CGU", "CONTACT"];
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-bl from-purple-100 to-teal-100">
-      <button
-        onClick={() => router.back()}
-        className="flex items-center gap-2 text-lg text-gray-700 mb-6 hover:text-black"
-      >
-        ← Retour
-      </button>
+    <div className="min-h-screen p-6 bg-gradient-to-l from-custom to-custom">
+      <div className="mb-15">
+        <BackButton />
+      </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
         {sections.map((section) => (

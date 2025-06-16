@@ -55,6 +55,7 @@ export default function LoginPage() {
           placeholder="Email"
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
+          autoComplete="username"
         />
 
         <FormInput
@@ -62,6 +63,7 @@ export default function LoginPage() {
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
         />
 
         <LinkButton to="/auth/reset" color="red">Mot de passe oublié</LinkButton>

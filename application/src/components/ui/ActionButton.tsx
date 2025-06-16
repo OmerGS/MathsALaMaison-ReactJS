@@ -2,23 +2,22 @@
 
 import React from "react";
 
-interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type ActionButtonProps = {
+  children: React.ReactNode;
+  onClick?: () => void;
   danger?: boolean;
-}
+};
 
-export default function ActionButton({ danger, children, className = "", ...props }: ActionButtonProps) {
+export default function ActionButton({ children, onClick, danger = false }: ActionButtonProps) {
   const baseClasses =
-    "w-full py-3 rounded-xl font-semibold text-white transition-colors";
+    "w-full px-4 py-2 rounded-xl font-medium text-white shadow transition-all duration-200";
 
-  const dangerClasses = danger
-    ? "bg-red-500 hover:bg-red-600"
-    : "bg-purple-600 hover:bg-purple-700";
+  const gradientClass = danger
+    ? "bg-gradient-to-r from-red-500 to-red-700 hover:opacity-90"
+    : "bg-gradient-to-r from-cyan-400 to-cyan-600 hover:opacity-90";
 
   return (
-    <button
-      {...props}
-      className={`${baseClasses} ${danger ? dangerClasses : "bg-purple-600 hover:bg-purple-700"} ${className}`}
-    >
+    <button onClick={onClick} className={`${baseClasses} ${gradientClass}`}>
       {children}
     </button>
   );

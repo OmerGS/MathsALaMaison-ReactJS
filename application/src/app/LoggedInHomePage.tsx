@@ -1,12 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { useUser } from '@/context/UserContext';
-import profileImages from '@/Type/ProfilePicture';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import { useMediaQuery } from 'react-responsive';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useMediaQuery } from "react-responsive";
+
+import ProfileCard from "@/components/ui/ProfileCard";
+import PointsCard from "@/components/ui/PointsCard";
+import SettingsButton from "@/components/ui/SettingsButton";
+import ModeSelector from "@/components/ui/ModeSelector";
+import PlayButton from "@/components/ui/PlayButton";
+import ModeChoiceModal from "@/components/ui/ModeChoiceModal";
+import ClassementButton from "@/components/ui/ClassementButton";
 
 export default function LoggedInHomePage() {
   return (
@@ -22,143 +28,109 @@ function DashboardContent() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isHoveredPlay, setIsHoveredPlay] = useState(false);
-  const [isHoveredLeadBorad, setIsHoveredLeadBorad] = useState(false);
-  const [isHoveredSetting, setIsHoveredSetting] = useState(false);
-  const [isHoveredProfil, setIsHoveredProfil] = useState(false);
-  const [isHoveredSelect, setIsHoveredSelect] = useState(false);
+  const [selectedMode, setSelectedMode] = useState<null | {
+    label: string;
+    action: () => void;
+  }>(null);
+
 
   const choices = [
-    { label: 'Les Questions', action: () => router.push('/play/question-list') },
-    { label: 'Partie en ligne', action: () => router.push('/play/matchmaking') },
-    { label: 'Partie local', action: () => router.push('/play/create') },
-    { label: 'Entraînement', action: () => router.push('/play/training') },
+    { 
+      label: "Les Questions", 
+      action: () => router.push("/play/question-list"),
+      description: "Accédez à une liste de questions pour tester vos connaissances à votre rythme."
+    },
+    { 
+      label: "Partie en ligne", 
+      action: () => router.push("/play/matchmaking"),
+      description: "Jouez contre d'autres joueurs en temps réel via un matchmaking rapide."
+    },
+    { 
+      label: "Partie local", 
+      action: () => router.push("/play/create"),
+      description: "Créez une partie locale pour jouer entre amis sur le même appareil."
+    },
+    { 
+      label: "Entraînement", 
+      action: () => router.push("/play/training"),
+      description: "Mode d'entraînement pour s'exercer sans pression et améliorer vos compétences."
+    },
   ];
-  const [selectedAction, setSelectedAction] = useState(choices[1]);
+
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace('/auth/login');
+      router.replace("/auth/login");
     }
   }, [user, loading, router]);
 
- 
+  if (!user) return null;
 
+  const handlePlay = () => {
+    if (!selectedMode) {
+      alert("Veuillez sélectionner un mode de jeu avant de jouer.");
+      return;
+    }
+    selectedMode.action();
+  };
 
+  return (
+    <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
+      
+      {/* LOGO EN ARRIÈRE-PLAN */}
+      <img
+        src="/icons/icon-512x512.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                  opacity-30 z-0 pointer-events-none
+                  w-[40vw] max-w-[500px] h-auto select-none
+                  animate-pulse-slow"
+      />
 
-const windowLayout = (
-  <div className="min-h-screen w-screen bg-gradient-to-l from-[#E6D8F7] to-[#B1EDE8] font-sans grid grid-cols-3 grid-rows-3 relative text-[clamp(1rem,2.5vw,1.75rem)]">
-    {/* Profil & Points */}
-    <div className="row-start-1 col-start-1 flex flex-col gap-3 p-2">
-      <button
-        className="flex items-center gap-3 px-3 py-2 bg-gradient-to-br from-blue-100 to-blue-200 border border-gray-600 rounded-xl shadow-md font-bold text-gray-700 transition-all duration-200 cursor-pointer w-full"
-        onClick={() => router.push("/profile")}
-        onMouseEnter={() => setIsHoveredProfil(true)}
-        onMouseLeave={() => setIsHoveredProfil(false)}
-      >
-        <Image
-          src={profileImages[user?.photoDeProfil || 1]}
-          alt="profile"
-          width={50}
-          height={50}
-          style={{ width: "clamp(30px, 8vw, 50px)", height: "clamp(30px, 8vw, 50px)" }}
-        />
-        <span className="truncate max-w-[10ch]">{user?.pseudo}</span>
-      </button>
-      <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-br from-blue-100 to-blue-200 border border-gray-600 rounded-xl shadow-md font-bold text-gray-700 text-base w-full">
-        <span className="truncate font-extrabold">{user?.point}</span>
-        <Image src="/icons/icon-192x192.png" alt="digit" width={28} height={28} />
+      {/* PROFIL ET POINTS */}
+      <div className="relative z-10 col-start-1 row-start-1 flex flex-col items-start gap-4">
+        <ProfileCard user={user} />
+        <PointsCard points={user.point} />
       </div>
-    </div>
 
-    {/* Centre : Logo */}
-    <div className="row-start-2 col-start-2 flex justify-center items-center h-full w-full p-2">
-      <div className="relative w-[50vw] max-w-[200px] aspect-square">
-        <Image
-          src="/icons/icon-512x512.png"
-          alt="logo"
-          fill
-          style={{ objectFit: 'contain' }}
-          priority
-        />
+      {/* PARAMÈTRES ET CLASSEMENT */}
+      <div className="relative z-10 row-start-1 col-start-3 flex flex-col gap-2 items-end">
+        <SettingsButton />
+        <ClassementButton />
       </div>
-    </div>
 
-    {/* Paramètres & Classement */}
-    <div className="row-start-1 col-start-3 flex flex-col gap-2 items-end p-2">
-      {[{
-        icon: "⚙️",
-        onClick: () => router.push("/settings")
-      }, {
-        icon: "🏆",
-        onClick: () => router.push("/leaderboard")
-      }].map(({icon, onClick}, i) => (
-        <button
-          key={i}
-          className="px-2 py-1 bg-gradient-to-br from-blue-100 to-blue-200 border border-gray-600 rounded-xl shadow-md font-bold text-gray-700 transition-all duration-200 cursor-pointer w-full"
-          onClick={onClick}
-          onMouseEnter={() => setIsHoveredPlay(true)}
-          onMouseLeave={() => setIsHoveredPlay(false)}
-        >
-          {icon}
-        </button>
-      ))}
-    </div>
-
-    {/* Mode de jeu */}
-    <div className="row-start-3 col-start-2 inline-flex justify-center p-2 gap-2 items-end">
-      <button
-        className="px-4 py-2 bg-gradient-to-br from-blue-100 to-blue-200 border border-gray-600 rounded-xl shadow-md font-bold text-gray-700 transition-all duration-200 cursor-pointer w-full"
-        onClick={() => setModalVisible(true)}
-        onMouseEnter={() => setIsHoveredSelect(true)}
-        onMouseLeave={() => setIsHoveredSelect(false)}
-      >
-        {selectedAction?.label || "Choisir un mode de jeu"}
-      </button>
-    </div>
-
-    {/* Bouton Jouer */}
-    <div className="row-start-3 col-start-3 flex flex-col justify-end items-end p-2 h-full">
-      <button
-        className="px-4 py-2 bg-gradient-to-br from-blue-100 to-blue-200 border border-gray-600 rounded-xl shadow-md font-bold text-gray-700 transition-all duration-200 cursor-pointer w-full"
-        onClick={() => router.push("/play")}
-        onMouseEnter={() => setIsHoveredPlay(true)}
-        onMouseLeave={() => setIsHoveredPlay(false)}
-      >
-        Jouer
-      </button>
-    </div>
-
-    {/* Modal (Overlay) */}
-    {isModalVisible && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 p-4">
-        <div className="bg-white rounded-lg p-4 flex flex-col gap-3 max-w-sm w-full mb-8">
-          {choices.map((choice, index) => (
-            <button
-              key={index}
-              className="px-3 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700 transition"
-              onClick={() => {
-                choice.action();
-                setModalVisible(false);
-              }}
-            >
-              {choice.label}
-            </button>
-          ))}
-          <button
-            className="mt-2 px-3 py-2 border border-gray-500 rounded-md hover:bg-gray-100 transition"
-            onClick={() => setModalVisible(false)}
+      {/* BOUTON MODE (digit) — plus petit */}
+      {/* MODE SELECTIONNÉ OU BOUTON SÉLECTEUR */}
+      <div className="relative z-10 row-start-3 col-start-2 flex justify-center items-end">
+        {selectedMode ? (
+          <div
+            className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-center"
+            onClick={() => setModalVisible(true)}
           >
-            Annuler
-          </button>
-        </div>
+            Mode : {selectedMode.label}
+          </div>
+        ) : (
+          <ModeSelector onClick={() => setModalVisible(true)} />
+        )}
       </div>
-    )}
-  </div>
-);
 
+      {/* BOUTON JOUER — agrandi */}
+      <div className="relative z-10 row-start-3 col-start-3 flex flex-col justify-end items-end">
+          <PlayButton onClick={handlePlay}/>
+      </div>
 
-
-
-  return windowLayout;
+      {/* MODAL */}
+      {isModalVisible && (
+        <ModeChoiceModal
+          choices={choices}
+          onClose={() => setModalVisible(false)}
+          onSelect={(choice) => {
+            setSelectedMode(choice);
+            setModalVisible(false);
+          }}
+        />
+      )}
+    </div>
+  );
 }

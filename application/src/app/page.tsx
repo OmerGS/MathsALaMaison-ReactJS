@@ -8,13 +8,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useUser } from "@/context/UserContext";
 import profileImages from '@/Type/ProfilePicture';
 import LoggedInDashboard from './LoggedInHomePage';
-import LoggedOutDashboard from './loggedOutHomePage';
-/*import AvatarProgressBar from '@/app/(tabs)/AvatarProgressBar';
-import { User } from '@/components/model/User';
-import API from '@/components/controller/ServerConnection';
-import profileImages from '@/components/model/ProfilePicture';
-import { playSound, isSoundPlaying, stopSound } from '@/components/controller/soundController';*/
-
 export default function Home() {
   return (
       <ProtectedRoute>
@@ -62,5 +55,5 @@ function DashboardContent() {
 
 
 
-  return user ? <LoggedInDashboard /> : <LoggedOutDashboard />;
+  return <LoggedInDashboard /> ;
 }

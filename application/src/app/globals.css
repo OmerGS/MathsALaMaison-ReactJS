@@ -12,12 +12,32 @@
     --color-muted: #9CA3AF;       /* Texte secondaire */
     --dark-gray: #161c24;
     --blue-sign: #95DCC7;
+    --bg-from: #E6D8F7;
+    --bg-to: #B1EDE8;
   }
 }
+
+
 
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.3s ease-in-out;
+  }
+  .animate-fade-in-delay-100 {
+    animation: fadeIn 0.3s ease-in-out 0.1s forwards;
+  }
+
+  .animate-fade-in-delay-200 {
+    animation: fadeIn 0.3s ease-in-out 0.2s forwards;
+  }
+
+  .from-custom {
+    --tw-gradient-from: var(--bg-from);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(255 255 255 / 0));
+  }
+
+  .to-custom {
+    --tw-gradient-to: var(--bg-to);
   }
 
   @keyframes fadeIn {
@@ -29,6 +49,25 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradientShift {
+    animation: gradientShift 15s ease infinite;
+    background-size: 600% 600%;
+  }
+  .bg-gradient-home {
+    background: linear-gradient(270deg, var(--bg-from), var(--bg-to), #C4E3F8);
   }
 
   /* Exemple de classes personnalisées */
@@ -51,6 +90,7 @@
   }
 
 
+
   .text-primary {
     color: var(--color-primary);
   }
@@ -65,4 +105,68 @@
     border-radius: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
+
+  .card:hover {
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .btn-primary {
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(79, 70, 229, 0.75);
+  }
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modalSlideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .modal-overlay {
+    animation: modalFadeIn 0.3s ease forwards;
+  }
+
+  .modal-content {
+    animation: modalSlideUp 0.3s ease forwards;
+  }
+
+
+  @keyframes pulseSlow {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulseSlow 4s ease-in-out infinite;
+  }
+
+
 }
