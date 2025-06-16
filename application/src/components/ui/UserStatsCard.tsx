@@ -8,7 +8,7 @@ import profileImages from "@/Type/ProfilePicture";
 
 type Props = {
   user: User;
-  currentUserRank: number;
+  currentUserRank: number | null;
 };
 
 export default function UserStatsCard({ user, currentUserRank }: Props) {
@@ -39,12 +39,12 @@ export default function UserStatsCard({ user, currentUserRank }: Props) {
         <div className="flex justify-between text-lg">
           <span>🏆 Classement</span>
           <span className="font-semibold text-cyan-600">
-            {currentUserRank}
+            {currentUserRank ?? "-"}
           </span>
         </div>
         <div className="flex justify-between text-lg">
           <span>⭐ Points</span>
-          <span className="font-semibold">{user.point}</span>
+          <span className="font-semibold">{user.point ?? "-"}</span>
         </div>
         <div className="flex justify-between text-lg">
           <span>🎯 Victoires</span>

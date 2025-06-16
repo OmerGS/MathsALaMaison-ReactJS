@@ -7,18 +7,27 @@ import { motion } from "framer-motion";
 type Props = {
   player: User;
   index: number;
-  currentUserId?: number;
-  selectedTab: "points" | "gamesPlayed" | "wins";
+  currentUser?: User | null;
+  selectedTab: "point" | "nombrePartie" | "nombreVictoire";
 };
 
-export default function ClassementCard({ player, index, currentUserId, selectedTab }: Props) {
+export default function ClassementCard({
+  player,
+  index,
+  currentUser,
+  selectedTab,
+}: Props) {
+
+
+  const isCurrentUser = currentUser?.pseudo === player.pseudo;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.4, ease: "easeOut" }}
-      className={`flex items-center justify-between p-3 rounded-xl shadow-sm ${
-        player.id === currentUserId ? "bg-cyan-400" : "bg-white"
+      transition={{ delay: index * 0.05, duration: 0.3, ease: "easeOut" }}
+      className={`flex items-center justify-between p-3 rounded-xl shadow-sm 
+        ${isCurrentUser ? "bg-cyan-100 border border-cyan-500" : "bg-white"}
       }`}
     >
       <div className="flex items-center space-x-3">
@@ -33,9 +42,9 @@ export default function ClassementCard({ player, index, currentUserId, selectedT
         <span className="font-medium text-gray-900">{player.pseudo}</span>
       </div>
       <span className="text-gray-700 font-semibold">
-        {selectedTab === "points"
+        {selectedTab === "point"
           ? player.point
-          : selectedTab === "gamesPlayed"
+          : selectedTab === "nombrePartie"
           ? player.nombrePartie
           : player.nombreVictoire}
       </span>
