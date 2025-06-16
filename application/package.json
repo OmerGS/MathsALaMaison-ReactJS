@@ -26,6 +26,7 @@
     "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/next-pwa": "^5.6.9",
     "@types/node": "^20",
     "@types/react": "^19",
