@@ -1,14 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import ChangePassword from "./ChangePassword";
 
-export default function ChangePassword() {
-  const router = useRouter();
-
+export default function AdminPage() {
   return (
-    <div>
-      <p>Bonjour !</p>
-      <button onClick={() => router.push('/')}>Aller vers /home</button>
-    </div>
+    <ProtectedRoute>
+      <ChangePassword />
+    </ProtectedRoute>
   );
 }
