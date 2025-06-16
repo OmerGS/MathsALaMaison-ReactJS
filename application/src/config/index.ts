@@ -7,5 +7,5 @@ export const API_KEY = {
 };
 
 const WEBSOCKET_API = {
-    baseURL: 'ws://omergs.com:50000',
+    baseURL: 'ws://mathsalamaison-backend.omergs.com',
 };

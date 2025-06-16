@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
@@ -15,8 +15,7 @@ export default function Signup() {
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const { user, loading, setUser } = useUser();
   const router = useRouter();
 
   const onSignUp = async () => {
