@@ -31,7 +31,7 @@ export default function ChangePassword() {
       <BackButton />
       <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
           <h1 className="text-3xl font-bold mb-6 text-black">
-            Modifier Pseudonyme
+            Changer mot de passe
           </h1>
 
           <FormInput
@@ -65,8 +65,8 @@ export default function ChangePassword() {
               }
           >
             {loading
-              ? "Changement du pseudo termine"
-              : "Changer le pseudo"}
+              ? "Changement du mot de passe termine"
+              : "Changer le mot de passe"}
           </FormButton>
       </div>
     </div>

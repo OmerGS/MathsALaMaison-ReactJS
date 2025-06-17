@@ -29,7 +29,7 @@ export default function ChangeUsername() {
       <BackButton />
       <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
           <h1 className="text-3xl font-bold mb-6 text-black">
-            Modifier Pseudonyme
+            Changer pseudonyme
           </h1>
 
           <FormInput

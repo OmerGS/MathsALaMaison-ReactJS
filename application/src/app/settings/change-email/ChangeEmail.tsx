@@ -30,7 +30,7 @@ export default function ChangeEmail() {
       <BackButton />
       <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
           <h1 className="text-3xl font-bold mb-6 text-black">
-            Modifier Pseudonyme
+            Changer Email
           </h1>
 
           <FormInput
@@ -56,8 +56,8 @@ export default function ChangeEmail() {
               }
           >
             {loading
-              ? "Changement du pseudo termine"
-              : "Changer le pseudo"}
+              ? "Changement de l'email termine"
+              : "Changer l'email"}
           </FormButton>
       </div>
     </div>
