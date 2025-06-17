@@ -37,13 +37,27 @@ export default function ResetPassword() {
         return;
       }
 
-      const response = await askValidation(identifier);
-      
-      if(response.status === 200) {
-        alert("Un code de validation a été envoyé à votre adresse email.");
-        setStep(1);
-      } else {
-        alert("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
+      try {
+        const response = await askValidation(identifier);
+        
+        if (response.status === 200) {
+          alert("Un code de validation a été envoyé à votre adresse email.");
+          setStep(1);
+        } else {
+          alert("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
+        }
+      } catch (error: any) {
+        if (error.response) {
+          if (error.response.status === 429) {
+            alert("Trop de requêtes. Veuillez patienter avant de réessayer.");
+          } else {
+            alert("Échec de l'envoi du code.");
+          }
+        } else if (error.request) {
+          alert("Le serveur ne répond pas. Veuillez vérifier votre connexion.");
+        } else {
+          alert("Une erreur inconnue s'est produite.");
+        }
       }
     } 
     
