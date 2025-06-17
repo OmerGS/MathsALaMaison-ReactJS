@@ -51,13 +51,13 @@ export default function Settings() {
       case "COMPTE":
         return user ? (
           <div className="space-y-4">
-            <ActionButton onClick={() => router.push("/change-password")}>
+            <ActionButton onClick={() => router.push("/settings/change-password")}>
               Changer mot de passe
             </ActionButton>
-            <ActionButton onClick={() => router.push("/change-email")}>
+            <ActionButton onClick={() => router.push("/settings/change-email")}>
               Changer email
             </ActionButton>
-            <ActionButton onClick={() => router.push("/change-pseudo")}>
+            <ActionButton onClick={() => router.push("/settings/change-username")}>
               Changer pseudo
             </ActionButton>
             <ActionButton
