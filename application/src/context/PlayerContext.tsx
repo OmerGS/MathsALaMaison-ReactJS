@@ -7,6 +7,7 @@ interface PlayerContextType {
   points: Record<string, number>;
   setPlayers: (players: string[]) => void;
   setPoints: (points: Record<string, number>) => void;
+  resetPlayers: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -16,17 +17,16 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const [points, setPointsState] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    const storedPlayers = localStorage.getItem("players");
-    const storedPoints = localStorage.getItem("points");
+    const savedPlayers = localStorage.getItem("players");
+    const savedPoints = localStorage.getItem("points");
+    if (savedPlayers) setPlayers(JSON.parse(savedPlayers));
+    if (savedPoints) setPoints(JSON.parse(savedPoints));
+    }, []);
 
-    if (storedPlayers) setPlayersState(JSON.parse(storedPlayers));
-    if (storedPoints) setPointsState(JSON.parse(storedPoints));
-  }, []);
-
-  useEffect(() => {
+    useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("points", JSON.stringify(points));
-  }, [players, points]);
+    }, [players, points]);
 
   const setPlayers = (newPlayers: string[]) => {
     setPlayersState(newPlayers);
@@ -36,8 +36,13 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     setPointsState(newPoints);
   };
 
+  const resetPlayers = () => {
+    setPlayers([]);
+    setPoints({});
+  };
+
   return (
-    <PlayerContext.Provider value={{ players, points, setPlayers, setPoints }}>
+    <PlayerContext.Provider value={{ players, points, setPlayers, setPoints, resetPlayers }}>
       {children}
     </PlayerContext.Provider>
   );

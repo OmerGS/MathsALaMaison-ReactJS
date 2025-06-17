@@ -1,19 +1,32 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Create from "./create";
+import CreateGame from "./create";
 import LocalGame from "./game";
-import { useState } from "react";
-import { PlayerProvider } from "@/context/PlayerContext";
 
-export default function Game() {
-  const [showLocalGame, setShowLocalGame] = useState(false);
+export default function GamePage() {
+  const [gameStarted, setGameStarted] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("localGameStarted");
+    if (stored === "true") {
+      setGameStarted(true);
+    }
+  }, []);
+
+  const handleStart = () => {
+    localStorage.setItem("localGameStarted", "true");
+    setGameStarted(true);
+  };
 
   return (
     <ProtectedRoute>
-      <PlayerProvider>
-        {showLocalGame ? <LocalGame /> : <Create onStart={() => setShowLocalGame(true)} />}
-      </PlayerProvider>
+      {gameStarted ? (
+        <LocalGame />
+      ) : (
+        <CreateGame onStart={handleStart} />
+      )}
     </ProtectedRoute>
   );
 }

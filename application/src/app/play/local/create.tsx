@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { usePlayer } from "@/context/PlayerContext";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import '../../globals.css';
 
 import PlayerInput from "@/components/ui/PlayerInput";
 import PlayerCard from "@/components/ui/PlayerCard";
 import LaunchButton from "@/components/ui/LanchButton";
+import { usePlayer } from "@/context/PlayerContext";
 
 const MAX_PLAYERS = 4;
 const MIN_PLAYERS = 2;
@@ -14,11 +15,21 @@ const MIN_PLAYERS = 2;
 export default function CreateGame({ onStart }: { onStart: () => void }) {
   const { players, setPlayers } = usePlayer();
   const [newPlayerName, setNewPlayerName] = useState("");
+  const router = useRouter();
 
   const addPlayer = () => {
-    if (newPlayerName.trim() && players.length < MAX_PLAYERS) {
-      setPlayers([...players, newPlayerName.trim()]);
+    const trimmedName = newPlayerName.trim();
+
+    if (
+      trimmedName &&
+      trimmedName.length <= 16 &&
+      !players.includes(trimmedName) &&
+      players.length < MAX_PLAYERS
+    ) {
+      setPlayers([...players, trimmedName]);
       setNewPlayerName("");
+    } else if (trimmedName.length > 16) {
+      alert("Le nom du joueur ne doit pas dépasser 16 caractères.");
     }
   };
 
@@ -28,7 +39,7 @@ export default function CreateGame({ onStart }: { onStart: () => void }) {
 
   const startGame = () => {
     if (players.length >= MIN_PLAYERS) {
-      onStart(); // switch vers la page "LocalGame"
+      onStart();
     } else {
       alert(`Il faut au moins ${MIN_PLAYERS} joueurs pour commencer.`);
     }
@@ -37,10 +48,14 @@ export default function CreateGame({ onStart }: { onStart: () => void }) {
   return (
     <div className="flex flex-col md:flex-row h-screen p-6 bg-gradient-to-l from-custom to-custom">
       <div className="flex flex-col flex-1 bg-white rounded-2xl p-6 shadow-xl mb-5 md:mb-0 md:mr-6">
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Création de la Partie</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
+          Création de la Partie
+        </h1>
 
         {players.length === 0 && (
-          <p className="text-center text-gray-400 mb-4">Aucun joueur ajouté</p>
+          <p className="text-center text-gray-400 mb-4">
+            Aucun joueur ajouté
+          </p>
         )}
 
         <div className="flex-grow overflow-y-auto mb-5">
