@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { Toaster } from 'react-hot-toast';
+import ProtectedRoute from "@/components/ProtectedRoute";
+import Training from "./Training";
 
-export default function Training() {
-  const router = useRouter();
-
+export default function TrainingPage() {
   return (
-    <div>
-      <p>Bonjour !</p>
-      <button onClick={() => router.push('/')}>Aller vers /home</button>
-    </div>
+    <ProtectedRoute>
+      <Training />
+      <Toaster position="top-right" reverseOrder={false} />
+    </ProtectedRoute>
   );
 }
