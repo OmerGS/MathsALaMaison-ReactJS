@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import '@/app/globals.css';
+
 import QuestionCard from '@/components/ui/QuestionCard';
 import TimerCircle from '@/components/ui/TimerCircle';
 import TimerBar from '@/components/ui/TimerBar';

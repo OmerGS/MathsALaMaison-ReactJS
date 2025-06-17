@@ -1,13 +1,14 @@
 "use client";
 
-import Training from "./training";
+import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Training from "./Training";
 
-
-export default function AdminPage() {
+export default function TrainingPage() {
   return (
     <ProtectedRoute>
       <Training />
+      <Toaster position="top-right" reverseOrder={false} />
     </ProtectedRoute>
   );
 }
