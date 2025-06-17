@@ -32,7 +32,7 @@ export default function ProfilEdit() {
     <div className="min-h-screen bg-gradient-to-l from-[#E6D8F7] to-[#B1EDE8] p-4 sm:p-6 md:p-10 flex flex-col items-center">
       <BackButton />
 
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-12 text-gray-900 text-center max-w-xl px-4">
+      <h1 className="mt-12 text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-12 text-gray-900 text-center max-w-xl px-4">
         Choisissez une photo de profil
       </h1>
 
