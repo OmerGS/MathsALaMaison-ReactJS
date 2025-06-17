@@ -12,6 +12,11 @@ export const handleSignUp = async (
     return;
   }
 
+  if(pseudo.length < 2 || pseudo.length > 16) {
+    alert("Le pseudo doit contenir entre 2 et 16 caractères");
+    return;
+  }
+
   if (password !== confirmPassword) {
     alert("Les mots de passe ne correspondent pas");
     return;
