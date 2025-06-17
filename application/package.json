@@ -21,6 +21,7 @@
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "react-responsive": "^10.0.1",
     "recharts": "^2.15.3",
     "tailwindcss": "^4.1.7"

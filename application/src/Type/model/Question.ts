@@ -1,7 +1,7 @@
 import Category from "@/Type/Category";
 
 /**
- * Represents a question with its associated properties, including its category, answer, 
+ * Represents a question with its associated properties, including its category, reponse, 
  * image (optional), and correction details.
  * 
  * @class Question
@@ -26,19 +26,19 @@ export default class Question {
     private _question: string;
 
     /**
-     * The correct answer to the question.
+     * The correct reponse to the question.
      * @type {string}
      */
-    private _answer: string;
+    private _reponse: string;
 
     /**
      * Optional image associated with the question.
      * @type {string | undefined}
      */
-    private _img?: string;
+    private _image_data?: string;
 
     /**
-     * Correction or explanation related to the question's answer.
+     * Correction or explanation related to the question's reponse.
      * @type {string}
      */
     private _correction: string;
@@ -56,8 +56,8 @@ export default class Question {
      * @param {number} id - Unique identifier for the question.
      * @param {Category} category - The category associated with the question.
      * @param {string} question - The question text.
-     * @param {string} answer - The correct answer to the question.
-     * @param {string} img - Optional image associated with the question.
+     * @param {string} reponse - The correct reponse to the question.
+     * @param {string} image_data - Optional image associated with the question.
      * @param {string} correction - Explanation or correction for the question.
      * @param {string} typeReponse - The type of response expected.
      */
@@ -65,16 +65,16 @@ export default class Question {
         id: number,
         category: Category,
         question: string,
-        answer: string,
-        img: string,
+        reponse: string,
+        image_data: string,
         correction: string,
         typeReponse: string
     ) {
         this._id = id;
         this._category = category;
-        this._answer = answer;
+        this._reponse = reponse;
         this._question = question;
-        this._img = img;
+        this._image_data = image_data;
         this._correction = correction;
         this._typeReponse = typeReponse;
     }
@@ -98,7 +98,7 @@ export default class Question {
     }
 
     /**
-     * Gets the correction or explanation related to the question's answer.
+     * Gets the correction or explanation related to the question's reponse.
      * 
      * @type {string}
      */
@@ -116,12 +116,12 @@ export default class Question {
     }
 
     /**
-     * Gets the correct answer to the question.
+     * Gets the correct reponse to the question.
      * 
      * @type {string}
      */
-    public get answer(): string {
-        return this._answer;
+    public get reponse(): string {
+        return this._reponse;
     }
 
     /**
@@ -138,7 +138,7 @@ export default class Question {
      * 
      * @type {string | undefined}
      */
-    public get img(): string | undefined {
-        return this._img;
+    public get image_data(): string | undefined {
+        return this._image_data;
     }
 }
