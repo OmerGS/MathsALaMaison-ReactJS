@@ -1,15 +1,26 @@
 "use client";
 
 import { usePlayer } from "@/context/PlayerContext";
-import "../../../globals.css";
+import "../../globals.css";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-interface EndGameProps {
-  onReplay: () => void;
-  onQuit: () => void;
-}
-
-export default function EndGame({ onReplay, onQuit }: EndGameProps) {
+export default function EndGame({ onCreated }: { onCreated: () => void }) {
   const { players, points, resetPlayers } = usePlayer();
+  const router = useRouter();
+
+
+  const handleReplay = () => {
+    resetPlayers();
+    onCreated();
+  };
+
+  const handleQuit = () => {
+    router.push("/");
+    resetPlayers();
+    onCreated();
+  };
+
 
   return (
     <div className="flex flex-col items-center justify-center h-screen p-6 bg-gradient-to-l from-custom to-custom text-white">
@@ -31,19 +42,13 @@ export default function EndGame({ onReplay, onQuit }: EndGameProps) {
 
       <div className="flex mt-8 space-x-4">
         <button
-          onClick={() => {
-            resetPlayers();
-            onReplay();
-          }}
+          onClick={handleReplay}
           className="px-4 py-2 bg-green-500 rounded hover:bg-green-600 transition"
         >
           Rejouer
         </button>
         <button
-          onClick={() => {
-            resetPlayers();
-            onQuit();
-          }}
+          onClick={handleQuit}
           className="px-4 py-2 bg-red-500 rounded hover:bg-red-600 transition"
         >
           Quitter

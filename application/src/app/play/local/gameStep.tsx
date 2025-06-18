@@ -58,19 +58,19 @@ export default function GameStep({
   const isMobile = useIsMobile();
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [questionKey, setQuestionKey] = useState(0);
-  const [showCorrection, setShowCorrection] = useState(false);
-  const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
-  const { currentPlayer, addPointToCurrentPlayer } = usePlayer();
+  const { addPointToCurrentPlayer } = usePlayer();
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleCategorySelected = (selectedCategoryName: string) => {
-    const entry = Object.entries(categoryData).find(
+    let entry = Object.entries(categoryData).find(
       ([, value]) => value.name === selectedCategoryName
     );
+    
     if (entry) {
       const selectedCategory = Number(entry[0]) as Category;
+      const centre = selectedCategory;
       setCategory(selectedCategory);
       setShowCategory(true);
       setReadyForQuestion(false);
@@ -101,8 +101,6 @@ export default function GameStep({
     setHasAnswered(true);
     if (timerRef.current) clearTimeout(timerRef.current);
 
-    setLastAnswerCorrect(isCorrect);
-    setShowCorrection(true);
 
     if (isCorrect) {
       addPointToCurrentPlayer(1);
@@ -112,7 +110,6 @@ export default function GameStep({
     }
 
     setTimeout(() => {
-      setShowCorrection(false);
       setHasAnswered(false);
       onEndTurn();
     }, 2000);
@@ -120,11 +117,11 @@ export default function GameStep({
 
   const startQuestion = async () => {
     await loadManager();
-    if (category || category === Number(Category.Centre)) {
-      await fetchNextQuestionByCategorie(category);
-    } else {
-        console.error("Aucune catégorie sélectionnée");
+    category = Number(Category.Centre)
+    if (!category || category === Number(Category.Centre)) {
       await fetchNextQuestion();
+    } else {
+      await fetchNextQuestionByCategorie(category);
     }
     setTimeLeft(TIMER_DURATION);
     setQuestionKey(k => k + 1);
@@ -153,11 +150,6 @@ export default function GameStep({
     handleAnswer(false);
   };
 
-  const isStepCategory = !readyForQuestion && category === null;
-  const isStepConfirmation = !readyForQuestion && showCategory && category !== null;
-  const isStepQuestion = readyForQuestion && showQuestionCard && currentQuestion;
-  const isStepLoading = readyForQuestion && showQuestionCard && !currentQuestion;
-  const isStepCorrection = showCorrection;
 
   const fadeSlideVariant = {
     initial: { opacity: 0, y: 20 },
@@ -229,27 +221,6 @@ export default function GameStep({
             className="mt-20"
         >
             <Loading />
-        </motion.div>
-        )}
-
-        {showCorrection && (
-        <motion.div
-            key="correction"
-            {...fadeSlideVariant}
-            className="text-center mt-4"
-        >
-            {lastAnswerCorrect ? (
-            <p className="text-green-600 font-semibold text-lg">Bonne réponse ! 🎉</p>
-            ) : (
-            <p className="text-red-600 font-semibold text-lg">
-                Mauvaise réponse ❌<br />
-                {currentQuestion?.correction && (
-                <span className="text-gray-800">
-                    Bonne réponse : {currentQuestion.correction}
-                </span>
-                )}
-            </p>
-            )}
         </motion.div>
         )}
     </AnimatePresence>

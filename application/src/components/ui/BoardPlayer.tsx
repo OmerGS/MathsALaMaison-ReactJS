@@ -10,24 +10,32 @@ interface BoardPlayerProps {
 export default function BoardPlayer({ currentIndex }: BoardPlayerProps) {
   const { players, points, categoriesDone } = usePlayer();
 
+  // Trouver le score max et le joueur gagnant
+  let maxPoints = -Infinity;
+  let winner: string | null = null;
+  players.forEach((player) => {
+    if ((points[player] ?? 0) > maxPoints) {
+      maxPoints = points[player] ?? 0;
+      winner = player;
+    }
+  });
+
   return (
     <div className="bg-white/60 backdrop-blur-md px-5 py-4 w-full max-w-xs rounded-xl shadow-md animate-fade-in-delay-100">
       <h2 className="text-center text-black-400 text-xl font-extrabold mb-4 tracking-wide uppercase drop-shadow-md">
         Classement
       </h2>
       <ul className="space-y-2 max-h-[280px] overflow-y-auto">
-        {players
-          .slice()
-          .sort((a, b) => (points[b] ?? 0) - (points[a] ?? 0))
-          .map((player, index) => (
-            <PlayerLine
-              key={player}
-              playerName={player}
-              points={points[player] ?? 0}
-              categoriesDone={categoriesDone[player] ?? 0}
-              isCurrent={index === currentIndex}
-            />
-          ))}
+        {players.map((player, index) => (
+          <PlayerLine
+            key={player}
+            playerName={player}
+            points={points[player] ?? 0}
+            categoriesDone={categoriesDone[player] ?? 0}
+            isCurrent={index === currentIndex}
+            isWinner={player === winner}
+          />
+        ))}
       </ul>
     </div>
   );

@@ -37,11 +37,6 @@ function DashboardContent() {
 
   const choices = [
     { 
-      label: "Les Questions", 
-      action: () => router.push("/play/question-list"),
-      description: "Accédez à une liste de questions pour tester vos connaissances à votre rythme."
-    },
-    { 
       label: "Partie en ligne", 
       action: () => router.push("/play/matchmaking"),
       description: "Jouez contre d'autres joueurs en temps réel via un matchmaking rapide."

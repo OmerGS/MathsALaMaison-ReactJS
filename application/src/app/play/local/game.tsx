@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BackButton from "@/components/ui/BackButton";
 import BoardPlayer from "@/components/ui/BoardPlayer";
@@ -10,10 +10,11 @@ import { usePlayer } from "@/context/PlayerContext";
 import Category from "@/Type/Category";
 import { categoryData } from "@/Type/CategoryData";
 import GameStep from "./gameStep";
+import { addPoint } from "@/services/gameAPI";
 
-export default function LocalGame() {
+export default function LocalGame({ onFinish }: { onFinish: () => void }) {
   const router = useRouter();
-  const { currentPlayer, currentPlayerIndex, nextPlayer, getPointsOfPlayer } = usePlayer();
+  const { players , currentPlayer, currentPlayerIndex, nextPlayer, getPointsOfPlayer } = usePlayer();
 
   // Convertir categoryData (Record<Category, CategoryData>) en tableau
   const categoriesArray = Object.values(categoryData);
@@ -23,18 +24,50 @@ export default function LocalGame() {
   const [readyForQuestion, setReadyForQuestion] = useState(false);
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [showQuestionCard, setShowQuestionCard] = useState(false);
-  const winningScorePoint = 21;
+  const [playersPlayed, setPlayersPlayed] = useState<string[]>([]);
+  const [isVictory, setIsVictory] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
+  const winningScorePoint = 1;
   const winningScoreCategory = 12;
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasMounted && isVictory) {
+      addPoint();
+      onFinish();
+    }
+  }, [hasMounted, isVictory, router]);
 
   const handleEndTurn = () => {
     if (!currentPlayer) return;
 
-    const playerScore = getPointsOfPlayer(currentPlayer);
-    
-    if (playerScore >= winningScorePoint || playerScore >= winningScoreCategory) {
-      router.push("/play/local/endgame");
-      return;
-    }
+    // Ajoute le joueur à la liste des joueurs ayant joué ce tour
+    setPlayersPlayed(prev => {
+      const updated = [...new Set([...prev, currentPlayer])];
+
+      // Si tous les joueurs ont joué, on vérifie la condition de victoire
+      if (updated.length === players.length) {
+        const winner = players.find(player => {
+          const score = getPointsOfPlayer(player);
+          return score >= winningScorePoint || score >= winningScoreCategory;
+        });
+
+        if (winner) {
+          setIsVictory(true); 
+          return updated;
+        }
+
+        // Si personne n'a gagné, on commence une nouvelle manche
+        return [];
+      }
+
+      return updated;
+    });
+
+    // Prépare pour le prochain tour
     setCategory(null);
     setShowCategory(false);
     setReadyForQuestion(false);
@@ -44,7 +77,7 @@ export default function LocalGame() {
 
   const handleEndGame = () => {
     if (confirmEnd) {
-      router.push("/play/local/endgame");
+      onFinish();
     } else {
       setConfirmEnd(true);
       setTimeout(() => setConfirmEnd(false), 3000);
@@ -89,6 +122,10 @@ export default function LocalGame() {
         {/* Classement joueur */}
         <div className="w-full flex justify-center md:justify-end mb-4">
           <BoardPlayer currentIndex={currentPlayerIndex} />
+        </div>
+
+        <div className="text-white mb-2 md:mr-4 text-sm">
+          {playersPlayed.length} / {players.length} joueurs ont joué ce tour
         </div>
 
         {/* Bouton terminer */}

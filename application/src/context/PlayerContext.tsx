@@ -100,7 +100,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const resetPlayers = () => {
     setPlayersState([]);
     setPointsState({});
-    setCategoriesDone({}); // <- nouveau reset aussi
+    setCategoriesDone({}); 
     setCurrentPlayerIndex(0);
   };
 
