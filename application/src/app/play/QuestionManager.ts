@@ -49,7 +49,7 @@ export default class QuestionManager {
   public async fetchRandomQuestionByCategory(category: Category) : Promise<Question> {
     const response = await getRandomCategoryQuestion(category);
 
-    this.question = response.data as Question;
+    this.question = response as Question;
     this.possiblereponses = [];
     this.reponseTypeSelector();
 
@@ -242,12 +242,14 @@ export default class QuestionManager {
   * @returns True if all the reponses are correct, false otherwise.
   */
   public checkMultipleTextreponses(userreponses: string[]): boolean {
+    console.log("Réponses utilisateur : ", userreponses);
     const sortedUserreponses = userreponses.map(reponse => reponse.trim().toLowerCase()).sort();
+    console.log("Réponses utilisateur triées : ", sortedUserreponses);
     const sortedPossiblereponses = this.possiblereponses.map(reponse => reponse.trim().toLowerCase()).sort();
-
+    console.log("Réponses possibles triées : ", sortedPossiblereponses);
     const isCorrect = JSON.stringify(sortedUserreponses) === JSON.stringify(sortedPossiblereponses);
 
-    //console.log("Est correct : ", isCorrect);
+    console.log("Est correct : ", isCorrect);
 
     return isCorrect;
 }

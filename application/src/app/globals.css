@@ -104,6 +104,15 @@
     color: var(--color-muted);
   }
 
+  .text-game {
+    background: linear-gradient(270deg, var(--bg-from), var(--bg-to), #C4E3F8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; /* utile pour certains navigateurs */
+    color: transparent;    /* fallback */
+  }
+
+
   .card {
     background-color: var(--color-surface);
     padding: 1rem;

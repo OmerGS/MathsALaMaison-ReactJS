@@ -48,7 +48,7 @@ function DashboardContent() {
     },
     { 
       label: "Partie local", 
-      action: () => router.push("/play/create"),
+      action: () => router.push("/play/local"),
       description: "Créez une partie locale pour jouer entre amis sur le même appareil."
     },
     { 
