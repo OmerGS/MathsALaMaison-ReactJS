@@ -6,10 +6,10 @@ import { useUser } from "@/context/UserContext";
 import "../globals.css";
 
 import SectionButton from "@/components/ui/SectionButton";
-import ActionButton from "@/components/ui/ActionButton";
 import BackButton from "@/components/ui/BackButton";
-import { logoutUser } from "@/services/authAPI";
-import CGU from "./SettingsComponents/CGU";
+import MentionLegales from "./SettingsComponents/MentionsLegales";
+import Contact from "./SettingsComponents/Contact";
+import Compte from "./SettingsComponents/Compte";
 
 export default function Settings() {
   const router = useRouter();
@@ -22,64 +22,22 @@ export default function Settings() {
     }
   }, [user, loading, router]);
 
-  const disconnect = async () => {
-    const response = await logoutUser();
-    if (response.status === 200) {
-      setUser(null);
-      router.push("/auth/login");
-    } else {
-      alert("Échec de la déconnexion. Veuillez réessayer.");
-      console.error("Failed to disconnect user");
-    }
-  }
-
   const renderContent = () => {
     switch (selectedSection) {
-      case "CGU":
-        <CGU></CGU>
+      case "MENTIONS":
+        return <MentionLegales></MentionLegales>
       case "CONTACT":
-        return (
-          <div className="space-y-2 text-gray-800">
-            <p>Contact : am@mathsalamaison.fr</p>
-            <p>Site Web : www.mathsalamaison.fr</p>
-          </div>
-        );
+        return <Contact></Contact>
       case "COMPTE":
         return user ? (
-          <div className="space-y-4">
-            <ActionButton onClick={() => router.push("/change-password")}>
-              Changer mot de passe
-            </ActionButton>
-            <ActionButton onClick={() => router.push("/change-email")}>
-              Changer email
-            </ActionButton>
-            <ActionButton onClick={() => router.push("/change-pseudo")}>
-              Changer pseudo
-            </ActionButton>
-            <ActionButton
-              danger
-              onClick={async () => {
-                await disconnect();
-              }}
-            >
-              Déconnexion
-            </ActionButton>
-            <ActionButton
-              danger
-              onClick={() => {
-                /* handleDeleteAccount(router, user, setUser); */
-              }}
-            >
-              Supprimer compte
-            </ActionButton>
-          </div>
+          <Compte></Compte>
         ) : null;
       default:
         return null;
     }
   };
 
-  const sections = user ? ["COMPTE", "CGU", "CONTACT"] : ["CGU", "CONTACT"];
+  const sections = user ? ["COMPTE", "MENTIONS", "CONTACT"] : ["MENTIONS", "CONTACT"];
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-l from-custom to-custom">
