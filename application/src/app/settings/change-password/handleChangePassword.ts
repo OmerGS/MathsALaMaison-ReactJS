@@ -17,6 +17,11 @@ export const handleChangePassword = async (
     return false;
   }
 
+  if(newPassword == currentPassword){
+    toast.error("Le nouveau mot de passe ne peut pas être le même que le mot de passe actuel.");
+    return false;
+  }
+
   if (newPassword.length < 10) {
     toast.error("Le nouveau mot de passe doit contenir au moins 10 caractères.");
     return false;
