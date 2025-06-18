@@ -84,7 +84,7 @@
     return (
       <div >
         {isMobile ? 
-        <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
+        <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-2 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
 
           {/* LOGO EN ARRIÈRE-PLAN */}
           <img
@@ -116,7 +116,8 @@
 
           {/* BOUTON MODE (digit) — plus petit */}
           {/* MODE SELECTIONNÉ OU BOUTON SÉLECTEUR */}
-          <div className="relative z-10 row-start-2 col-start-2 flex justify-center items-end">
+          <div className="relative z-10 row-start-2 col-start-2 flex justify-center items-end
+          ">
             {selectedMode ? (
               <div
                 className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-center"
