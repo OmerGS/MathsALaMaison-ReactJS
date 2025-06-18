@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import "../../globals.css";
 
 import FormInput from "@/components/ui/FormInput";
@@ -14,15 +13,14 @@ export default function ChangeEmail() {
   const [currentPassword, setCurrentPassword] = useState("");
   const {user, loading, setUser} = useUser();
   
-  const router = useRouter();
-
   if (!user) return null;
 
-  const onSubmit = async (newEmail: string) => {
-    const success = await handleUsernameChange(newEmail);
-    if(success){
-      setUser({ ...user, pseudo: newEmail})
-    }
+  const onSubmit = async (
+    password: string, 
+    newEmail: string
+  ) => {
+    console.log(password);
+    console.log(newEmail)
   };
 
   return (
@@ -50,7 +48,7 @@ export default function ChangeEmail() {
           />
 
           <FormButton
-              onClick={() => onSubmit(newEmail)}
+              onClick={() => onSubmit(currentPassword, newEmail)}
               disabled={
                   loading
               }
