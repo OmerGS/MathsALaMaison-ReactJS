@@ -14,6 +14,11 @@ import PlayButton from "@/components/ui/PlayButton";
 import ModeChoiceModal from "@/components/ui/ModeChoiceModal";
 import ClassementButton from "@/components/ui/ClassementButton";
 import AdminButtton from "@/components/ui/AdminButton"
+import SettingsButtonMobile from "@/components/ui/SettingsButtonMobile";
+import ProfileCardMobile from "@/components/ui/ProfileCardMobile";
+import ClassementButtonMobile from "@/components/ui/ClassementButtonMobile";
+import ModeSelectorMobile from "@/components/ui/ModeSelectorMobile";
+import PlayButtonMobile from "@/components/ui/PlayButtonMobile";
 
 export default function LoggedInHomePage() {
   return (
@@ -76,67 +81,135 @@ function DashboardContent() {
   };
 
   return (
-    <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
-      
-      {/* LOGO EN ARRIÈRE-PLAN */}
-      <img
-        src="/icons/icon-512x512.png"
-        alt=""
-        aria-hidden="true"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                  opacity-40 z-0 pointer-events-none
-                  w-[40vw] max-w-[500px] h-auto select-none
-                  animate-pulse-slow"
-      />
+    <div>
+      {isMobile ? 
+      <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
 
-      {/* PROFIL ET POINTS */}
-      <div className="relative z-10 col-start-1 row-start-1 flex flex-col items-start gap-4">
-        <ProfileCard user={user} />
-        <PointsCard points={user.point} />
-      </div>
-
-      {/* PARAMÈTRES ET CLASSEMENT */}
-      <div className="relative z-10 row-start-1 col-start-3 flex flex-col gap-2 items-end">
-        <SettingsButton />
-        <ClassementButton />
-        {user.specialRole === "admin" ? (
-          <AdminButtton />
-        ):(
-          <></>
-        )}
-      </div>
-
-      {/* BOUTON MODE (digit) — plus petit */}
-      {/* MODE SELECTIONNÉ OU BOUTON SÉLECTEUR */}
-      <div className="relative z-10 row-start-3 col-start-2 flex justify-center items-end">
-        {selectedMode ? (
-          <div
-            className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-center"
-            onClick={() => setModalVisible(true)}
-          >
-            Mode : {selectedMode.label}
-          </div>
-        ) : (
-          <ModeSelector onClick={() => setModalVisible(true)} />
-        )}
-      </div>
-
-      {/* BOUTON JOUER — agrandi */}
-      <div className="relative z-10 row-start-3 col-start-3 flex flex-col justify-end items-end">
-          <PlayButton onClick={handlePlay}/>
-      </div>
-
-      {/* MODAL */}
-      {isModalVisible && (
-        <ModeChoiceModal
-          choices={choices}
-          onClose={() => setModalVisible(false)}
-          onSelect={(choice) => {
-            setSelectedMode(choice);
-            setModalVisible(false);
-          }}
+        {/* LOGO EN ARRIÈRE-PLAN */}
+        <img
+          src="/icons/icon-512x512.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                    opacity-40 z-0 pointer-events-none
+                    w-[40vw] max-w-[500px] h-auto select-none
+                    animate-pulse-slow"
         />
-      )}
+
+        {/* PROFIL ET POINTS */}
+        <div className="relative z-10 col-start-1 row-start-1 flex flex-col items-start gap-4">
+          <ProfileCardMobile user={user} />
+          <PointsCard points={user.point} />
+        </div>
+
+        {/* PARAMÈTRES ET CLASSEMENT */}
+        <div className="relative z-10 row-start-1 col-start-3 flex flex-col gap-2 items-end">
+          <SettingsButtonMobile />
+          <ClassementButtonMobile />
+          {user.specialRole === "admin" ? (
+            <AdminButtton />
+          ):(
+            <></>
+          )}
+        </div>
+
+        {/* BOUTON MODE (digit) — plus petit */}
+        {/* MODE SELECTIONNÉ OU BOUTON SÉLECTEUR */}
+        <div className="relative z-10 row-start-3 col-start-2 flex justify-center items-end">
+          {selectedMode ? (
+            <div
+              className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-center"
+              onClick={() => setModalVisible(true)}
+            >
+              Mode : {selectedMode.label}
+            </div>
+          ) : (
+            <ModeSelectorMobile onClick={() => setModalVisible(true)} />
+          )}
+        </div>
+
+        {/* BOUTON JOUER — agrandi */}
+        <div className="relative z-10 row-start-5 col-start-2 flex flex-col justify-center items-center">
+            <PlayButtonMobile onClick={handlePlay}/>
+        </div>
+
+        {/* MODAL */}
+        {isModalVisible && (
+          <ModeChoiceModal
+            choices={choices}
+            onClose={() => setModalVisible(false)}
+            onSelect={(choice) => {
+              setSelectedMode(choice);
+              setModalVisible(false);
+            }}
+          />
+        )}
+      </div>
+    :
+      <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
+      
+        {/* LOGO EN ARRIÈRE-PLAN */}
+        <img
+          src="/icons/icon-512x512.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                    opacity-40 z-0 pointer-events-none
+                    w-[40vw] max-w-[500px] h-auto select-none
+                    animate-pulse-slow"
+        />
+
+        {/* PROFIL ET POINTS */}
+        <div className="relative z-10 col-start-1 row-start-1 flex flex-col items-start gap-4">
+          <ProfileCard user={user} />
+          <PointsCard points={user.point} />
+        </div>
+
+        {/* PARAMÈTRES ET CLASSEMENT */}
+        <div className="relative z-10 row-start-1 col-start-3 flex flex-col gap-2 items-end">
+          <SettingsButton />
+          <ClassementButton />
+          {user.specialRole === "admin" ? (
+            <AdminButtton />
+          ):(
+            <></>
+          )}
+        </div>
+
+        {/* BOUTON MODE (digit) — plus petit */}
+        {/* MODE SELECTIONNÉ OU BOUTON SÉLECTEUR */}
+        <div className="relative z-10 row-start-3 col-start-2 flex justify-center items-end">
+          {selectedMode ? (
+            <div
+              className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-center"
+              onClick={() => setModalVisible(true)}
+            >
+              Mode : {selectedMode.label}
+            </div>
+          ) : (
+            <ModeSelector onClick={() => setModalVisible(true)} />
+          )}
+        </div>
+
+        {/* BOUTON JOUER — agrandi */}
+        <div className="relative z-10 row-start-3 col-start-3 flex flex-col justify-end items-end">
+            <PlayButton onClick={handlePlay}/>
+        </div>
+
+        {/* MODAL */}
+        {isModalVisible && (
+          <ModeChoiceModal
+            choices={choices}
+            onClose={() => setModalVisible(false)}
+            onSelect={(choice) => {
+              setSelectedMode(choice);
+              setModalVisible(false);
+            }}
+          />
+        )}
+      </div>}
     </div>
+
+    
   );
 }
