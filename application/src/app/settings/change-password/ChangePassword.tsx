@@ -4,71 +4,87 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
-import FormInput from "@/components/ui/FormInput";
 import FormButton from "@/components/ui/FormButton";
 import BackButton from "@/components/ui/BackButton";
 import { useUser } from "@/context/UserContext";
+import { handleChangePassword } from "./handleChangePassword";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 export default function ChangePassword() {
-  const [curPassword, setCurrentPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const {user, loading, setUser} = useUser();
+  const { user, loading } = useUser();
 
   const router = useRouter();
 
   if (!user) return null;
 
-  const onSubmit = async (newPassword: string) => {
-    const success = await handlePasswordChange(newPassword);
-    if(success){
-      setUser({ ...user, password: newPassword})
+  const onSubmit = async (
+    currentPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => {
+    const success = await handleChangePassword(
+      currentPassword,
+      newPassword,
+      confirmPassword
+    );
+    if (success) {
+      router.push("/settings/");
     }
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-l from-custom to-custom">
-      <BackButton />
-      <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
-          <h1 className="text-3xl font-bold mb-6 text-black">
-            Changer mot de passe
-          </h1>
+    <div className="min-h-screen bg-gradient-to-l from-custom to-custom flex flex-col items-center justify-center px-4 py-8">
+      <BackButton/>
 
-          <FormInput
-            type="text"
+      <main className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl p-10 shadow-lg border border-gray-200">
+        <h1 className="text-4xl font-extrabold mb-8 text-gray-900 text-center">
+          Changer mot de passe
+        </h1>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(currentPassword, newPassword, confirmPassword);
+          }}
+          className="space-y-6"
+        >
+          <PasswordInput
             placeholder="Mot de passe actuel"
-            value={curPassword}
+            value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            autoComplete="username"
+            autoComplete="current-password"
           />
 
-          <FormInput
-            type="text"
+          <PasswordInput
             placeholder="Nouveau mot de passe"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            autoComplete="username"
+            autoComplete="new-password"
+            showStrength={true}
           />
 
-          <FormInput
-            type="text"
+          <PasswordInput
             placeholder="Confirmer nouveau mot de passe"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            autoComplete="username"
+            autoComplete="new-password"
           />
 
+          <p className="text-xs text-gray-500 italic mt-2">
+            Le mot de passe doit contenir au moins 8 caractères, une majuscule,
+            un chiffre et un symbole.
+          </p>
+
           <FormButton
-              onClick={() => onSubmit(newPassword)}
-              disabled={
-                  loading
-              }
+            disabled={loading}
           >
-            {loading
-              ? "Changement du mot de passe termine"
-              : "Changer le mot de passe"}
+            {loading ? "Changement en cours..." : "Changer le mot de passe"}
           </FormButton>
-      </div>
+        </form>
+      </main>
     </div>
-  ); 
+  );
 }

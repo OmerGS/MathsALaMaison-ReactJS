@@ -92,8 +92,8 @@ export default function ResetPassword() {
         return;
       }
 
-      if (newPassword.length < 8) {
-        alert("Le mot de passe doit contenir au moins 8 caractères.");
+      if (newPassword.length < 10) {
+        alert("Le mot de passe doit contenir au moins 10 caractères.");
         setLoading(false);
         return;
       }

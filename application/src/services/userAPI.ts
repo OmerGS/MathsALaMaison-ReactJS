@@ -12,10 +12,6 @@ export const getUserIp = () => {
   return http.post('/user/ip');
 };
 
-export const updateProfilePicture = (idPicture: number) => {
-  return http.post('/user/updatePicture', {idPicture: idPicture})
-}
-
 export const getLeaderBoardUser = async (sortBy: string) => {
   const params: any = {sortBy};
   return await http.get("/user/users", {
@@ -23,3 +19,10 @@ export const getLeaderBoardUser = async (sortBy: string) => {
   });
 };
 
+export const updateProfilePicture = (idPicture: number) => {
+  return http.post('/user/updatePicture', {idPicture: idPicture})
+}
+
+export const updatePassword = (oldPassword: string, newPassword: string) => {
+  return http.post('/user/update/password', {oldPassword, newPassword})
+}
