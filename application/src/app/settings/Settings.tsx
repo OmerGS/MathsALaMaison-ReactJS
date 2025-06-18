@@ -9,6 +9,7 @@ import SectionButton from "@/components/ui/SectionButton";
 import ActionButton from "@/components/ui/ActionButton";
 import BackButton from "@/components/ui/BackButton";
 import { logoutUser } from "@/services/authAPI";
+import CGU from "./SettingsComponents/CGU";
 
 export default function Settings() {
   const router = useRouter();
@@ -35,12 +36,7 @@ export default function Settings() {
   const renderContent = () => {
     switch (selectedSection) {
       case "CGU":
-        return (
-          <div className="space-y-2 text-gray-800">
-            <p>A VOIR AVEC CLIENTE</p>
-            <p>L'application stocke les données utilisateur sur un serveur externe.</p>
-          </div>
-        );
+        <CGU></CGU>
       case "CONTACT":
         return (
           <div className="space-y-2 text-gray-800">
