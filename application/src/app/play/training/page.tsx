@@ -2,7 +2,7 @@
 
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Training from "./training";
+import Training from "./Training";
 
 export default function TrainingPage() {
   return (
