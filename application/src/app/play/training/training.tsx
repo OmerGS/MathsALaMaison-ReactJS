@@ -40,6 +40,7 @@ const TrainingScreen = () => {
 
   useEffect(() => {
     const initialize = async () => {
+      await loadManager();
       await fetchNextQuestion();
       setTimeLeft(TIMER_DURATION);
       setQuestionKey(k => k + 1);
