@@ -98,6 +98,9 @@ export default function LocalGame({ onFinish }: { onFinish: () => void }) {
 
   return (
     <div className="relative min-h-screen w-screen p-4 bg-gradient-to-l from-custom to-custom font-sans flex flex-col md:grid md:grid-cols-[3fr_1fr] md:grid-rows-[auto_1fr_auto] gap-4">
+      <div className="self-start mb-4">
+        <BackButton />
+      </div>
       {/* --- Colonne principale --- */}
       <div className="flex flex-col items-center justify-center gap-6 w-full px-2 md:col-start-1 md:row-span-3">
         <div className="w-full max-w-4xl flex flex-col items-center">

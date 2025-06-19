@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import '../../globals.css';
+import "../../globals.css";
 
 import PlayerInput from "@/components/ui/PlayerInput";
 import PlayerCard from "@/components/ui/PlayerCard";
 import LaunchButton from "@/components/ui/LanchButton";
 import { usePlayer } from "@/context/PlayerContext";
+import BackButton from "@/components/ui/BackButton";
+import { Info } from "lucide-react";
 
 const MAX_PLAYERS = 4;
 const MIN_PLAYERS = 2;
@@ -47,6 +49,9 @@ export default function CreateGame({ onStart }: { onStart: () => void }) {
 
   return (
     <div className="flex flex-col md:flex-row h-screen p-6 bg-gradient-to-l from-custom to-custom">
+      <div className="self-start mb-4">
+        <BackButton />
+      </div>
       <div className="flex flex-col flex-1 bg-white rounded-2xl p-6 shadow-xl mb-5 md:mb-0 md:mr-6">
         <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Création de la Partie
@@ -78,7 +83,21 @@ export default function CreateGame({ onStart }: { onStart: () => void }) {
         )}
       </div>
 
-      <div className="flex md:w-[30%] items-center justify-center">
+      <div className="flex flex-col md:w-[30%] items-center justify-center space-y-6">
+        {/* Bloc règles */}
+        <div className="bg-white text-gray-700 rounded-xl shadow-lg p-4 w-full">
+          <div className="flex items-center mb-2">
+            <Info size={20} className="text-blue-500 mr-2" />
+            <h2 className="text-lg font-semibold">Règles du jeu</h2>
+          </div>
+          <ul className="text-sm list-disc list-inside space-y-1">
+            <li>Chaque joueur répond à une question à son tour.</li>
+            <li>Les catégories sont sélectionnées aléatoirement.</li>
+            <li>1 point par bonne réponse.</li>
+            <li>Le joueur avec le plus de points gagne !</li>
+          </ul>
+        </div>
+
         <LaunchButton onClick={startGame} />
       </div>
     </div>
