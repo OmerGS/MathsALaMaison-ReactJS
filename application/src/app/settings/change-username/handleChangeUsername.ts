@@ -1,4 +1,4 @@
-import { updatePseudoAsk, updatePseudoCheck } from "@/services/userAPI";
+import { updateUserInfo } from "@/services/userAPI";
 import toast from "react-hot-toast";
 
 export const handleChangePseudo = async (
@@ -16,7 +16,7 @@ export const handleChangePseudo = async (
   }
 
   try {
-    const response = await updatePseudoAsk(password, pseudo);
+    const response = await updateUserInfo('pseudo', 'ask', { password, newValue: pseudo} );
 
     if (response.status === 200) {
       toast.success("Un email de confirmation vous a été envoyé.");
@@ -33,7 +33,7 @@ export const handleChangePseudo = async (
 
 export async function validatePseudoCodeWrapper(code: string): Promise<boolean> {
   try {
-    const response = await updatePseudoCheck(code);
+    const response = await updateUserInfo('pseudo', 'validate', { code} );
     return response.status === 200;
   } catch {
     return false;

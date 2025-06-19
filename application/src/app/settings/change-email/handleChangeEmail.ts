@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { updateEmailAsk, updateEmailCheck } from "@/services/userAPI";
+import { updateUserInfo } from "@/services/userAPI";
 
 export const handleChangeEmail = async (
   password: string,
@@ -18,7 +18,7 @@ export const handleChangeEmail = async (
   }
 
   try {
-    const response = await updateEmailAsk(password, email);
+    const response = await updateUserInfo('mail', 'ask', { password, newValue: email} );
 
     if (response.status === 200) {
       toast.success("Un email de confirmation vous a été envoyé.");
@@ -35,7 +35,7 @@ export const handleChangeEmail = async (
 
 export async function validateEmailCodeWrapper(code: string): Promise<boolean> {
   try {
-    const response = await updateEmailCheck(code);
+    const response = await updateUserInfo('mail', 'validate', { code });;
     return response.status === 200;
   } catch {
     return false;
