@@ -11,7 +11,7 @@ export default function FormButton({ children, onClick, disabled }: FormButtonPr
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`w-4/5 max-w-md bg-dark text-white font-bold py-3 rounded-md  transition-opacity ${
+      className={`w-full max-w-md bg-dark text-white font-bold py-3 rounded-md  transition-opacity ${
         disabled ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
       }`}
     >
