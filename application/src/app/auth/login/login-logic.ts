@@ -1,6 +1,4 @@
-import { PasswordUtil } from "@/utils/PasswordUtil";
-import { login, getSaltByIdentifier } from "@/services/authAPI";
-import { User } from "@/Type/User";
+import { login } from "@/services/authAPI";
 
 export async function handleLogin(identifier: string, password: string): Promise<any | null> {
   if (!identifier || !password) {
@@ -9,16 +7,7 @@ export async function handleLogin(identifier: string, password: string): Promise
   }
 
   try {
-    const response = await getSaltByIdentifier(identifier);
-
-    if (!response.data.success) {
-      alert(response.data.message || "Erreur lors de la récupération du sel.");
-      return null;
-    }
-
-    const hashedPassword = PasswordUtil.hashPassword(password, response.data.salt);
-
-    const loginResponse = await login(identifier, hashedPassword);
+    const loginResponse = await login(identifier, password);
 
     if (!loginResponse.data.success) {
       alert(loginResponse.data.message || "Identifiants incorrects.");
