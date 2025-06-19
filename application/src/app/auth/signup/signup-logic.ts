@@ -1,4 +1,3 @@
-import { PasswordUtil } from "@/utils/PasswordUtil";
 import { register } from "@/services/authAPI";
 
 export const handleSignUp = async (
@@ -20,8 +19,8 @@ export const handleSignUp = async (
   if (password !== confirmPassword) {
     alert("Les mots de passe ne correspondent pas");
     return;
-  } else if (password.length < 8) {
-    alert("Le mot de passe doit contenir au moins 8 caractères");
+  } else if (password.length < 10) {
+    alert("Le mot de passe doit contenir au moins 10 caractères");
     return;
   }
 
@@ -31,10 +30,7 @@ export const handleSignUp = async (
   }
 
   try {
-    const salt = await PasswordUtil.getSalt();
-    const hashedPassword = PasswordUtil.hashPassword(password, salt);
-
-    const response = await register(pseudo, email.trim().toLowerCase(), hashedPassword, salt);
+    const response = await register(pseudo, email.trim().toLowerCase(), password);
 
     if (!response.data.success) {
       alert(response.data.message || "Erreur lors de l'inscription.");
