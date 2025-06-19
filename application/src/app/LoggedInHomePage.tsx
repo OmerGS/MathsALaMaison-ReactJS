@@ -71,7 +71,7 @@ function DashboardContent() {
   };
 
   return (
-    <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
+    <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom overflow-y-auto">
       
       {/* LOGO EN ARRIÈRE-PLAN */}
       <img

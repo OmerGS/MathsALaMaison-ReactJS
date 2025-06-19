@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import useIsMobile from "@/hooks/useIsMobile";
 import Loading from "@/components/ui/Loading";
 import { usePlayer } from "@/context/PlayerContext";
+import CategoryStart from "@/components/ui/CategoryStart";
 
 type Props = {
   category: Category | null;
@@ -158,71 +159,58 @@ export default function GameStep({
     transition: { duration: 0.4 },
    };
    return (
-    <AnimatePresence mode="wait">
-        {!readyForQuestion && category === null && (
-        <motion.div
-            key="carousel"
-            {...fadeSlideVariant}
-            className="w-full flex justify-center"
-        >
-            <CategoryCarousel
-            categories={categoriesArray}
-            onCategorySelect={handleCategorySelected}
-            />
-        </motion.div>
-        )}
+    <div className="flex flex-col flex-1 w-full min-h-0">
+      <AnimatePresence mode="wait">
+          {!readyForQuestion && category === null && (
+          <motion.div
+              key="carousel"
+              {...fadeSlideVariant}
+              className="flex flex-col items-center justify-center w-full gap-4">
+                <CategoryCarousel
+                categories={categoriesArray}
+                onCategorySelect={handleCategorySelected}
+                />
+          </motion.div>
+          )}
 
-        {showCategory && category !== null && !readyForQuestion && (
-        <motion.div
-            key="category-card"
-            {...fadeSlideVariant}
-            className="w-full flex justify-center p-4"
-        >
-            <div className="flex flex-col items-center gap-4">
-            <CategoryCard
-                name={categoryData[category].name}
-                imageUrl={categoryData[category].imageUrl}
-                isSelected={true}
-                onClick={() => {}}
-                large={true}
-            />
-            <button className="btn btn-primary" onClick={startQuestion}>
-                Commencer la question
-            </button>
-            </div>
-        </motion.div>
-        )}
+          {showCategory && category !== null && !readyForQuestion && (
+          <motion.div
+              key="category-card"
+              {...fadeSlideVariant}
+              className="flex flex-col items-center justify-center w-full gap-4">
+              <CategoryStart
+                category={categoryData[category]}
+                onStartQuestion={startQuestion}
+                />
+          </motion.div>
+          )}
 
-        {readyForQuestion && showQuestionCard && currentQuestion && (
-        <motion.div
-            key="question-card"
-            {...fadeSlideVariant}
-            className="w-full flex justify-center items-center flex-col gap-6"
-        >
-            {isMobile ? (
-            <TimerCircle key={questionKey} duration={TIMER_DURATION} timeLeft={timeLeft} />
-            ) : (
-            <TimerBar key={questionKey} duration={TIMER_DURATION} timeLeft={timeLeft} />
-            )}
-            <QuestionCard
-            question={currentQuestion}
-            possiblereponses={possiblereponses}
-            onCheckSelection={handlereponseSelection}
-            onCheckText={handleTextreponseSelection}
-            onCheckMultipleText={handleMultipleTextreponse}
-            />
-        </motion.div>
-        )}
+          {readyForQuestion && showQuestionCard && currentQuestion && (
+          <motion.div
+              key="question-card"
+              {...fadeSlideVariant}
+              className="flex flex-col items-center justify-center w-full gap-4">
+                <TimerBar key={questionKey} duration={TIMER_DURATION} timeLeft={timeLeft} />
+                <QuestionCard
+                question={currentQuestion}
+                possiblereponses={possiblereponses}
+                onCheckSelection={handlereponseSelection}
+                onCheckText={handleTextreponseSelection}
+                onCheckMultipleText={handleMultipleTextreponse}
+                />
+          </motion.div>
+          )}
 
-        {readyForQuestion && showQuestionCard && !currentQuestion && (
-        <motion.div
-            key="loading"
-            {...fadeSlideVariant}
-            className="mt-20"
-        >
-            <Loading />
-        </motion.div>
-        )}
-    </AnimatePresence>
+          {readyForQuestion && showQuestionCard && !currentQuestion && (
+          <motion.div
+              key="loading"
+              {...fadeSlideVariant}
+              className="mt-20"
+          >
+              <Loading />
+          </motion.div>
+          )}
+      </AnimatePresence>
+      </div>
     );
 }

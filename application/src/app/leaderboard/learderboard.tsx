@@ -11,6 +11,7 @@ import BackButton from "@/components/ui/BackButton";
 import SectionButton from "@/components/ui/SectionButton";
 import ClassementCard from "@/components/ui/ClassementCard";
 import UserStatsCard from "@/components/ui/UserStatsCard";
+import Loading from "@/components/ui/Loading";
 
 const TABS = [
   { key: "point", label: "Points" },
@@ -64,7 +65,7 @@ export default function LeaderBoard() {
 
         <div className="space-y-3 max-h-[calc(100vh-175px)] overflow-y-auto pr-2">
           {isLoading ? (
-            <p className="text-center text-gray-500">Chargement du classement...</p>
+            <Loading />
           ) : (
             sortedPlayers.map((player, index) => (
               <ClassementCard

@@ -29,13 +29,21 @@ export default function CategoryCard({
         duration-300
         flex flex-col items-center
         ${isSelected ? "scale-105 ring-4 ring-blue-500" : "hover:scale-105 hover:shadow-lg"}
+        w-full
         max-w-full
+        h-full
+        max-h-full
       `}
-      style={{ width: large ? "100%" : 180 }}
+      style={{ minWidth: 0 }}
     >
       {/* Nom au-dessus de l'image */}
       <span
-        className={`mb-4 text-game font-semibold text-center select-none
+        className={`
+          mb-4
+          text-game
+          font-semibold
+          text-center
+          select-none
           ${large ? "text-2xl" : "text-base"}
         `}
       >
@@ -44,8 +52,8 @@ export default function CategoryCard({
 
       {/* Image affichée entièrement */}
       <div
-        className="w-full rounded-lg overflow-hidden bg-gray-100 flex justify-center items-center"
-        style={{ aspectRatio: "4 / 3", maxHeight: large ? 380 : 160 }}
+        className="w-full rounded-lg overflow-hidden bg-gray-100 flex justify-center items-center flex-shrink-0"
+        style={{ aspectRatio: "4 / 3", width: "100%", height: "auto" }}
       >
         <img
           src={imageUrl}

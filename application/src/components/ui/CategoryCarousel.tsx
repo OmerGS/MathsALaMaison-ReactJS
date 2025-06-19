@@ -15,7 +15,7 @@ export default function CategoryCarousel({ categories, onCategorySelect }: Categ
   const rollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const stepsRef = useRef(0);
 
-  const intervalDuration = 500; // ⏱️ plus lent
+  const intervalDuration = 500;
   const animationDuration = intervalDuration / 1000;
   const maxSteps = categories.length * 3;
 
@@ -54,11 +54,7 @@ export default function CategoryCarousel({ categories, onCategorySelect }: Categ
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-3xl px-6">
-      <div
-        className="relative w-full flex justify-center items-center"
-        style={{ minHeight: 350 }}
-      >
+    <div className="flex items-center justify-center w-full gap-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={categories[currentIndex].name}
@@ -66,9 +62,15 @@ export default function CategoryCarousel({ categories, onCategorySelect }: Categ
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
             transition={{ duration: animationDuration, ease: "easeInOut" }}
-            className="w-full max-w-md flex justify-center"
-            style={{ willChange: "transform, opacity" }}
-          >
+            className="w-full max-w-md flex justify-center items-center"
+            style={{
+              willChange: "transform, opacity",
+              width: "100%",      // largeur à 80% du parent
+              height: "auto",    // hauteur automatique selon contenu
+              minWidth: "300px", // taille mini pour éviter trop petit
+              minHeight: "400px" // hauteur mini pour garder constance
+            }}
+>
             <CategoryCard
               name={categories[currentIndex].name}
               imageUrl={categories[currentIndex].imageUrl}
@@ -78,7 +80,6 @@ export default function CategoryCarousel({ categories, onCategorySelect }: Categ
             />
           </motion.div>
         </AnimatePresence>
-      </div>
     </div>
   );
 }

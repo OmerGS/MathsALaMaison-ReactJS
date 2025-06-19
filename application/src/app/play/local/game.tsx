@@ -102,8 +102,7 @@ export default function LocalGame({ onFinish }: { onFinish: () => void }) {
         <BackButton />
       </div>
       {/* --- Colonne principale --- */}
-      <div className="flex flex-col items-center justify-center gap-6 w-full px-2 md:col-start-1 md:row-span-3">
-        <div className="w-full max-w-4xl flex flex-col items-center">
+      <div className="flex flex-col items-center gap-6 px-2 md:col-start-1 md:row-span-3 flex-1 min-h-0 w-full">
           <GameStep
             category={category}
             setCategory={setCategory}
@@ -117,18 +116,13 @@ export default function LocalGame({ onFinish }: { onFinish: () => void }) {
             onEndTurn={onEndTurn}
             onReadyForQuestion={onReadyForQuestion}
           />
-        </div>
       </div>
 
       {/* --- BoardPlayer et bouton --- */}
       <div className="w-full flex flex-col justify-between items-center md:col-start-2 md:row-span-3 md:items-end">
         {/* Classement joueur */}
         <div className="w-full flex justify-center md:justify-end mb-4">
-          <BoardPlayer currentIndex={currentPlayerIndex} />
-        </div>
-
-        <div className="text-white mb-2 md:mr-4 text-sm">
-          {playersPlayed.length} / {players.length} joueurs ont joué ce tour
+          <BoardPlayer currentIndex={currentPlayerIndex} playersPlayed={playersPlayed} />
         </div>
 
         {/* Bouton terminer */}

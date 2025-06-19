@@ -52,7 +52,9 @@ export default function EndGame({ onCreated }: { onCreated: () => void }) {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-6 bg-gradient-to-bl from-custom via-[#2d2a4a] to-custom text-white overflow-hidden">
+    <div className="relative w-full flex flex-col items-center justify-center min-h-[100svh] p-6 bg-gradient-to-bl from-custom via-[#2d2a4a] to-custom text-white auto-rows-auto
+      p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]
+      gap-4 bg-gradient-to-l from-custom to-custom overflow-auto">
       <div className="self-start mb-4">
         <BackButton />
       </div>
