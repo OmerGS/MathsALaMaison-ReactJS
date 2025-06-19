@@ -2,6 +2,7 @@ import React from "react";
 import { UserProvider } from "@/context/UserContext";
 import ServiceWorker from "@/components/reusable/ServiceWorker";
 import ToastContainer from "@/components/ToastContainer";
+import { PlayerProvider } from "@/context/PlayerContext";
 
 export const metadata = {
   title: "MathsALaMaison",
@@ -27,7 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{ margin: 0, padding: 0, width: "100%", height: "100%", boxSizing: "border-box" }}>
         <UserProvider>
+          <PlayerProvider>
           {children}
+          </PlayerProvider>
           <ServiceWorker />
         </UserProvider>
         <ToastContainer/>

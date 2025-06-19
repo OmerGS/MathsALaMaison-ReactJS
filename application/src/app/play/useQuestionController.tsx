@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import QuestionManager from './QuestionManager';
 import Question from '@/Type/model/Question';
+import Category from '@/Type/Category';
 
 type UseQuestionControllerReturn = {
   currentQuestion: Question | null;
@@ -8,6 +9,7 @@ type UseQuestionControllerReturn = {
   possiblereponses: string[];
   loadManager: () => Promise<void>;
   fetchNextQuestion: () => Promise<void>;
+  fetchNextQuestionByCategorie: (category: Category) => Promise<void>;
   checkSelectionreponse: (reponse: string) => boolean;
   checkTextreponse: (reponse: string) => boolean;
   checkMultipleTextreponses: (reponses: string[]) => boolean;
@@ -40,6 +42,27 @@ export default function useQuestionController(): UseQuestionControllerReturn {
     }
   }, []);
 
+  const fetchNextQuestionByCategorie = useCallback(async (category: Category) => {
+    setLoading(true);
+    try {
+      if (!controllerRef.current) {
+        controllerRef.current = new QuestionManager();
+      }
+      if (!category) {
+        throw new Error('Aucune catégorie sélectionnée');
+      }
+      console.log('Chargement de la question pour la catégorie :', category);
+      const question = await controllerRef.current.fetchRandomQuestionByCategory(category);
+      console.log('Question chargée :', question);
+      setCurrentQuestion(question);
+    } catch (error) {
+      console.error('Erreur lors du chargement de la question :', error);
+      setCurrentQuestion(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const getPossiblereponses = useCallback(() => {
     return controllerRef.current?.getPossiblereponses() || [];
   }, []);
@@ -55,6 +78,7 @@ export default function useQuestionController(): UseQuestionControllerReturn {
   }, []);
 
   const checkMultipleTextreponses = useCallback((reponses: string[]) => {
+    console.log('Checking multiple text responses:', reponses);
     if (!controllerRef.current) return false;
     return controllerRef.current.checkMultipleTextreponses(reponses);
   }, []);
@@ -65,6 +89,7 @@ export default function useQuestionController(): UseQuestionControllerReturn {
     possiblereponses: getPossiblereponses(),
     loadManager,
     fetchNextQuestion,
+    fetchNextQuestionByCategorie,
     checkSelectionreponse,
     checkTextreponse,
     checkMultipleTextreponses,

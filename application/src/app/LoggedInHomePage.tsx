@@ -42,18 +42,13 @@ function DashboardContent() {
 
   const choices = [
     { 
-      label: "Les Questions", 
-      action: () => router.push("/play/question-list"),
-      description: "Accédez à une liste de questions pour tester vos connaissances à votre rythme."
-    },
-    { 
       label: "Partie en ligne", 
       action: () => router.push("/play/matchmaking"),
       description: "Jouez contre d'autres joueurs en temps réel via un matchmaking rapide."
     },
     { 
       label: "Partie local", 
-      action: () => router.push("/play/create"),
+      action: () => router.push("/play/local"),
       description: "Créez une partie locale pour jouer entre amis sur le même appareil."
     },
     { 
@@ -147,6 +142,7 @@ function DashboardContent() {
       </div>
     :
       <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
+    <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom overflow-y-auto">
       
         {/* LOGO EN ARRIÈRE-PLAN */}
         <img

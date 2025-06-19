@@ -85,7 +85,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                        focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
           />
           <button
-            onClick={() => onCheckMultipleText(userreponses)}
+            onClick={() => onCheckText(userreponse)}
             className="btn-primary w-full max-w-md mt-6 focus:outline-none focus:ring-2 focus:ring-violet-700"
           >
             Vérifier la réponse
