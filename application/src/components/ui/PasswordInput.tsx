@@ -44,7 +44,7 @@ export default function PasswordInput({
   const strength = useMemo(() => {
     if (value.length === 0) return { label: "", color: "", width: "0%" };
 
-    if (value.length < 8) return { label: "Faible", color: "bg-red-500", width: "25%" };
+    if (value.length < 10) return { label: "Faible", color: "bg-red-500", width: "25%" };
 
     const hasUpper = /[A-Z]/.test(value);
     const hasLower = /[a-z]/.test(value);

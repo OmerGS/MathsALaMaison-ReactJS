@@ -26,3 +26,11 @@ export const updateProfilePicture = (idPicture: number) => {
 export const updatePassword = (oldPassword: string, newPassword: string) => {
   return http.post('/user/update/password', {oldPassword, newPassword})
 }
+
+export const updateEmailAsk = (password: string, newEmail: string) => {
+  return http.post('/user/update/mail/ask', {password, newEmail})
+}
+
+export const updateEmailCheck = (code: string) => {
+  return http.post('/user/update/mail/validate', { code });
+}

@@ -14,11 +14,9 @@ export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { user, loading } = useUser();
+  const { loading } = useUser();
 
   const router = useRouter();
-
-  if (!user) return null;
 
   const onSubmit = async (
     currentPassword: string,
@@ -74,7 +72,7 @@ export default function ChangePassword() {
           />
 
           <p className="text-xs text-gray-500 italic mt-2">
-            Le mot de passe doit contenir au moins 8 caractères, une majuscule,
+            Le mot de passe doit contenir au moins 10 caractères, une majuscule,
             un chiffre et un symbole.
           </p>
 
