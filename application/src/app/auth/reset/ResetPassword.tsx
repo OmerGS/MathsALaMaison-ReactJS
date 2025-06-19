@@ -9,6 +9,8 @@ import FormButton from "@/components/ui/FormButton";
 import BackButton from "@/components/ui/BackButton";
 import LinkButton from "@/components/ui/LinkButton";
 import { askValidation, resetPassword, validateCode } from "@/services/validationAPI";
+import { useMediaQuery } from "react-responsive";
+import toast from "react-hot-toast";
 
 export default function ResetPassword() {
   const [identifier, setIdentifier] = useState("");
@@ -16,6 +18,7 @@ export default function ResetPassword() {
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [step, setStep] = useState(0);
 
@@ -26,13 +29,13 @@ export default function ResetPassword() {
 
     if (step === 0) {
       if(!identifier) {
-        alert("Veuillez entrer votre email ou pseudonyme.");
+        toast.error("Veuillez entrer votre email ou pseudonyme.");
         setLoading(false);
         return;
       } 
       
       if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(identifier)) {
-        alert("Veuillez entrer un email valide.");
+        toast.error("Veuillez entrer un email valide.");
         setLoading(false);
         return;
       }
@@ -41,29 +44,29 @@ export default function ResetPassword() {
         const response = await askValidation(identifier);
         
         if (response.status === 200) {
-          alert("Un code de validation a été envoyé à votre adresse email.");
+          toast.success("Un code de validation a été envoyé à votre adresse email.");
           setStep(1);
         } else {
-          alert("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
+          toast.error("Une erreur s'est produite lors de l'envoi du code. Veuillez réessayer.");
         }
       } catch (error: any) {
         if (error.response) {
           if (error.response.status === 429) {
-            alert("Trop de requêtes. Veuillez patienter avant de réessayer.");
+            toast.error("Trop de requêtes. Veuillez patienter avant de réessayer.");
           } else {
-            alert("Échec de l'envoi du code.");
+            toast.error("Échec de l'envoi du code.");
           }
         } else if (error.request) {
-          alert("Le serveur ne répond pas. Veuillez vérifier votre connexion.");
+          toast.error("Le serveur ne répond pas. Veuillez vérifier votre connexion.");
         } else {
-          alert("Une erreur inconnue s'est produite.");
+          toast.error("Une erreur inconnue s'est produite.");
         }
       }
     } 
     
     else if (step === 1) {
       if(!code) {
-        alert("Veuillez entrer le code reçu par email.");
+        toast.success("Veuillez entrer le code reçu par email.");
         setLoading(false);
         return;
       }
@@ -73,37 +76,37 @@ export default function ResetPassword() {
 
         if (response.status === 200 && response.data.success) {
           setToken(response.data.token);
-          alert("Code validé avec succès. Vous pouvez maintenant changer votre mot de passe.");
+          toast.success("Code validé avec succès. Vous pouvez maintenant changer votre mot de passe.");
           setStep(2);
         } else if (response.data && response.data.message) {
-          alert(response.data.message);
+          toast.error(response.data.message);
         } else {
-          alert("Code incorrect ou expiré. Veuillez réessayer.");
+          toast.error("Code incorrect ou expiré. Veuillez réessayer.");
         }
       } catch (error: any) {
-        alert("Code incorrect ou expiré. Veuillez réessayer.");
+        toast.error("Code incorrect ou expiré. Veuillez réessayer.");
       }
     }
 
     else if (step === 2) {
       if (!newPassword) {
-        alert("Veuillez entrer un nouveau mot de passe.");
+        toast.success("Veuillez entrer un nouveau mot de passe.");
         setLoading(false);
         return;
       }
 
       if (newPassword.length < 10) {
-        alert("Le mot de passe doit contenir au moins 10 caractères.");
+        toast.error("Le mot de passe doit contenir au moins 10 caractères.");
         setLoading(false);
         return;
       }
 
       const response = await resetPassword(identifier, token, newPassword);
       if (response.status === 200) {
-        alert("Mot de passe changé avec succès. Vous pouvez maintenant vous connecter.");
+        toast.success("Mot de passe changé avec succès. Vous pouvez maintenant vous connecter.");
         router.push("/auth/login");
       } else {
-        alert("Une erreur s'est produite lors du changement de mot de passe. Veuillez réessayer.");
+        toast.error("Une erreur s'est produite lors du changement de mot de passe. Veuillez réessayer.");
         setLoading(false);
       }      
     }
@@ -112,19 +115,24 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Côté image */}
-      <div className="hidden md:flex flex-1 flex-col bg-accent relative justify-center items-center p-10">
+    <div className="flex relative w-full h-[100svh] font-sans
+      text-[clamp(1rem,2.5vw,1.75rem)]
+      gap-4"
+    >
+        {/* Left side – logo + retour (seulement sur desktop) */}
         <BackButton />
-        <img
-          src="/icons/icon-192x192.png"
-          alt="Icône"
-          className="w-4/5 max-h-[80%] object-contain"
-        />
-      </div>
+        {!isMobile && (
+          <div className="hidden md:flex flex-1 flex-col bg-accent relative justify-center items-center p-10">
+            <img
+              src="/icons/icon-192x192.png"
+              alt="Icône"
+              className="w-4/5 max-h-[80%] object-contain"
+            />
+          </div>
+        )}
 
-      {/* Côté formulaire */}
-      <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
+        {/* Côté formulaire */}
+        <div className={`md:flex-1 ${isMobile ? "bg-accent" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
           <h1 className="text-3xl font-bold mb-6 text-black">
             Mot de passe oublié
           </h1>

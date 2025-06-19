@@ -1,10 +1,11 @@
 import { PasswordUtil } from "@/utils/PasswordUtil";
 import { login, getSaltByIdentifier } from "@/services/authAPI";
 import { User } from "@/Type/User";
+import toast from "react-hot-toast";
 
 export async function handleLogin(identifier: string, password: string): Promise<any | null> {
   if (!identifier || !password) {
-    alert("Veuillez remplir tous les champs.");
+    toast.error("Veuillez remplir tous les champs.");
     return null;
   }
 
@@ -12,7 +13,7 @@ export async function handleLogin(identifier: string, password: string): Promise
     const response = await getSaltByIdentifier(identifier);
 
     if (!response.data.success) {
-      alert(response.data.message || "Erreur lors de la récupération du sel.");
+      toast.error(response.data.message || "Erreur lors de la récupération du sel.");
       return null;
     }
 
@@ -21,7 +22,7 @@ export async function handleLogin(identifier: string, password: string): Promise
     const loginResponse = await login(identifier, hashedPassword);
 
     if (!loginResponse.data.success) {
-      alert(loginResponse.data.message || "Identifiants incorrects.");
+      toast.error(loginResponse.data.message || "Identifiants incorrects.");
       return null;
     }
 
@@ -30,7 +31,7 @@ export async function handleLogin(identifier: string, password: string): Promise
     const message =
       error.response?.data?.message ||
       `Erreur réseau (${error.response?.status || "inconnue"})`;
-    alert(message);
+    toast.error(message);
     console.error("Erreur handleLogin:", error);
     return null;
   }

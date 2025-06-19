@@ -11,6 +11,7 @@ import BackButton from "@/components/ui/BackButton";
 import Spinner from "@/components/ui/Spinner";
 import { useUser } from "@/context/UserContext";
 import { handleSignUp } from "./signup-logic";
+import { useMediaQuery } from "react-responsive";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -19,6 +20,7 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { user, loading, setUser } = useUser();
   const router = useRouter();
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   
   const onSignUp = async () => {
     const userInfo = await handleSignUp(email, pseudo, password, confirmPassword);
@@ -28,13 +30,14 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex relative w-full h-[100svh] font-sans
+      text-[clamp(1rem,2.5vw,1.75rem)]
+      gap-4"
+    >
+
+      <BackButton />
       {/* Formulaire (gauche sur desktop) */}
-      <div className="hidden md:flex flex-1 flex-col bg-bg relative justify-center items-center p-10">
-        <div className="w-full max-w-md flex flex-col items-center space-y-4">
-          <div className="w-full">
-            <BackButton />
-          </div>
+      <div className={`md:flex-1 ${isMobile ? "bg-signup" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
 
           <h1 className="text-3xl font-bold text-black mb-2 text-center">
             S'inscrire
@@ -77,18 +80,15 @@ export default function Signup() {
               Déjà un compte ? Se connecter
             </LinkButton>
           </div>
-        </div>
       </div>
 
 
       {/* Logo */}
-      <div className="md:flex-1 bg-signup p-10 flex flex-col justify-center items-center space-y-2">
-        <img
-          src="/icons/icon-192x192.png"
-          alt="Logo"
-          className="w-4/5 max-h-[80%] object-contain"
-        />
-      </div>
+      {!isMobile && (
+        <div className="hidden md:flex flex-1 flex-col bg-signup relative justify-center items-center p-10">
+          <img src="/icons/icon-192x192.png" alt="Logo" className="w-4/5 max-h-[80%] object-contain" />
+        </div>
+      )}
 
     </div>
   );

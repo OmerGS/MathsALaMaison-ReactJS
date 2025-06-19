@@ -1,5 +1,6 @@
 import { PasswordUtil } from "@/utils/PasswordUtil";
 import { register } from "@/services/authAPI";
+import toast from "react-hot-toast";
 
 export const handleSignUp = async (
   email: string,
@@ -8,25 +9,25 @@ export const handleSignUp = async (
   confirmPassword: string
 ) => {
   if (!email || !pseudo || !password || !confirmPassword) {
-    alert("Veuillez remplir tous les champs");
+    toast.error("Veuillez remplir tous les champs");
     return;
   }
 
   if(pseudo.length < 2 || pseudo.length > 16) {
-    alert("Le pseudo doit contenir entre 2 et 16 caractères");
+    toast.error("Le pseudo doit contenir entre 2 et 16 caractères");
     return;
   }
 
   if (password !== confirmPassword) {
-    alert("Les mots de passe ne correspondent pas");
+    toast.error("Les mots de passe ne correspondent pas");
     return;
   } else if (password.length < 8) {
-    alert("Le mot de passe doit contenir au moins 8 caractères");
+    toast.error("Le mot de passe doit contenir au moins 8 caractères");
     return;
   }
 
   if (!checkMail(email.trim().toLowerCase())) {
-    alert("L'adresse email est invalide");
+    toast.error("L'adresse email est invalide");
     return;
   }
 
@@ -37,7 +38,7 @@ export const handleSignUp = async (
     const response = await register(pseudo, email.trim().toLowerCase(), hashedPassword, salt);
 
     if (!response.data.success) {
-      alert(response.data.message || "Erreur lors de l'inscription.");
+      toast.error(response.data.message || "Erreur lors de l'inscription.");
       return null;
     } else {
       return response.data.pseudo;
@@ -47,7 +48,7 @@ export const handleSignUp = async (
       error?.response?.data?.message ||
       error?.message ||
       "Erreur inconnue lors de l'inscription.";
-    alert(message);
+    toast.error(message);
     return null;
   }
 };

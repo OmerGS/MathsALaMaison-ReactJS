@@ -35,7 +35,12 @@ export default function ProfilPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-custom to-custom p-6 flex flex-col items-center">
+    <div className="relative min-h-screen w-full font-sans
+        bg-gradient-to-l from-custom to-custom
+        flex flex-col items-center
+        text-[clamp(1rem,2.5vw,1.75rem)]
+        p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+      >
       <div className="self-start mb-4">
         <BackButton />
       </div>

@@ -8,10 +8,12 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useUser } from "@/context/UserContext";
 import profileImages from '@/Type/ProfilePicture';
 import LoggedInDashboard from './LoggedInHomePage';
+import { Toaster } from 'react-hot-toast';
 export default function Home() {
   return (
       <ProtectedRoute>
         <DashboardContent />
+        <Toaster position="top-right" reverseOrder={false} />
       </ProtectedRoute>
   );
 }

@@ -143,11 +143,11 @@ export default function EmailGenerator() {
 
   async function handleSend() {
     if (!subject.trim()) {
-      alert("Le sujet est requis.");
+      //alert("Le sujet est requis.");
       return;
     }
     if (!content.trim()) {
-      alert("Le contenu du mail ne peut pas être vide.");
+      //alert("Le contenu du mail ne peut pas être vide.");
       return;
     }
 
@@ -155,13 +155,13 @@ export default function EmailGenerator() {
     const emailSend = await sendEmailToEveryone(subject, rawHtmlWithPlaceholders);
 
     if(emailSend){
-      alert("Email envoyé avec succès à tous les utilisateurs !");
+      //alert("Email envoyé avec succès à tous les utilisateurs !");
       setSubject("");
       setContent("");
       setPreviewUserId(users[0]?.id || 0);
       setIsSidebarOpen(false);
     } else {
-      alert("Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer plus tard.");
+      //alert("Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer plus tard.");
     }
   }
 

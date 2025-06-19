@@ -12,12 +12,15 @@ import FormButton from "@/components/ui/FormButton";
 import LinkButton from "@/components/ui/LinkButton";
 import Spinner from "@/components/ui/Spinner";
 import BackButton from "@/components/ui/BackButton";
+import { useMediaQuery } from "react-responsive";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const { user, loading, setUser } = useUser();
   const router = useRouter();
+    const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
     if (!loading && user) {
@@ -34,26 +37,31 @@ export default function LoginPage() {
           router.push("/");
         }
       } else {
-        alert(responseData.message || "Votre compte est en attente de validation par un administrateur.");
+        toast.success(responseData.message || "Votre compte est en attente de validation par un administrateur.");
       }
     } 
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Left side – logo + retour */}
-      <div className="hidden md:flex flex-1 flex-col bg-accent relative justify-center items-center p-10">
-        <BackButton />
-
-        <img
-          src="/icons/icon-192x192.png"
-          alt="Icône"
-          className="w-4/5 max-h-[80%] object-contain"
-        />
-      </div>
+   <div className="flex relative w-full h-[100svh] font-sans
+      text-[clamp(1rem,2.5vw,1.75rem)]
+      gap-4"
+    >
+      {/* Left side – logo + retour (seulement sur desktop) */}
+      <BackButton />
+      {!isMobile && (
+        <div className="hidden md:flex flex-1 flex-col bg-accent relative justify-center items-center p-10">
+          <img
+            src="/icons/icon-192x192.png"
+            alt="Icône"
+            className="w-4/5 max-h-[80%] object-contain"
+          />
+        </div>
+      )}
 
       {/* Right side – formulaire */}
-      <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
+      <div className={`md:flex-1 ${isMobile ? "bg-accent" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
+
         <h1 className="text-3xl font-bold mb-6 text-black">Connexion</h1>
 
         <FormInput

@@ -10,6 +10,7 @@ import LaunchButton from "@/components/ui/LanchButton";
 import { usePlayer } from "@/context/PlayerContext";
 import BackButton from "@/components/ui/BackButton";
 import { Info } from "lucide-react";
+import toast from "react-hot-toast";
 
 const MAX_PLAYERS = 4;
 const MIN_PLAYERS = 2;
@@ -31,7 +32,7 @@ export default function CreateGame({ onStart }: { onStart: () => void }) {
       setPlayers([...players, trimmedName]);
       setNewPlayerName("");
     } else if (trimmedName.length > 16) {
-      alert("Le nom du joueur ne doit pas dépasser 16 caractères.");
+      toast.error("Le nom du joueur ne doit pas dépasser 16 caractères.");
     }
   };
 
@@ -43,7 +44,7 @@ export default function CreateGame({ onStart }: { onStart: () => void }) {
     if (players.length >= MIN_PLAYERS) {
       onStart();
     } else {
-      alert(`Il faut au moins ${MIN_PLAYERS} joueurs pour commencer.`);
+      toast.error(`Il faut au moins ${MIN_PLAYERS} joueurs pour commencer.`);
     }
   };
 

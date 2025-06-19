@@ -19,6 +19,7 @@ import ProfileCardMobile from "@/components/ui/ProfileCardMobile";
 import ClassementButtonMobile from "@/components/ui/ClassementButtonMobile";
 import ModeSelectorMobile from "@/components/ui/ModeSelectorMobile";
 import PlayButtonMobile from "@/components/ui/PlayButtonMobile";
+import toast from "react-hot-toast";
 
 export default function LoggedInHomePage() {
   return (
@@ -69,7 +70,7 @@ function DashboardContent() {
 
   const handlePlay = () => {
     if (!selectedMode) {
-      alert("Veuillez sélectionner un mode de jeu avant de jouer.");
+      toast.error("Veuillez sélectionner un mode de jeu avant de jouer.");
       return;
     }
     selectedMode.action();
@@ -141,7 +142,12 @@ function DashboardContent() {
         )}
       </div>
     :
-      <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom overflow-y-auto">
+      <div className="relative w-full h-[100svh] font-sans
+          grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-fr
+          text-[clamp(1rem,2.5vw,1.75rem)]
+          p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]
+          gap-4 bg-gradient-to-l from-custom to-custom"
+        >
       
         {/* LOGO EN ARRIÈRE-PLAN */}
         <img

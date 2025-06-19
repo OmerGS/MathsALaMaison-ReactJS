@@ -6,6 +6,7 @@ import { logoutUser } from "@/services/authAPI";
 import { useUser } from "@/context/UserContext";
 
 import React from "react";
+import toast from "react-hot-toast";
 
 const Compte = () => {
     const router = useRouter();
@@ -17,7 +18,7 @@ const Compte = () => {
             setUser(null);
             router.push("/auth/login");
         } else {
-            alert("Échec de la déconnexion. Veuillez réessayer.");
+            toast.error("Échec de la déconnexion. Veuillez réessayer.");
             console.error("Failed to disconnect user");
         }
     }
