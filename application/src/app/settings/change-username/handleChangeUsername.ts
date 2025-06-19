@@ -1,14 +1,12 @@
+import { updatePseudoAsk, updatePseudoCheck } from "@/services/userAPI";
 import toast from "react-hot-toast";
-import { updateEmailAsk, updateEmailCheck } from "@/services/userAPI";
 
-export const handleChangeEmail = async (
+export const handleChangePseudo = async (
   password: string,
-  email: string
+  pseudo: string
 ): Promise<Boolean> => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!email || !emailRegex.test(email)) {
-    toast.error("Adresse email invalide.");
+  if (!pseudo || pseudo.length < 2 || pseudo.length > 16) {
+    toast.error("Pseudo invalide.");
     return false;
   }
 
@@ -18,7 +16,7 @@ export const handleChangeEmail = async (
   }
 
   try {
-    const response = await updateEmailAsk(password, email);
+    const response = await updatePseudoAsk(password, pseudo);
 
     if (response.status === 200) {
       toast.success("Un email de confirmation vous a été envoyé.");
@@ -33,9 +31,9 @@ export const handleChangeEmail = async (
   }
 };
 
-export async function validateEmailCodeWrapper(code: string): Promise<boolean> {
+export async function validatePseudoCodeWrapper(code: string): Promise<boolean> {
   try {
-    const response = await updateEmailCheck(code);
+    const response = await updatePseudoCheck(code);
     return response.status === 200;
   } catch {
     return false;

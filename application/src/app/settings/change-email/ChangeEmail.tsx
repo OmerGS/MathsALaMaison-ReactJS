@@ -6,11 +6,13 @@ import "../../globals.css";
 import FormInput from "@/components/ui/FormInput";
 import FormButton from "@/components/ui/FormButton";
 import BackButton from "@/components/ui/BackButton";
-import { handleChangeEmail } from "./handleChangeEmail";
+import { handleChangeEmail, validateEmailCodeWrapper } from "./handleChangeEmail";
 import PasswordInput from "@/components/ui/PasswordInput";
-import EmailCodeModal from "@/components/ui/EmailCodeModal";
+import CodeValidationModal from "@/components/ui/EmailCodeModal";
+import { useRouter } from "next/navigation";
 
 export default function ChangeEmail() {
+  const router = useRouter();
   const [newEmail, setNewEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -59,9 +61,14 @@ export default function ChangeEmail() {
       </main>
 
       {showModal && (
-        <EmailCodeModal
-          email={newEmail}
-          onClose={() => setShowModal(false)}
+        <CodeValidationModal
+          label="Email"
+          targetValue={newEmail}
+          onValidate={validateEmailCodeWrapper}
+          onClose={() => {
+            setShowModal(false);
+            router.push('/');
+          }}
         />
       )}
     </div>

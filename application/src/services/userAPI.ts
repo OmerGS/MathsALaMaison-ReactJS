@@ -34,3 +34,11 @@ export const updateEmailAsk = (password: string, newEmail: string) => {
 export const updateEmailCheck = (code: string) => {
   return http.post('/user/update/mail/validate', { code });
 }
+
+export const updatePseudoAsk = (password: string, newPseudo: string) => {
+  return http.post('/user/update/pseudo/ask', {password, newPseudo});
+} 
+
+export const updatePseudoCheck = (code: string) => {
+  return http.post('/user/update/pseudo/validate', { code });
+}

@@ -4,14 +4,15 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import FormInput from "@/components/ui/FormInput";
 import FormButton from "@/components/ui/FormButton";
-import { updateEmailCheck } from "@/services/userAPI";
 
 type Props = {
-  email: string;
+  label: string;
+  targetValue: string;
+  onValidate: (code: string) => Promise<boolean>;
   onClose: () => void;
 };
 
-export default function EmailCodeModal({ email, onClose }: Props) {
+export default function CodeValidationModal({ label, targetValue, onValidate, onClose }: Props) {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,16 +24,16 @@ export default function EmailCodeModal({ email, onClose }: Props) {
 
     try {
       setLoading(true);
-      const response = await updateEmailCheck(code);
+      const success = await onValidate(code);
 
-      if (response.status === 200) {
-        toast.success("Adresse email mise à jour !");
+      if (success) {
+        toast.success(`${label} mis à jour avec succès !`);
         onClose();
       } else {
-        toast.error(response.data.message || "Échec de la validation");
+        toast.error(`Échec de la validation du ${label.toLowerCase()}`);
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Erreur serveur");
+      toast.error(err?.message || "Erreur serveur");
     } finally {
       setLoading(false);
     }
@@ -41,9 +42,9 @@ export default function EmailCodeModal({ email, onClose }: Props) {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-xl p-6 w-full max-w-sm shadow-lg space-y-4">
-        <h2 className="text-lg font-bold text-center">Vérifiez votre email</h2>
+        <h2 className="text-lg font-bold text-center">Vérifiez votre {label.toLowerCase()}</h2>
         <p className="text-sm text-gray-600 text-center">
-          Entrez le code envoyé à <span className="font-medium">{email}</span>
+          Entrez le code envoyé à <span className="font-medium">{targetValue}</span>
         </p>
 
         <FormInput

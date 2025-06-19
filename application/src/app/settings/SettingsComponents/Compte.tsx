@@ -30,7 +30,7 @@ const Compte = () => {
         <ActionButton onClick={() => router.push("/settings/change-email")}>
             Changer email
         </ActionButton>
-        <ActionButton onClick={() => router.push("/settings/change-pseudo")}>
+        <ActionButton onClick={() => router.push("/settings/change-username")}>
             Changer pseudo
         </ActionButton>
         <ActionButton
