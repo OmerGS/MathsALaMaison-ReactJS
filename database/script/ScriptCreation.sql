@@ -1,8 +1,5 @@
 use mathsALaMaison;
 
-DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS Questions;
-
 -- Table User
 CREATE TABLE User (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,12 +37,22 @@ CREATE TABLE sessions (
     ip_address VARCHAR(45),
     device_info VARCHAR(255),
     last_login DATETIME,
-    FOREIGN KEY (user_id) REFERENCES User(id)
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
 );
 
--- Table Settings
 CREATE TABLE Settings (
   id INT PRIMARY KEY AUTO_INCREMENT,
   keyName VARCHAR(100) UNIQUE NOT NULL,
   value VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE verification_codes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    pseudo VARCHAR(255) DEFAULT NULL,
+    code_hash VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL,
+    expires_at DATETIME NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    token VARCHAR(255) DEFAULT NULL
 );
