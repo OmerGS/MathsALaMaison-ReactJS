@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 connection = pymysql.connect(
-    host='omergs.com',
+    host='serverURI',
     port=XXXX, 
     user='XXXX', 
     password='mdp', 
