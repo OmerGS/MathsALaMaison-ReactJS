@@ -4,12 +4,11 @@ import React from "react";
 interface PlayerLineProps {
   playerName: string;
   points: number;
-  categoriesDone?: number;
   isCurrent: boolean;
   isWinner?: boolean;
 }
 
-export default function PlayerLine({ playerName, points, categoriesDone = 0, isCurrent, isWinner }: PlayerLineProps) {
+export default function PlayerLine({ playerName, points, isCurrent, isWinner }: PlayerLineProps) {
   return (
     <li
       className={`flex justify-between items-center rounded-md px-3 py-2 transition

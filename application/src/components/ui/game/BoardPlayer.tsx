@@ -9,7 +9,7 @@ interface BoardPlayerProps {
 }
 
 export default function BoardPlayer({ currentIndex, playersPlayed }: BoardPlayerProps) {
-  const { players, points, categoriesDone } = usePlayer();
+  const { players, points } = usePlayer();
 
   let maxPoints = -Infinity;
   let winner: string | null = null;
@@ -36,7 +36,6 @@ export default function BoardPlayer({ currentIndex, playersPlayed }: BoardPlayer
             key={player}
             playerName={player}
             points={points[player] ?? 0}
-            categoriesDone={categoriesDone[player] ?? 0}
             isCurrent={index === currentIndex}
             isWinner={player === winner}
           />
