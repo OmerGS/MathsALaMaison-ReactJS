@@ -5,7 +5,8 @@ export const handleSignUp = async (
   email: string,
   pseudo: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
+  acceptedCGU: boolean
 ) => {
   if (!email || !pseudo || !password || !confirmPassword) {
     toast.error("Veuillez remplir tous les champs");
@@ -27,6 +28,10 @@ export const handleSignUp = async (
 
   if (!checkMail(email.trim().toLowerCase())) {
     toast.error("L'adresse email est invalide");
+    return;
+  }
+  if (!acceptedCGU) {
+    toast.error("Vous devez accepter les conditions générales d'utilisation");
     return;
   }
 
