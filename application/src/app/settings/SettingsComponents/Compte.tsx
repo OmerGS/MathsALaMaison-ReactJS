@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { logoutUser } from "@/services/authAPI";
+import { deleteUser, logoutUser } from "@/services/authAPI";
 import { useUser } from "@/context/UserContext";
 import ActionButton from "@/components/ui/ActionButton";
 import ConfirmDelete from "@/components/ui/ConfirmDelete";
@@ -55,8 +55,16 @@ const Compte = () => {
   };
 
   const handleFinalDelete = async () => {
-    // TODO
-    console.log("Deleted");
+    const response = await deleteUser();
+
+    if(response.status === 200){
+      setUser(null);
+      toast.success("Utilisateur supprimé avec succès");
+      router.push('/auth/login');
+    } else {
+      toast.error("Une erreur est survenue lors de la suppression de l'utilisateur");
+    }
+
     setShowFinalConfirm(false);
   };
 
