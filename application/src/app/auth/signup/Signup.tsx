@@ -13,6 +13,7 @@ import { useUser } from "@/context/UserContext";
 import { handleSignUp } from "./signup-logic";
 import { useMediaQuery } from "react-responsive";
 import PasswordInput from "@/components/ui/auth/PasswordInput";
+import CguModal from "@/components/ui/auth/CguModal";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -20,11 +21,13 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { user, loading, setUser } = useUser();
+  const [acceptedCGU, setAcceptedCGU] = useState(false);
+  const [showCGUModal, setShowCGUModal] = useState(false);
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   
   const onSignUp = async () => {
-    const userInfo = await handleSignUp(email, pseudo, password, confirmPassword);
+    const userInfo = await handleSignUp(email, pseudo, password, confirmPassword, acceptedCGU);
     if (userInfo) {
       router.push(`/auth/signup/success?pseudo=${encodeURIComponent(userInfo)}`);
     }
@@ -73,6 +76,28 @@ export default function Signup() {
             autoComplete="new-password"
           />
 
+          <div className="flex items-start space-x-2 text-sm mt-2">
+            <input
+              type="checkbox"
+              id="cgu"
+              checked={acceptedCGU}
+              onChange={() => {
+                setAcceptedCGU(!acceptedCGU);
+              }}
+              className="mt-1"
+            />
+            <label htmlFor="cgu" className="text-black">
+              J'accepte les{" "}
+              <button
+                type="button"
+                onClick={() => setShowCGUModal(true)}
+                className="text-blue-600 underline"
+              >
+                Conditions Générales d'Utilisation
+              </button>
+            </label>
+          </div>
+
           <FormButton onClick={onSignUp} disabled={loading}>
             {loading ? <Spinner /> : "Créer un compte"}
           </FormButton>
@@ -90,6 +115,15 @@ export default function Signup() {
           <img src="/icons/icon-192x192.png" alt="Logo" className="w-4/5 max-h-[80%] object-contain" />
         </div>
       )}
+
+
+      {showCGUModal && (
+        <CguModal
+          onAccept={() => {
+            setAcceptedCGU(true);
+            setShowCGUModal(false);
+          }}/>
+      )} 
 
     </div>
   );
