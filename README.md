@@ -54,7 +54,7 @@ Voici quelques-unes des meilleures fonctionnalités du projet :
 
 Technologies utilisées dans le projet :
 
-*   React  
+*   ReactJS
 *   TypeScript  
 *   JavaScript (NodeJS)  
 *   MySQL  
