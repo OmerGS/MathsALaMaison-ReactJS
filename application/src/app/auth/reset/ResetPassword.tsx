@@ -133,60 +133,62 @@ export default function ResetPassword() {
 
         {/* Côté formulaire */}
         <div className={`md:flex-1 ${isMobile ? "bg-accent" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
-          <h1 className="text-3xl font-bold mb-6 text-black">
-            Mot de passe oublié
-          </h1>
+          <div className="bg-white/80 flex flex-col justify-center items-center space-y-2 rounded-xl w-full max-w-md p-5 shadow-lg backdrop-blur-md">
+            <h1 className="text-3xl font-bold mb-6 text-black">
+              Mot de passe oublié
+            </h1>
 
-          {(step === 0 || step > 0) && (
-            <FormInput
-              type="email"
-              placeholder="Email ou Pseudonyme"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              disabled={step > 0}
-              autoComplete="username"
-            />
-          )}
+            {(step === 0 || step > 0) && (
+              <FormInput
+                type="email"
+                placeholder="Email ou Pseudonyme"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+                disabled={step > 0}
+                autoComplete="username"
+              />
+            )}
 
-          {step === 1 && (
-            <FormInput
-              type="text"
-              placeholder="Code"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              autoComplete="one-time-code"
-            />
-          )}
+            {step === 1 && (
+              <FormInput
+                type="text"
+                placeholder="Code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                autoComplete="one-time-code"
+              />
+            )}
 
-          {step === 2 && (
-            <FormInput
-              type="password"
-              placeholder="Nouveau mot de passe"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              autoComplete="new-password"
-            />
-          )}
+            {step === 2 && (
+              <FormInput
+                type="password"
+                placeholder="Nouveau mot de passe"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                autoComplete="new-password"
+              />
+            )}
 
-          <FormButton
-            onClick={onSubmit}
-            disabled={
-              loading ||
-              (step === 0 && !identifier) ||
-              (step === 1 && !code) ||
-              (step === 2 && !newPassword)
-            }
-          >
-            {loading
-              ? "Chargement..."
-              : step === 0
-              ? "Recevoir le code"
-              : step === 1
-              ? "Valider le code"
-              : "Changer le mot de passe"}
-          </FormButton>
+            <FormButton
+              onClick={onSubmit}
+              disabled={
+                loading ||
+                (step === 0 && !identifier) ||
+                (step === 1 && !code) ||
+                (step === 2 && !newPassword)
+              }
+            >
+              {loading
+                ? "Chargement..."
+                : step === 0
+                ? "Recevoir le code"
+                : step === 1
+                ? "Valider le code"
+                : "Changer le mot de passe"}
+            </FormButton>
 
-          <LinkButton to="/auth/signup" color="black">Pas de compte ? S'inscrire</LinkButton>
+            <LinkButton to="/auth/signup" color="black">Pas de compte ? S'inscrire</LinkButton>
+          </div>
         </div>
     </div>
   );

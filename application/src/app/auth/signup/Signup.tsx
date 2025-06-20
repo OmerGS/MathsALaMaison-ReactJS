@@ -38,7 +38,7 @@ export default function Signup() {
       <BackButton />
       {/* Formulaire (gauche sur desktop) */}
       <div className={`md:flex-1 ${isMobile ? "bg-signup" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
-
+        <div className="bg-white/80 flex flex-col justify-center items-center space-y-2 rounded-xl w-full max-w-md p-5 shadow-lg backdrop-blur-md">
           <h1 className="text-3xl font-bold text-black mb-2 text-center">
             S'inscrire
           </h1>
@@ -75,11 +75,10 @@ export default function Signup() {
             {loading ? <Spinner /> : "Créer un compte"}
           </FormButton>
 
-          <div className="text-center">
-            <LinkButton to="/auth/login" color="text-black">
+          <LinkButton to="/auth/login" color="text-black">
               Déjà un compte ? Se connecter
-            </LinkButton>
-          </div>
+          </LinkButton>
+        </div>
       </div>
 
 

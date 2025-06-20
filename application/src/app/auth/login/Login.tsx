@@ -61,7 +61,7 @@ export default function LoginPage() {
 
       {/* Right side – formulaire */}
       <div className={`md:flex-1 ${isMobile ? "bg-accent" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
-
+        <div className="bg-white/80 flex flex-col justify-center items-center space-y-2 rounded-xl w-full max-w-md p-5 shadow-lg backdrop-blur-md">
         <h1 className="text-3xl font-bold mb-6 text-black">Connexion</h1>
 
         <FormInput
@@ -87,6 +87,7 @@ export default function LoginPage() {
         </FormButton>
 
         <LinkButton to="/auth/signup" color="black">Pas de compte ? S'inscrire</LinkButton>
+        </div>
       </div>
     </div>
   );
