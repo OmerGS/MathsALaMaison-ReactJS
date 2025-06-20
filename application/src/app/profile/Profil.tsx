@@ -27,11 +27,11 @@ export default function ProfilPage() {
       : "0%";
 
   const stats = [
-    { label: "Digits", value: user.point, icon: "/assets/images/icones/digit.png" },
-    { label: "Ratio", value: ratio, icon: "/assets/images/icones/ratio.png" },
-    { label: "Victoires", value: user.nombreVictoire, icon: "/assets/images/icones/victories.png" },
-    { label: "Parties", value: user.nombrePartie, icon: "/assets/images/icones/games.png" },
-    { label: "Défaites", value: defeats, icon: "/assets/images/icones/defeats.png" },
+    { label: "Digits", value: user.point, icon: "/images/icones/app/digit.png" },
+    { label: "Ratio", value: ratio, icon: "/images/icones/app/ratio.png" },
+    { label: "Victoires", value: user.nombreVictoire, icon: "/images/icones/app/victories.png" },
+    { label: "Parties", value: user.nombrePartie, icon: "/images/icones/app/games.png" },
+    { label: "Défaites", value: defeats, icon: "/images/icones/app/defeats.png" },
   ];
 
   return (
