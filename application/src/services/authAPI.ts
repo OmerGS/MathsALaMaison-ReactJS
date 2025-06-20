@@ -12,3 +12,7 @@ export const logoutUser = async () => {
   const response = await http.post('/auth/logout');
   return response;
 }
+
+export const deleteUser = async () => {
+  return http.post('/auth/delete');
+}

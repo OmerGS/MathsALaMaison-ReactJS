@@ -27,10 +27,10 @@ export default function CodeValidationModal({ label, targetValue, onValidate, on
       const success = await onValidate(code);
 
       if (success) {
-        toast.success(`${label} mis à jour avec succès !`);
+        toast.success(`Code validé !`);
         onClose();
       } else {
-        toast.error(`Échec de la validation du ${label.toLowerCase()}`);
+        toast.error(`Échec de la validation du code`);
       }
     } catch (err: any) {
       toast.error(err?.message || "Erreur serveur");
