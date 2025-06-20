@@ -3,7 +3,7 @@
 import React, { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { checkAdminAccess } from "@/services/adminAPI";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/global/Spinner";
 
 interface AdminAccessControlProps {
   children: ReactNode;

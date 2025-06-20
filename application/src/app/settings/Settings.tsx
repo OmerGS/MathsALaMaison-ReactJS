@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import "../globals.css";
 
-import SectionButton from "@/components/ui/SectionButton";
-import BackButton from "@/components/ui/BackButton";
+import SectionButton from "@/components/ui/global/SectionButton";
+import BackButton from "@/components/ui/global/BackButton";
 import MentionLegales from "./SettingsComponents/MentionsLegales";
 import Contact from "./SettingsComponents/Contact";
 import Compte from "./SettingsComponents/Compte";

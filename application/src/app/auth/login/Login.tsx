@@ -7,13 +7,14 @@ import "../../globals.css";
 import { handleLogin } from "./login-logic";
 import { useUser } from "@/context/UserContext";
 
-import FormInput from "@/components/ui/FormInput";
-import FormButton from "@/components/ui/FormButton";
-import LinkButton from "@/components/ui/LinkButton";
-import Spinner from "@/components/ui/Spinner";
-import BackButton from "@/components/ui/BackButton";
+import FormInput from "@/components/ui/auth/FormInput";
+import FormButton from "@/components/ui/auth/FormButton";
+import LinkButton from "@/components/ui/auth/LinkButton";
+import Spinner from "@/components/ui/global/Spinner";
+import BackButton from "@/components/ui/global/BackButton";
 import { useMediaQuery } from "react-responsive";
 import toast from "react-hot-toast";
+import PasswordInput from "@/components/ui/auth/PasswordInput";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState("");
@@ -72,8 +73,7 @@ export default function LoginPage() {
               autoComplete="username"
             />
 
-            <FormInput
-              type="password"
+             <PasswordInput
               placeholder="Mot de passe"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

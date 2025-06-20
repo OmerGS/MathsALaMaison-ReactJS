@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteUser, logoutUser } from "@/services/authAPI";
 import { useUser } from "@/context/UserContext";
-import ActionButton from "@/components/ui/ActionButton";
-import ConfirmDelete from "@/components/ui/ConfirmDelete";
-import CodeValidationModal from "@/components/ui/EmailCodeModal";
+import ActionButton from "@/components/ui/global/ActionButton";
+import ConfirmDelete from "@/components/ui/settings/ConfirmDelete";
+import CodeValidationModal from "@/components/ui/global/EmailCodeModal";
 import { askMailCode, checkMailCode } from "@/services/validationAPI";
 import toast from "react-hot-toast";
-import FinalConfirmDelete from "@/components/ui/FinalConfirmDelete";
+import FinalConfirmDelete from "@/components/ui/settings/FinalConfirmDelete";
 
 const Compte = () => {
   const router = useRouter();

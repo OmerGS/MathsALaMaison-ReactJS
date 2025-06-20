@@ -6,20 +6,20 @@
   import ProtectedRoute from "@/components/ProtectedRoute";
   import { useMediaQuery } from "react-responsive";
 
-  import ProfileCard from "@/components/ui/ProfileCard";
-  import PointsCard from "@/components/ui/PointsCard";
-  import SettingsButton from "@/components/ui/SettingsButton";
-  import ModeSelector from "@/components/ui/ModeSelector";
-  import PlayButton from "@/components/ui/PlayButton";
-  import ModeChoiceModal from "@/components/ui/ModeChoiceModal";
-  import ClassementButton from "@/components/ui/ClassementButton";
-  import AdminButtton from "@/components/ui/AdminButton"
-  import SettingsButtonMobile from "@/components/ui/SettingsButtonMobile";
-  import ProfileCardMobile from "@/components/ui/ProfileCardMobile";
-  import ClassementButtonMobile from "@/components/ui/ClassementButtonMobile";
-  import ModeSelectorMobile from "@/components/ui/ModeSelectorMobile";
-  import PlayButtonMobile from "@/components/ui/PlayButtonMobile";
-  import AdminButtonMobile from "@/components/ui/AdminButtonMobile";
+  import ProfileCard from "@/components/ui/home/ProfileCard";
+  import PointsCard from "@/components/ui/home/PointsCard";
+  import SettingsButton from "@/components/ui/home/SettingsButton";
+  import ModeSelector from "@/components/ui/home/ModeSelector";
+  import PlayButton from "@/components/ui/home/PlayButton";
+  import ModeChoiceModal from "@/components/ui/home/ModeChoiceModal";
+  import ClassementButton from "@/components/ui/home/ClassementButton";
+  import AdminButtton from "@/components/ui/home/AdminButton"
+  import SettingsButtonMobile from "@/components/ui/home/SettingsButtonMobile";
+  import ProfileCardMobile from "@/components/ui/home/ProfileCardMobile";
+  import ClassementButtonMobile from "@/components/ui/home/ClassementButtonMobile";
+  import ModeSelectorMobile from "@/components/ui/home/ModeSelectorMobile";
+  import PlayButtonMobile from "@/components/ui/home/PlayButtonMobile";
+  import AdminButtonMobile from "@/components/ui/home/AdminButtonMobile";
 import toast from "react-hot-toast";
 
   export default function LoggedInHomePage() {

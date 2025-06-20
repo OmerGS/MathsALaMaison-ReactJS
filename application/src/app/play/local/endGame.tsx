@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ArrowLeftCircle, RotateCcw } from "lucide-react";
 import Confetti from "react-confetti";
-import BackButton from "@/components/ui/BackButton";
+import BackButton from "@/components/ui/global/BackButton";
 
 export default function EndGame({ onCreated }: { onCreated: () => void }) {
   const { players, points, resetPlayers } = usePlayer();

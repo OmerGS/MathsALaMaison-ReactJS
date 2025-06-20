@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Question } from "@/Type/Question";
 import { getAllQuestion } from "@/services/adminAPI";
 import QuestionOverview from "./QuestionOverview";
-import Loading from "@/components/ui/Loading";
+import Loading from "@/components/ui/global/Loading";
 
 const QUESTIONS_PER_PAGE = 10;
 

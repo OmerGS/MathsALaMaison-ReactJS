@@ -7,8 +7,8 @@ import ProfilPicture from "@/config/ProfilePicture";
 import { handleProfilePictureChange } from "./edit";
 import "../../globals.css";
 
-import BackButton from "@/components/ui/BackButton";
-import AvatarSelector from "@/components/ui/AvatarSelector";
+import BackButton from "@/components/ui/global/BackButton";
+import AvatarSelector from "@/components/ui/profil/AvatarSelector";
 
 export default function ProfilEdit() {
   const { user, setUser, loading } = useUser();

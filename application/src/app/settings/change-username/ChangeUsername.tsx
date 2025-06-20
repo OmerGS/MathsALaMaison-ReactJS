@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
-import FormInput from "@/components/ui/FormInput";
-import FormButton from "@/components/ui/FormButton";
-import BackButton from "@/components/ui/BackButton";
+import FormInput from "@/components/ui/auth/FormInput";
+import FormButton from "@/components/ui/auth/FormButton";
+import BackButton from "@/components/ui/global/BackButton";
 import { useUser } from "@/context/UserContext";
-import PasswordInput from "@/components/ui/PasswordInput";
+import PasswordInput from "@/components/ui/auth/PasswordInput";
 import { handleChangePseudo, validatePseudoCodeWrapper } from "./handleChangeUsername";
-import CodeValidationModal from "@/components/ui/EmailCodeModal";
+import CodeValidationModal from "@/components/ui/global/EmailCodeModal";
 
 export default function ChangeUsername() {
   const router = useRouter();

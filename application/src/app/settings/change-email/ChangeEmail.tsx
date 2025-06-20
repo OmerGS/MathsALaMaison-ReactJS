@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import "../../globals.css";
 
-import FormInput from "@/components/ui/FormInput";
-import FormButton from "@/components/ui/FormButton";
-import BackButton from "@/components/ui/BackButton";
+import FormInput from "@/components/ui/auth/FormInput";
+import FormButton from "@/components/ui/auth/FormButton";
+import BackButton from "@/components/ui/global/BackButton";
 import { handleChangeEmail, validateEmailCodeWrapper } from "./handleChangeEmail";
-import PasswordInput from "@/components/ui/PasswordInput";
-import CodeValidationModal from "@/components/ui/EmailCodeModal";
+import PasswordInput from "@/components/ui/auth/PasswordInput";
+import CodeValidationModal from "@/components/ui/global/EmailCodeModal";
 import { useRouter } from "next/navigation";
 
 export default function ChangeEmail() {

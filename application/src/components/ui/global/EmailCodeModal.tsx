@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import FormInput from "@/components/ui/FormInput";
-import FormButton from "@/components/ui/FormButton";
+import FormInput from "@/components/ui/auth/FormInput";
+import FormButton from "@/components/ui/auth/FormButton";
 
 type Props = {
   label: string;

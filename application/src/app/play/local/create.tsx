@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
-import PlayerInput from "@/components/ui/PlayerInput";
-import PlayerCard from "@/components/ui/PlayerCard";
-import LaunchButton from "@/components/ui/LanchButton";
+import PlayerInput from "@/components/ui/game/PlayerInput";
+import PlayerCard from "@/components/ui/game/PlayerCard";
+import LaunchButton from "@/components/ui/game/LanchButton";
 import { usePlayer } from "@/context/PlayerContext";
-import BackButton from "@/components/ui/BackButton";
+import BackButton from "@/components/ui/global/BackButton";
 import { Info } from "lucide-react";
 import toast from "react-hot-toast";
 

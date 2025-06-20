@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import HelpTooltip from "@/components/ui/HelpTooltip";
+import HelpTooltip from "@/components/ui/home/HelpTooltip";
 
 interface Choice {
   label: string;

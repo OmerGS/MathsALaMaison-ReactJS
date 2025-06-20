@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import "../globals.css";
-import BackButton from "@/components/ui/BackButton";
-import ProfileHeader from "@/components/ui/ProfileHeader";
-import StatCard from "@/components/ui/StatCard";
+import BackButton from "@/components/ui/global/BackButton";
+import ProfileHeader from "@/components/ui/profil/ProfileHeader";
+import StatCard from "@/components/ui/profil/StatCard";
 
 export default function ProfilPage() {
   const { user, loading } = useUser();
