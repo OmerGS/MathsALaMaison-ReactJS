@@ -41,29 +41,7 @@
     }>(null);
 
 
-  const choices = [
-    { 
-      label: "Partie en ligne", 
-      action: () => router.push("/play/matchmaking"),
-      description: "Jouez contre d'autres joueurs en temps réel via un matchmaking rapide."
-    },
-    { 
-      label: "Partie local", 
-      action: () => router.push("/play/local"),
-      description: "Créez une partie locale pour jouer entre amis sur le même appareil."
-    },
-    { 
-      label: "Entraînement", 
-      action: () => router.push("/play/training"),
-      description: "Mode d'entraînement pour s'exercer sans pression et améliorer vos compétences."
-    },
-  ];
     const choices = [
-      { 
-        label: "Les Questions", 
-        action: () => router.push("/play/question-list"),
-        description: "Accédez à une liste de questions pour tester vos connaissances à votre rythme."
-      },
       { 
         label: "Partie en ligne", 
         action: () => router.push("/play/matchmaking"),
@@ -133,11 +111,11 @@
 
           {/* BOUTON MODE (digit) — plus petit */}
           {/* MODE SELECTIONNÉ OU BOUTON SÉLECTEUR */}
-          <div className="relative z-10 row-start-2 col-start-2 flex justify-center items-end
+          <div className="relative z-10 row-start-2 col-start-2 flex flex-col justify-end items-center
           ">
             {selectedMode ? (
               <div
-                className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-center"
+                className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-end"
                 onClick={() => setModalVisible(true)}
               >
                 Mode : {selectedMode.label}
@@ -148,7 +126,7 @@
           </div>
 
           {/* BOUTON JOUER — agrandi */}
-          <div className="relative z-10 row-start-2 col-start-2 flex flex-col justify-center items-center">
+          <div className="relative z-10 row-start-3 col-start-2 flex flex-col justify-end items-center">
               <PlayButtonMobile onClick={handlePlay}/>
           </div>
 
@@ -228,7 +206,5 @@
           )}
         </div>}
       </div>
-
-      
     );
   }
