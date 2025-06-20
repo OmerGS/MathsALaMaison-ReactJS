@@ -13,6 +13,7 @@ import LinkButton from "@/components/ui/LinkButton";
 import Spinner from "@/components/ui/Spinner";
 import BackButton from "@/components/ui/BackButton";
 import { useMediaQuery } from "react-responsive";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState("");
@@ -20,6 +21,7 @@ export default function LoginPage() {
   const { user, loading, setUser } = useUser();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const router = useRouter();
+    const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
     if (!loading && user) {
@@ -36,77 +38,32 @@ export default function LoginPage() {
           router.push("/");
         }
       } else {
-        alert(responseData.message || "Votre compte est en attente de validation par un administrateur.");
+        toast.success(responseData.message || "Votre compte est en attente de validation par un administrateur.");
       }
     } 
   };
 
   return (
-    <div>
-      {isMobile ?
-        <div className="relative min-h-screen w-full">
-          <div className="absolute inset-0 bg-accent z-0" />
-        
+   <div className="flex relative w-full h-[100svh] font-sans
+      text-[clamp(1rem,2.5vw,1.75rem)]
+      gap-4"
+    >
+      {/* Left side – logo + retour (seulement sur desktop) */}
+      <BackButton />
+      {!isMobile && (
+        <div className="hidden md:flex flex-1 flex-col bg-accent relative justify-center items-center p-10">
           <img
             src="/icons/icon-192x192.png"
-            alt="Fond"
-            className="absolute inset-0 w-full h-full object-cover z-0 opacity-30"
+            alt="Icône"
+            className="w-4/5 max-h-[80%] object-contain"
           />
-        
-          <div className="absolute top-4 left-4 z-10">
-            <BackButton />
-          </div>
-        
-          <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-            <div className="bg-white/80 backdrop-blur-md rounded-xl p-6 w-full max-w-md space-y-4">
-              <h1 className="text-3xl font-bold text-black text-center">Connexion</h1>
-        
-              <FormInput
-                type="text"
-                placeholder="Email"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-                autoComplete="username"
-              />
-        
-              <FormInput
-                type="password"
-                placeholder="Mot de passe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-        
-              <LinkButton to="/auth/reset" color="red">
-                Mot de passe oublié
-              </LinkButton>
-        
-              <FormButton onClick={onLogin} disabled={loading}>
-                {loading ? <Spinner /> : "Se connecter"}
-              </FormButton>
-        
-              <LinkButton to="/auth/signup" color="black">
-                Pas de compte ? S'inscrire
-              </LinkButton>
-            </div>
-          </div>
-        </div> 
-        :
-        <div className="flex h-screen">
-          {/* Left side – logo + retour */}
-          <div className="hidden md:flex flex-1 flex-col bg-accent relative justify-center items-center p-10">
-            <BackButton />
+        </div>
+      )}
 
-            <img
-              src="/icons/icon-192x192.png"
-              alt="Icône"
-              className="w-4/5 max-h-[80%] object-contain"
-            />
-          </div>
-
-          {/* Right side – formulaire */}
-          <div className="md:flex-1 bg-bg p-10 flex flex-col justify-center items-center space-y-2">
-            <h1 className="text-3xl font-bold mb-6 text-black">Connexion</h1>
+      {/* Right side – formulaire */}
+      <div className={`md:flex-1 ${isMobile ? "bg-accent" : "bg-bg"} p-10 flex flex-col justify-center items-center space-y-2 w-full`}>
+        <div className="bg-white/80 flex flex-col justify-center items-center space-y-2 rounded-xl w-full max-w-md p-5 shadow-lg backdrop-blur-md">
+        <h1 className="text-3xl font-bold mb-6 text-black">Connexion</h1>
 
             <FormInput
               type="text"
@@ -130,10 +87,9 @@ export default function LoginPage() {
               {loading ? <Spinner /> : "Se connecter"}
             </FormButton>
 
-            <LinkButton to="/auth/signup" color="black">Pas de compte ? S'inscrire</LinkButton>
-          </div>
+        <LinkButton to="/auth/signup" color="black">Pas de compte ? S'inscrire</LinkButton>
         </div>
-      }
+      </div>
     </div>
   );
 }

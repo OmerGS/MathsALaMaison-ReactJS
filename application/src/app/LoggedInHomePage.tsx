@@ -20,6 +20,7 @@
   import ModeSelectorMobile from "@/components/ui/ModeSelectorMobile";
   import PlayButtonMobile from "@/components/ui/PlayButtonMobile";
   import AdminButtonMobile from "@/components/ui/AdminButtonMobile";
+import toast from "react-hot-toast";
 
   export default function LoggedInHomePage() {
     return (
@@ -68,13 +69,13 @@
 
     if (!user) return null;
 
-    const handlePlay = () => {
-      if (!selectedMode) {
-        alert("Veuillez sélectionner un mode de jeu avant de jouer.");
-        return;
-      }
-      selectedMode.action();
-    };
+  const handlePlay = () => {
+    if (!selectedMode) {
+      toast.error("Veuillez sélectionner un mode de jeu avant de jouer.");
+      return;
+    }
+    selectedMode.action();
+  };
 
     return (
       <div >
@@ -130,31 +131,36 @@
               <PlayButtonMobile onClick={handlePlay}/>
           </div>
 
-          {/* MODAL */}
-          {isModalVisible && (
-            <ModeChoiceModal
-              choices={choices}
-              onClose={() => setModalVisible(false)}
-              onSelect={(choice) => {
-                setSelectedMode(choice);
-                setModalVisible(false);
-              }}
-            />
-          )}
-        </div>
-      :
-        <div className="relative min-h-screen w-screen font-sans grid grid-cols-3 grid-rows-3 text-[clamp(1rem,2.5vw,1.75rem)] p-4 gap-4 bg-gradient-to-l from-custom to-custom">
-        
-          {/* LOGO EN ARRIÈRE-PLAN */}
-          <img
-            src="/icons/icon-512x512.png"
-            alt=""
-            aria-hidden="true"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                      opacity-40 z-0 pointer-events-none
-                      w-[40vw] max-w-[500px] h-auto select-none
-                      animate-pulse-slow"
+        {/* MODAL */}
+        {isModalVisible && (
+          <ModeChoiceModal
+            choices={choices}
+            onClose={() => setModalVisible(false)}
+            onSelect={(choice) => {
+              setSelectedMode(choice);
+              setModalVisible(false);
+            }}
           />
+        )}
+      </div>
+    :
+      <div className="relative w-full h-[100svh] font-sans
+          grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-fr
+          text-[clamp(1rem,2.5vw,1.75rem)]
+          p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]
+          gap-4 bg-gradient-to-l from-custom to-custom"
+        >
+      
+        {/* LOGO EN ARRIÈRE-PLAN */}
+        <img
+          src="/icons/icon-512x512.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                    opacity-40 z-0 pointer-events-none
+                    w-[40vw] max-w-[500px] h-auto select-none
+                    animate-pulse-slow"
+        />
 
           {/* PROFIL ET POINTS */}
           <div className="relative z-10 col-start-1 row-start-1 flex flex-col items-start gap-4">

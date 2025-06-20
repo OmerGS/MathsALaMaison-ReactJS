@@ -102,7 +102,7 @@ export default function AddQuestionForm({ onClose }: AddQuestionFormProps) {
     e.preventDefault();
 
     if (!questionText.trim()) {
-      alert("Merci de saisir la question.");
+      //alert("Merci de saisir la question.");
       return;
     }
     if (typeQuestion === "QCM") {
@@ -110,9 +110,7 @@ export default function AddQuestionForm({ onClose }: AddQuestionFormProps) {
         qcmAnswers.some((a) => !a.text.trim()) ||
         !qcmAnswers.some((a) => a.isCorrect)
       ) {
-        alert(
-          "Merci de remplir toutes les réponses et de sélectionner la bonne réponse."
-        );
+        //alert("Merci de remplir toutes les réponses et de sélectionner la bonne réponse.");
         return;
       }
     }
@@ -128,11 +126,11 @@ export default function AddQuestionForm({ onClose }: AddQuestionFormProps) {
 
     try {
       await addNewQuestion(dataToSend);
-      alert("Question ajoutée avec succès !");
+      //alert("Question ajoutée avec succès !");
       onClose();
     } catch (err) {
       console.error("Erreur lors de l'ajout de la question :", err);
-      alert("Une erreur est survenue lors de l'ajout de la question.");
+      //alert("Une erreur est survenue lors de l'ajout de la question.");
     }
   };
 
