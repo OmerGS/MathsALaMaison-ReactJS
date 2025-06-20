@@ -1,0 +1,440 @@
+import express from 'express';
+import { pool } from '../config/database.js';
+import { logger } from '../config/logger.js';
+import CryptoJS from 'crypto-js';
+
+/**
+ * Express Router instance for handling routing within the application.
+ * This object will be used to define routes and their handlers for various HTTP methods.
+ * 
+ * @constant
+ * @type {express.Router}
+ */
+const router = express.Router();
+
+/**
+ * Handles GET requests to retrieve all users from the database.
+ * 
+ * @route GET /users
+ * @async
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {void}
+ * @throws {Error} If fetching the users fails, a 500 status code with an error message is sent.
+ */
+router.get('/users', async function(req, res) {
+    try {
+        const [rows] = await pool.query('SELECT * FROM User');
+        res.json(rows);
+    } catch (error) {
+        logger.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+});
+
+/**
+ * Handles POST requests to check if an email already exists in the database.
+ * The email is passed in the request body, and the response indicates whether the email exists or not.
+ * 
+ * @route POST /emailExists
+ * @async
+ * @param {Object} req - The request object containing the email in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {void}
+ * @throws {Error} If checking the email existence fails, a 500 status code with an error message is sent.
+ * @throws {Object} If the email is not provided, a 400 status code with an error message is returned.
+ */
+router.post('/emailExists', async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+  }
+
+  try {
+      const [rows] = await pool.query('SELECT COUNT(*) AS count FROM User WHERE email = ?', [email]);
+      const count = rows[0].count;
+
+      res.json({ exists: count > 0 });
+  } catch (error) {
+      logger.error('Error checking email existence:', error);
+      res.status(500).json({ error: 'Failed to check email' });
+  }
+});
+
+/**
+ * Handles POST requests to check if a pseudo already exists in the database.
+ * The pseudo is passed in the request body, and the response indicates whether the pseudo exists or not.
+ * 
+ * @route POST /pseudoExists
+ * @async
+ * @param {Object} req - The request object containing the pseudo in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {void}
+ * @throws {Error} If checking the pseudo existence fails, a 500 status code with an error message is sent.
+ * @throws {Object} If the pseudo is not provided, a 400 status code with an error message is returned.
+ */
+router.post('/pseudoExists', async (req, res) => {
+  const { pseudo } = req.body;
+  if (!pseudo) {
+      return res.status(400).json({ error: 'Pseudo is required' });
+  }
+
+  try {
+      const [rows] = await pool.query('SELECT COUNT(*) AS count FROM User WHERE pseudo = ?', [pseudo]);
+      const count = rows[0].count;
+
+      res.json({ exists: count > 0 });
+  } catch (error) {
+      logger.error('Error checking pseudo existence:', error);
+      res.status(500).json({ error: 'Failed to check pseudo' });
+  }
+});
+
+/**
+ * Handles POST requests to update a user's password in the database.
+ * The request must include the pseudo, new password, and salt to update the user's credentials.
+ * 
+ * @route POST /updatePassword
+ * @async
+ * @param {Object} req - The request object containing the pseudo, password, and salt in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response indicating success or failure of the password update.
+ * @throws {Error} If required fields (pseudo, password, salt) are missing, a 400 status code with an error message is returned.
+ * @throws {Error} If the password update fails, a 500 status code with an error message is returned.
+ */
+router.post('/updatePassword', async (req, res) => {
+  const { email, password, salt } = req.body;
+
+  if (!email || !password || !salt) {
+      return res.status(400).json({ error: 'Email, password, and salt are required' });
+  }
+
+  try {
+      const [result] = await pool.execute(
+          `UPDATE User SET 
+              password = ?,
+              salt = ?
+          WHERE email = ?`,
+          [password, salt, email]
+      );
+
+      return res.json({ success: true });
+  } catch (error) {
+      logger.error('Error registering user:', error); 
+      res.status(500).json({ error: 'Failed to register user', details: error.message }); 
+  }
+});
+
+/**
+ * Handles POST requests to update a user's pseudo in the database.
+ * The request must include the pseudo and email to update the user's credentials.
+ * 
+ * @route POST /updatePseudo
+ * @async
+ * @param {Object} req - The request object containing the pseudo and email in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response indicating success or failure of the pseudo update.
+ * @throws {Error} If required fields (pseudo, email) are missing, a 400 status code with an error message is returned.
+ * @throws {Error} If the pseudo update fails, a 500 status code with an error message is returned.
+ */
+router.post('/updatePseudo', async (req, res) => {
+  const { pseudo, email } = req.body;
+
+  if (!pseudo || !email) {
+      return res.status(400).json({ error: 'Pseudo and email are required' });
+  }
+
+  try {
+      const [result] = await pool.execute(
+          `UPDATE User SET 
+              pseudo = ?
+          WHERE email = ?`,
+          [pseudo, email]
+      );
+
+      return res.json({ success: true });
+  } catch (error) {
+      logger.error('Error registering user:', error); 
+      res.status(500).json({ error: 'Failed to register user', details: error.message }); 
+  }
+});
+
+/**
+ * Handles POST requests to update a user's email in the database.
+ * The request must include the pseudo and email to update the user's credentials.
+ * 
+ * @route POST /updateEmail
+ * @async
+ * @param {Object} req - The request object containing the pseudo and email in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response indicating success or failure of the email update.
+ * @throws {Error} If required fields (pseudo, email) are missing, a 400 status code with an error message is returned.
+ * @throws {Error} If the email update fails, a 500 status code with an error message is returned.
+ */
+router.post('/updateEmail', async (req, res) => {
+  const { pseudo, email } = req.body;
+
+  if (!pseudo || !email) {
+      return res.status(400).json({ error: 'Pseudo and email are required' });
+  }
+
+  try {
+      const [result] = await pool.execute(
+          `UPDATE User SET 
+              email = ?
+          WHERE pseudo = ?`,
+          [email, pseudo]
+      );
+
+      return res.json({ success: true });
+  } catch (error) {
+      logger.error('Error registering user:', error); 
+      res.status(500).json({ error: 'Failed to register user', details: error.message }); 
+  }
+});
+
+/**
+ * Handles POST requests to update a user's profile picture in the database.
+ * The request must include the ID of the new picture and the user's email.
+ * 
+ * @route POST /updatePicture
+ * @async
+ * @param {Object} req - The request object containing the idPicture (new profile picture ID) and email of the user in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response indicating the success of the operation, including the number of affected rows and the email of the user.
+ * @throws {Error} If the update fails, a 500 status code with an error message is returned.
+ */
+router.post('/updatePicture', async (req, res) => {
+  const { idPicture, email } = req.body;
+
+  try {
+      const [result] = await pool.execute(
+          `UPDATE User SET photoDeProfil = ? WHERE email = ?`,
+          [idPicture, email]
+      );
+
+      res.json({ success: true, affectedRows: result.affectedRows, email });
+  } catch (error) {
+      logger.error('Error updating profile picture:', error);
+      res.status(500).json({ error: 'Failed to update profile picture', details: error.message });
+  }
+});
+
+/**
+ * Handles POST requests to create a new user in the database.
+ * The request must include the username and email of the new user.
+ * 
+ * @route POST /users
+ * @async
+ * @param {Object} req - The request object containing the username and email of the new user in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response with the inserted user's ID, username, and email.
+ * @throws {Error} If the insertion fails, a 500 status code with an error message is returned.
+ */
+router.post('/users', async (req, res) => {
+  const { username, email } = req.body;
+  try {
+      const [result] = await pool.execute('INSERT INTO User (username, email) VALUES (?, ?)', [username, email]);
+      res.json({ id: result.insertId, username, email });
+  } catch (error) {
+      logger.error('Error inserting user:', error);
+      res.status(500).json({ error: 'Failed to insert user' });
+  }
+});
+
+/**
+ * Handles POST requests to register a new user.
+ * The request must include the user's pseudo, email, password, salt, and other optional data.
+ * 
+ * @route POST /register
+ * @async
+ * @param {Object} req - The request object containing the new user's details in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response containing the new user's ID, pseudo, and email upon successful registration.
+ * @throws {Error} If the registration fails, a 500 status code with an error message is returned.
+ * 
+ * @body {string} pseudo - The user's pseudo.
+ * @body {string} email - The user's email.
+ * @body {string} password - The user's password (hashed).
+ * @body {string} salt - The salt used in the password hashing process.
+ * @body {number} point - The initial score for the user.
+ * @body {number} nbPartie - The number of games the user has played (initially 0).
+ * @body {number} nbVictoire - The number of victories the user has (initially 0).
+ * @body {boolean} isPremium - Indicates whether the user has a premium account.
+ * @body {string} photoDeProfil - The URL or path to the user's profile picture.
+ */
+router.post('/register', async (req, res) => {
+  const { pseudo, email, password, salt, point, nbPartie, nbVictoire, isPremium, photoDeProfil } = req.body;
+
+  if (!pseudo || !email || !password || !salt) {
+      return res.status(400).json({ error: 'Pseudo, email, password, and salt are required' });
+  }
+
+  try {
+      const [result] = await pool.execute(
+          `INSERT INTO User (pseudo, email, password, salt, point, nombrePartie, nombreVictoire, isPremium, photoDeProfil)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [pseudo, email, password, salt, point, nbPartie, nbVictoire, isPremium, photoDeProfil]
+      );
+
+      res.json({ id: result.insertId, pseudo, email });
+  } catch (error) {
+      logger.error('Error registering user:', error); 
+      res.status(500).json({ error: 'Failed to register user', details: error.message }); 
+  }
+});
+
+/**
+ * Handles POST requests to login a user using their identifier (email or pseudo) and password.
+ * 
+ * @route POST /login
+ * @async
+ * @param {Object} req - The request object containing the user's identifier and password in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response with a success message if the login is successful or an error message with status code 404 or 401.
+ * @throws {Error} If there is an internal server error, a 500 status code with an error message is returned.
+ * 
+ * @body {string} identifier - The user's identifier, which can either be their email or pseudo.
+ * @body {string} password - The user's password (plaintext) which will be hashed with the stored salt.
+ */
+router.post('/login', async (req, res) => {
+  const { identifier, password } = req.body;
+
+  //console.log(identifier);
+  //console.log(password);
+  
+  if (!identifier || !password) {
+      return res.status(400).json({ error: 'Identifiant et mot de passe requis.' });
+  }
+
+  try {
+      const [userRows] = await pool.query('SELECT * FROM User WHERE email = ? OR pseudo = ?', [identifier, identifier]);
+      if (userRows.length === 0) {
+          return res.status(404).json({ error: 'Identifiant non trouvé.' });
+      }
+
+      const user = userRows[0];
+      
+      const passwordHash = CryptoJS.SHA256(password + user.salt).toString();
+
+      //console.log("Password : " + user.password);
+      //console.log("Hash Password : " + passwordHash);
+
+      if (user.password === passwordHash) {
+          return res.json({ success: true });
+      } else {
+          return res.status(401).json({ error: 'Mot de passe incorrect.' });
+      }
+  } catch (error) {
+      logger.error('Error during login:', error);
+      res.status(500).json({ error: 'Erreur lors de la connexion.' });
+  }
+});
+
+/**
+ * Handles POST requests to delete a user based on their identifier (email or pseudo).
+ * 
+ * @route POST /delete
+ * @async
+ * @param {Object} req - The request object containing the user's identifier (email or pseudo) in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response with a success message if the user is successfully deleted or an error message with status code 404 if the user is not found, or 500 if there is an internal error.
+ * @throws {Error} If there is an internal server error, a 500 status code with an error message is returned.
+ * 
+ * @body {string} identifier - The user's identifier, which can either be their email or pseudo.
+ */
+router.post('/delete', async (req, res) => {
+  const { identifier } = req.body;
+
+  if (!identifier) {
+      console.log("Identifiant non fourni");
+      return res.status(400).json({ error: 'Identifiant requis.' });
+  }
+
+  try {
+      const [result] = await pool.query('DELETE FROM User WHERE email = ? OR pseudo = ?', [identifier, identifier]);
+
+      console.log('Lignes affectées :', result.affectedRows);
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+      }
+
+      return res.json({ success: true });
+  } catch (error) {
+      logger.error('Erreur lors de la suppression de l\'utilisateur :', error);
+      res.status(500).json({ error: 'Erreur lors de la suppression de l\'utilisateur.' });
+  }
+});
+
+/**
+ * Stores information about active users, tracking their last seen time and connection date.
+ * 
+ * @type {Object.<string, { lastSeen: number, lastConnectionDate: string }>}
+ * @description 
+ * The `activeUsers` object maps each user's identifier (e.g., email or pseudo) to an object containing:
+ * - `lastSeen`: The timestamp of the user's last activity (in milliseconds).
+ * - `lastConnectionDate`: A human-readable string representing the last connection date of the user.
+ * 
+ * This object is used to track the online status of users, where users who have been active within a specified timeout period are considered online.
+ */
+export const activeUsers = {};
+
+/**
+ * Handles POST requests to mark a player as online by updating their last seen time and connection date.
+ * 
+ * @route POST /checkOnlinePlayer
+ * @async
+ * @param {Object} req - The request object containing the player's identifier in the request body.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response with a success message if the player is marked as online.
+ * @throws {Error} If the identifier is missing from the request body, a 400 status code is returned.
+ * 
+ * @body {string} identifier - The identifier of the player (can be email or pseudo).
+ */
+router.post('/checkOnlinePlayer', (req, res) => {
+    const { identifier } = req.body;
+
+    if (!identifier) {
+        return res.status(400).json({ error: 'Identifiant requis' });
+    }
+
+    activeUsers[identifier] = {
+        lastSeen: Date.now(),
+        lastConnectionDate: new Date().toLocaleString(),
+    };
+
+    res.json({ success: true });
+});
+
+/**
+ * Handles GET requests to retrieve the list of online players who are currently active.
+ * 
+ * @route GET /online-users
+ * @async
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {Object} A JSON response containing the list of online players with their identifier and last connection date.
+ * @throws {Error} If there is an internal server error, a 500 status code is returned.
+ * 
+ * @response {Object[]} onlineUsers - List of players who are online.
+ * @response {string} onlineUsers.identifier - The identifier of the player (email or pseudo).
+ * @response {string} onlineUsers.lastConnectionDate - The last connection date of the player.
+ */
+router.get('/online-users', (req, res) => {
+    const now = Date.now();
+    const timeout = 1 * 60 * 1000;
+
+    const onlineUsers = Object.keys(activeUsers).filter(
+        (user) => now - activeUsers[user].lastSeen < timeout
+    );
+
+    const usersWithLastConnection = onlineUsers.map((user) => ({
+        identifier: user,
+        lastConnectionDate: activeUsers[user].lastConnectionDate,
+    }));
+
+    res.json({ onlineUsers: usersWithLastConnection });
+});
+
+export default router;

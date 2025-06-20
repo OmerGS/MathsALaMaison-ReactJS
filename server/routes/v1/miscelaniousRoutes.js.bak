@@ -1,0 +1,34 @@
+import express from 'express';
+import { playerPerGame } from '../config/gameAttribute.js';
+
+/**
+ * Express Router instance for handling routing within the application.
+ * This object will be used to define routes and their handlers for various HTTP methods.
+ * 
+ * @constant
+ * @type {express.Router}
+ */
+const router = express.Router();
+
+/**
+ * Handles GET requests to retrieve the number of players per game.
+ * Responds with the value of `playerPerGame` in JSON format.
+ * In case of an error, responds with a 500 status code and an error message.
+ * 
+ * @route GET /numberOfPlayer
+ * @async
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {void}
+ */
+router.get('/numberOfPlayer', async (req, res) => {
+    try {
+        res.status(200).json({ playerPerGame });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des joueurs par jeu:', error);
+        res.status(500).json({ message: 'Erreur interne du serveur' });
+    }
+});
+
+
+export default router;
