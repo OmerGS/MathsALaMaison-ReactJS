@@ -1,5 +1,6 @@
 import { sendEmailToEveryone } from "@/services/adminAPI";
 import React, { useState, useRef } from "react";
+import toast from "react-hot-toast";
 
 type User = {
   id: number;
@@ -143,11 +144,11 @@ export default function EmailGenerator() {
 
   async function handleSend() {
     if (!subject.trim()) {
-      //alert("Le sujet est requis.");
+      toast.error("Le sujet est requis.");
       return;
     }
     if (!content.trim()) {
-      //alert("Le contenu du mail ne peut pas être vide.");
+      toast.error("Le contenu du mail ne peut pas être vide.");
       return;
     }
 
@@ -155,13 +156,13 @@ export default function EmailGenerator() {
     const emailSend = await sendEmailToEveryone(subject, rawHtmlWithPlaceholders);
 
     if(emailSend){
-      //alert("Email envoyé avec succès à tous les utilisateurs !");
+      toast.success("Email envoyé avec succès à tous les utilisateurs !");
       setSubject("");
       setContent("");
       setPreviewUserId(users[0]?.id || 0);
       setIsSidebarOpen(false);
     } else {
-      //alert("Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer plus tard.");
+      toast.error("Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer plus tard.");
     }
   }
 

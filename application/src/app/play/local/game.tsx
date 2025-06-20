@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import BackButton from "@/components/ui/BackButton";
-import BoardPlayer from "@/components/ui/BoardPlayer";
+import BackButton from "@/components/ui/global/BackButton";
+import BoardPlayer from "@/components/ui/game/BoardPlayer";
 
 import "../../globals.css";
 import { usePlayer } from "@/context/PlayerContext";

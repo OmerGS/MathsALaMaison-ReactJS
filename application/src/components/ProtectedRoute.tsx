@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/global/Spinner";
 
 export default function UserAccessControl({ children }: { children: React.ReactNode }) {
   const { user, loading } = useUser();

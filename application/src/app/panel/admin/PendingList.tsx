@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { User } from "@/Type/User";
 import { getNonPremiumUser, approveUser, rejectUser } from "@/services/adminAPI";
-import Spinner from "@/components/ui/Spinner";
-import EmptyStateAnimated from "@/components/ui/EmptyState";
+import Spinner from "@/components/ui/global/Spinner";
+import EmptyStateAnimated from "@/components/ui/admin/EmptyState";
 
 export default function PendingList() {
   const [pendingUsers, setPendingUsers] = useState<User[]>([]);

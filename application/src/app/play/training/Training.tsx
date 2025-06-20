@@ -4,12 +4,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-import QuestionCard from '@/components/ui/QuestionCard';
-import TimerCircle from '@/components/ui/TimerCircle';
-import TimerBar from '@/components/ui/TimerBar';
-import { TrainingEndgame } from '@/components/ui/TrainingEndgame';
-import Loading from '@/components/ui/Loading';
-import BackButton from '@/components/ui/BackButton';
+import QuestionCard from '@/components/ui/game/QuestionCard';
+import TimerCircle from '@/components/ui/game/TimerCircle';
+import TimerBar from '@/components/ui/game/TimerBar';
+import { TrainingEndgame } from '@/components/ui/game/TrainingEndgame';
+import Loading from '@/components/ui/global/Loading';
+import BackButton from '@/components/ui/global/BackButton';
 
 import useIsMobile from '@/hooks/useIsMobile';
 import useQuestionController from '../useQuestionController';

@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
-import FormInput from "@/components/ui/FormInput";
-import FormButton from "@/components/ui/FormButton";
-import BackButton from "@/components/ui/BackButton";
-import LinkButton from "@/components/ui/LinkButton";
+import FormInput from "@/components/ui/auth/FormInput";
+import FormButton from "@/components/ui/auth/FormButton";
+import BackButton from "@/components/ui/global/BackButton";
+import LinkButton from "@/components/ui/auth/LinkButton";
 import { askValidation, resetPassword, validateCode } from "@/services/validationAPI";
 import { useMediaQuery } from "react-responsive";
 import toast from "react-hot-toast";
+import PasswordInput from "@/components/ui/auth/PasswordInput";
 
 export default function ResetPassword() {
   const [identifier, setIdentifier] = useState("");
@@ -141,7 +142,7 @@ export default function ResetPassword() {
             {(step === 0 || step > 0) && (
               <FormInput
                 type="email"
-                placeholder="Email ou Pseudonyme"
+                placeholder="Email"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 disabled={step > 0}
@@ -160,12 +161,12 @@ export default function ResetPassword() {
             )}
 
             {step === 2 && (
-              <FormInput
-                type="password"
+              <PasswordInput
                 placeholder="Nouveau mot de passe"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 autoComplete="new-password"
+                showStrength={true}
               />
             )}
 

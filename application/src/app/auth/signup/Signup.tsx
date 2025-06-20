@@ -4,14 +4,15 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
-import FormInput from "@/components/ui/FormInput";
-import FormButton from "@/components/ui/FormButton";
-import LinkButton from "@/components/ui/LinkButton";
-import BackButton from "@/components/ui/BackButton";
-import Spinner from "@/components/ui/Spinner";
+import FormInput from "@/components/ui/auth/FormInput";
+import FormButton from "@/components/ui/auth/FormButton";
+import LinkButton from "@/components/ui/auth/LinkButton";
+import BackButton from "@/components/ui/global/BackButton";
+import Spinner from "@/components/ui/global/Spinner";
 import { useUser } from "@/context/UserContext";
 import { handleSignUp } from "./signup-logic";
 import { useMediaQuery } from "react-responsive";
+import PasswordInput from "@/components/ui/auth/PasswordInput";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -57,18 +58,19 @@ export default function Signup() {
             onChange={(e) => setPseudo(e.target.value)}
           />
 
-          <FormInput
-            type="password"
+          <PasswordInput
             placeholder="Mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+            showStrength={true}
           />
 
-          <FormInput
-            type="password"
+          <PasswordInput
             placeholder="Confirmer le mot de passe"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            autoComplete="new-password"
           />
 
           <FormButton onClick={onSignUp} disabled={loading}>

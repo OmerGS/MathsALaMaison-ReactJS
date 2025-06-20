@@ -1,20 +1,20 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import CategoryCarousel from "@/components/ui/CategoryCarousel";
-import CategoryCard from "@/components/ui/CategoryCard";
-import QuestionCard from "@/components/ui/QuestionCard";
-import TimerCircle from '@/components/ui/TimerCircle';
-import TimerBar from '@/components/ui/TimerBar';
+import CategoryCarousel from "@/components/ui/game/CategoryCarousel";
+import CategoryCard from "@/components/ui/game/CategoryCard";
+import QuestionCard from "@/components/ui/game/QuestionCard";
+import TimerCircle from '@/components/ui/game/TimerCircle';
+import TimerBar from '@/components/ui/game/TimerBar';
 import Category, { CategoryData } from "@/Type/Category";
 import { categoryData } from "@/Type/CategoryData";
 import useQuestionController from "../useQuestionController";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import useIsMobile from "@/hooks/useIsMobile";
-import Loading from "@/components/ui/Loading";
+import Loading from "@/components/ui/global/Loading";
 import { usePlayer } from "@/context/PlayerContext";
-import CategoryStart from "@/components/ui/CategoryStart";
+import CategoryStart from "@/components/ui/game/CategoryStart";
 
 type Props = {
   category: Category | null;

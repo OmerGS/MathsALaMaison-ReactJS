@@ -21,7 +21,7 @@ export const handleSignUp = async (
     toast.error("Les mots de passe ne correspondent pas");
     return;
   } else if (password.length < 10) {
-    alert("Le mot de passe doit contenir au moins 10 caractères");
+    toast.error("Le mot de passe doit contenir au moins 10 caractères");
     return;
   }
 

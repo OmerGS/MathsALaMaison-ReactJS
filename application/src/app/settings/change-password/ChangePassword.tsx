@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 
-import FormButton from "@/components/ui/FormButton";
-import BackButton from "@/components/ui/BackButton";
+import FormButton from "@/components/ui/auth/FormButton";
+import BackButton from "@/components/ui/global/BackButton";
 import { useUser } from "@/context/UserContext";
 import { handleChangePassword } from "./handleChangePassword";
-import PasswordInput from "@/components/ui/PasswordInput";
+import PasswordInput from "@/components/ui/auth/PasswordInput";
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");

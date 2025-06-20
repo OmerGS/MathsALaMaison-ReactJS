@@ -1,4 +1,5 @@
 import { updateProfilePicture } from "@/services/userAPI";
+import toast from "react-hot-toast";
 
 export async function handleProfilePictureChange(id: number): Promise<boolean> {
   try {
@@ -6,14 +7,14 @@ export async function handleProfilePictureChange(id: number): Promise<boolean> {
     console.log(response);
 
     if (!response.data.success) {
-      //alert(response.data.message || "Une erreur est survenue.");
+      toast.error(response.data.message || "Une erreur est survenue.");
       return false;
     }
 
     return true;
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la photo de profil :", error);
-    //alert("Impossible de mettre à jour la photo de profil.");
+    toast.error("Impossible de mettre à jour la photo de profil.");
     return false;
   }
 }

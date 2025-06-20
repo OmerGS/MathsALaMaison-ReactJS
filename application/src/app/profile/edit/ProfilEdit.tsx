@@ -3,12 +3,12 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
-import profileImages from "@/Type/ProfilePicture";
+import ProfilPicture from "@/config/ProfilePicture";
 import { handleProfilePictureChange } from "./edit";
 import "../../globals.css";
 
-import BackButton from "@/components/ui/BackButton";
-import AvatarSelector from "@/components/ui/AvatarSelector";
+import BackButton from "@/components/ui/global/BackButton";
+import AvatarSelector from "@/components/ui/profil/AvatarSelector";
 
 export default function ProfilEdit() {
   const { user, setUser, loading } = useUser();
@@ -37,7 +37,7 @@ export default function ProfilEdit() {
       </h1>
 
       <AvatarSelector
-        profileImages={profileImages}
+        profileImages={ProfilPicture}
         selectedId={user.photoDeProfil}
         onSelect={handleChange}
         className="w-full max-w-5xl px-2 sm:px-4"

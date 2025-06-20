@@ -7,11 +7,11 @@ import { User } from "@/Type/User";
 import { handleGetLeadBoardUser } from "./leaderboard";
 import "../globals.css";
 
-import BackButton from "@/components/ui/BackButton";
-import SectionButton from "@/components/ui/SectionButton";
-import ClassementCard from "@/components/ui/ClassementCard";
-import UserStatsCard from "@/components/ui/UserStatsCard";
-import Loading from "@/components/ui/Loading";
+import BackButton from "@/components/ui/global/BackButton";
+import SectionButton from "@/components/ui/global/SectionButton";
+import ClassementCard from "@/components/ui/learderBoard/ClassementCard";
+import UserStatsCard from "@/components/ui/learderBoard/UserStatsCard";
+import Loading from "@/components/ui/global/Loading";
 
 const TABS = [
   { key: "point", label: "Points" },

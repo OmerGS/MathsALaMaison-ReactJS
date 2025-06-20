@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { getQuestionPerPage, updateQuestionPerPageNumber } from "@/services/adminAPI";
 import ToastContainer from "@/components/ToastContainer";
 import { motion, useAnimation } from "framer-motion";
-import AnimatedNumber from "@/components/ui/AnimatedNumber";
-import Spinner from "@/components/ui/Spinner";
+import AnimatedNumber from "@/components/ui/admin/AnimatedNumber";
+import Spinner from "@/components/ui/global/Spinner";
 
 export default function QuestionPaginationSettings() {
   const [questionsPerPage, setQuestionsPerPage] = useState<number>(1);

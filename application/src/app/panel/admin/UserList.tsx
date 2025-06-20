@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User } from "@/Type/User";
 import { getAllUsers } from "@/services/adminAPI";
 import UserProfileView from "./UserListChild/UserProfileView";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/ui/global/Spinner";
 
 const USERS_PER_PAGE = 10;
 
