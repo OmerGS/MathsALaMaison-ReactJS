@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SCRIPT_DIR="$(dirname "$0")"
+
+if [[ "$PWD" == *"/src" ]]; then
+  node --no-deprecation index.js
+else
+  cd "$SCRIPT_DIR/src" || exit 1
+  node --no-deprecation index.js
+fi

@@ -1,0 +1,44 @@
+import express from 'express';
+import { pool } from '../config/database.js';
+import { logger } from '../config/logger.js';
+
+/**
+ * Express Router instance for handling routing within the application.
+ * This object will be used to define routes and their handlers for various HTTP methods.
+ * 
+ * @constant
+ * @type {express.Router}
+ */
+const router = express.Router();
+
+/**
+ * Handles GET requests to retrieve all questions from the database.
+ * Each question includes an optional image, which is converted to a Base64-encoded string if it exists.
+ * 
+ * @route GET /questions
+ * @async
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object used to send the result.
+ * @returns {void}
+ * @throws {Error} If fetching the questions fails, a 500 status code with an error message is sent.
+ */
+router.get('/questions', async (req, res) => {
+    try {
+      const [rows] = await pool.query('SELECT * FROM Questions');
+      
+      const questionsWithBase64Images = rows.map((row) => {
+        let base64Image = '';
+        if (row.image_data) {
+          base64Image = `data:image/jpeg;base64,${row.image_data.toString('base64')}`;
+        }
+        return { ...row, image_data: base64Image };
+      });
+  
+      res.json(questionsWithBase64Images);
+    } catch (error) {
+      logger.error('Error fetching questions:', error);
+      res.status(500).json({ error: 'Failed to fetch questions' });
+    }
+});
+
+export default router;

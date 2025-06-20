@@ -1,0 +1,124 @@
+import express from 'express';
+import bcrypt from 'bcrypt'
+import { verificationCodeExpireTime } from '../config/globalAttribute.js';
+import sendMail from '../services/mailService.js';
+
+/**
+ * Express Router instance for handling routing within the application.
+ * This object will be used to define routes and their handlers for various HTTP methods.
+ * 
+ * @constant
+ * @type {express.Router}
+ */
+const router = express.Router();
+
+
+/**
+ * The number of salt rounds to use when hashing the validation code.
+ * This value is used to secure the generated validation code using bcrypt.
+ * 
+ * @constant {number} saltRounds
+ * @default
+ */
+const saltRounds = 10;
+
+/**
+ * Array to store validation codes and their corresponding timestamps.
+ * Each entry contains a hashed code and the time it was generated.
+ * 
+ * @type {Array<{hashedCode: string, timestamp: string}>}
+ */
+let validationCodes = [];
+
+/**
+ * Route handler for generating and sending a validation code to the user.
+ * 
+ * The validation code is generated, hashed using bcrypt, and stored along with 
+ * a timestamp. The code will expire after a predefined time (e.g., 15 minutes).
+ * 
+ * @route {POST} /getValidationCode
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The request body containing the email of the user.
+ * @param {string} req.body.email - The email of the user requesting the validation code.
+ * @param {Object} res - The response object.
+ * @returns {Object} 200 - A success message with an expiration notice for the code.
+ * @returns {Object} 400 - If the email is missing or there is another error.
+ */
+router.post('/askVerificationCode', async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ sucess: false });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000);
+
+    const hashedCode = await bcrypt.hash(code.toString(), saltRounds);
+
+    const timestamp = new Date().toISOString(); 
+
+    let emailAndCode = [];
+
+    emailAndCode.push({email, hashedCode})
+
+    validationCodes.push({ emailAndCode, timestamp });
+
+    const response = "Le code est " + code + " , ce code expirera dans " + verificationCodeExpireTime + " minutes";
+
+    sendMail(email, "Code", response);
+
+    res.json({ success: true });
+});
+
+/**
+ * Route handler for checking the validity of a verification code.
+ * 
+ * Compares the code provided by the user with the stored hashed validation code.
+ * If the code is found and not expired, it is considered valid.
+ * 
+ * @route {POST} /checkVerificationCode
+ * @param {Object} req - The request object.
+ * @param {Object} req.query - The query parameters containing the email and the code.
+ * @param {string} req.query.email - The email associated with the verification code.
+ * @param {string} req.query.code - The validation code entered by the user.
+ * @param {Object} res - The response object.
+ * @returns {Object} 200 - A success message indicating the code is valid.
+ * @returns {Object} 400 - If the code is expired or missing.
+ * @returns {Object} 404 - If the code is not found.
+ */
+router.post('/checkVerificationCode', async (req, res) => {
+    const { email, code } = req.body;
+
+    console.log("Email : " + email, "Code : " + code);
+
+    if (!email || !code) {
+        return res.status(400).json({ error: "Email ou code manquant" });
+    }
+
+    const codeIndex = validationCodes.findIndex(entry => {
+        return entry.emailAndCode.some(eac => eac.email === email && bcrypt.compareSync(code, eac.hashedCode));
+    });
+
+    if (codeIndex === -1) {
+        console.log("Code de validation incorrect");
+        return res.status(404).json({ error: "Code de validation non trouvé" });
+    }
+
+    const codeEntry = validationCodes[codeIndex];
+    const currentTime = new Date();
+    const codeTimestamp = new Date(codeEntry.timestamp);
+    const timeDifference = (currentTime - codeTimestamp) / 1000 / 60;
+
+    if (timeDifference > verificationCodeExpireTime) {
+        validationCodes.splice(codeIndex, 1);
+        return res.status(400).json({ error: "Code expiré" });
+    }
+
+    // Supprimer l'entrée valide après utilisation
+    validationCodes.splice(codeIndex, 1);
+    console.log("Code de validation correct");
+    res.json({ success: true, message: "Code valide" });
+});
+
+
+export default router;
