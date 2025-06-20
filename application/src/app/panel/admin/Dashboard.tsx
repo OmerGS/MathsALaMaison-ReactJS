@@ -37,7 +37,6 @@ const ConnectionsChart = React.memo(
     data: { time: string; connections: number }[];
     isSmallScreen: boolean;
   }) => {
-    console.log("Rendering ConnectionsChart with data length:", data);
     return (
       <ResponsiveContainer width="100%" height={isSmallScreen ? 250 : 350}>
         <LineChart

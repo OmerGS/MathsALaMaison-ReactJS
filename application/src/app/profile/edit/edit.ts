@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 export async function handleProfilePictureChange(id: number): Promise<boolean> {
   try {
     const response = await updateProfilePicture(id);
-    console.log(response);
 
     if (!response.data.success) {
       toast.error(response.data.message || "Une erreur est survenue.");

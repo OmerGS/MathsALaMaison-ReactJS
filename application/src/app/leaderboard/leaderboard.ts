@@ -4,9 +4,6 @@ import { User } from "@/Type/User";
 export async function handleGetLeadBoardUser(sortBy: string): Promise<User[] | null> {
   try {
     let response = await getLeaderBoardUser(sortBy);
-    console.log(response);
-
-   
 
     return response.data;
   } catch (error) {

@@ -21,7 +21,6 @@ export async function handleLogin(identifier: string, password: string): Promise
       error.response?.data?.message ||
       `Erreur réseau (${error.response?.status || "inconnue"})`;
     toast.error(message);
-    console.error("Erreur handleLogin:", error);
     return null;
   }
 }
