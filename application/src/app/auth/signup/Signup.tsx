@@ -19,7 +19,6 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { user, loading, setUser } = useUser();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   
