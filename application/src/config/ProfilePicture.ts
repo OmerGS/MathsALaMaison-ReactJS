@@ -15,6 +15,9 @@ const ProfilPicture: Record<number, string> = {
   14: "/images/profile-picture/squareRoot.png",
   15: "/images/profile-picture/theFirst.jpg",
   16: "/images/profile-picture/universeMaster.webp",
+  17: "/images/profile-picture/number1.jpg",
+  18: "/images/profile-picture/number2.jpg",
+  19: "/images/profile-picture/number3.jpg",
 
 };
 
