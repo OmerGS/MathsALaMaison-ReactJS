@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { User } from "@/Type/User";
 import { motion } from "framer-motion";
-import ProfilPicture from "@/config/ProfilPicture";
+import ProfilPicture from "@/config/ProfilePicture";
 import { updatePremiumState } from "@/services/adminAPI";
 
 type UserProfileViewProps = {

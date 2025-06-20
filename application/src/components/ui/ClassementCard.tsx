@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import profileImages from "@/Type/ProfilePicture";
+import ProfilPicture from "@/config/ProfilePicture";
 import { User } from "@/Type/User";
 import { motion } from "framer-motion";
 
@@ -33,7 +33,7 @@ export default function ClassementCard({
       <div className="flex items-center space-x-3">
         <span className="text-lg font-bold text-gray-800">{index + 1}.</span>
         <Image
-          src={profileImages[player.photoDeProfil]}
+          src={ProfilPicture[player.photoDeProfil]}
           alt="Profile"
           width={32}
           height={32}

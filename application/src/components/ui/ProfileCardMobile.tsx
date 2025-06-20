@@ -1,6 +1,6 @@
 "use client";
 
-import profileImages from "@/Type/ProfilePicture";
+import ProfilPicture from "@/config/ProfilePicture";
 import { User } from "@/Type/User";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -18,7 +18,7 @@ export default function ProfileCardMobile({ user }: ProfileCardProps) {
       onClick={() => router.push("/profile")}
     >
       <img
-        src={profileImages[user.photoDeProfil]}
+        src={ProfilPicture[user.photoDeProfil]}
         alt="Avatar"
         className="w-16 h-16 rounded-full object-cover"
       />

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import profileImages from "@/Type/ProfilePicture";
+import ProfilPicture from "@/config/ProfilePicture";
 import { User } from "@/Type/User";
 
 type Props = { user: User };
@@ -13,7 +13,7 @@ export default function ProfileHeader({ user }: Props) {
     <div className="flex flex-col items-center gap-5 mb-10">
       <div className="relative w-28 h-28 sm:w-32 sm:h-32">
         <Image
-          src={profileImages[user.photoDeProfil]}
+          src={ProfilPicture[user.photoDeProfil]}
           alt="Profil"
           fill
           className="rounded-full border-4 bg-gradient-to-r from-cyan-400 to-cyan-600 object-cover"

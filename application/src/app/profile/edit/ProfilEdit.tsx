@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
-import profileImages from "@/Type/ProfilePicture";
+import ProfilPicture from "@/config/ProfilePicture";
 import { handleProfilePictureChange } from "./edit";
 import "../../globals.css";
 
@@ -37,7 +37,7 @@ export default function ProfilEdit() {
       </h1>
 
       <AvatarSelector
-        profileImages={profileImages}
+        profileImages={ProfilPicture}
         selectedId={user.photoDeProfil}
         onSelect={handleChange}
         className="w-full max-w-5xl px-2 sm:px-4"

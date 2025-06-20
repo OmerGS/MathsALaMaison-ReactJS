@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { User } from "@/Type/User";
-import profileImages from "@/Type/ProfilePicture";
+import ProfilPicture from "@/config/ProfilePicture"
 
 type Props = {
   user: User;
@@ -21,7 +21,7 @@ export default function UserStatsCard({ user, currentUserRank }: Props) {
     >
       <div className="flex items-center gap-4 mb-4">
         <Image
-          src={profileImages[user.photoDeProfil]}
+          src={ProfilPicture[user.photoDeProfil]}
           alt="Profil"
           width={64}
           height={64}

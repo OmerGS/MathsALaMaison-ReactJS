@@ -44,13 +44,8 @@ import toast from "react-hot-toast";
 
     const choices = [
       { 
-        label: "Partie en ligne", 
-        action: () => router.push("/play/matchmaking"),
-        description: "Jouez contre d'autres joueurs en temps réel via un matchmaking rapide."
-      },
-      { 
         label: "Partie local", 
-        action: () => router.push("/play/create"),
+        action: () => router.push("/play/local"),
         description: "Créez une partie locale pour jouer entre amis sur le même appareil."
       },
       { 
@@ -115,11 +110,13 @@ import toast from "react-hot-toast";
           <div className="relative z-10 row-start-2 col-start-2 flex flex-col justify-end items-center
           ">
             {selectedMode ? (
-              <div
-                className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-end"
-                onClick={() => setModalVisible(true)}
-              >
-                Mode : {selectedMode.label}
+              <div className="pl-3 mt-10">
+                <button
+                  className="btn-primary px-6 py-3 rounded-full text-white cursor-pointer w-[30rem] text-end"
+                          onClick={() => setModalVisible(true)}
+                        >
+                          Mode : {selectedMode.label}
+                </button>
               </div>
             ) : (
               <ModeSelectorMobile onClick={() => setModalVisible(true)} />

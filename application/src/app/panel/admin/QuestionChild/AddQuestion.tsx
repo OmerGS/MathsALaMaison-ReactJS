@@ -1,5 +1,6 @@
 import { addNewQuestion } from "@/services/adminAPI";
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import toast from "react-hot-toast";
 
 type QuestionType = "QCM" | "VF";
 
@@ -102,7 +103,7 @@ export default function AddQuestionForm({ onClose }: AddQuestionFormProps) {
     e.preventDefault();
 
     if (!questionText.trim()) {
-      //alert("Merci de saisir la question.");
+      toast.error("Merci de saisir la question.");
       return;
     }
     if (typeQuestion === "QCM") {
@@ -110,7 +111,7 @@ export default function AddQuestionForm({ onClose }: AddQuestionFormProps) {
         qcmAnswers.some((a) => !a.text.trim()) ||
         !qcmAnswers.some((a) => a.isCorrect)
       ) {
-        //alert("Merci de remplir toutes les réponses et de sélectionner la bonne réponse.");
+        toast.error("Merci de remplir toutes les réponses et de sélectionner la bonne réponse.");
         return;
       }
     }
@@ -126,11 +127,11 @@ export default function AddQuestionForm({ onClose }: AddQuestionFormProps) {
 
     try {
       await addNewQuestion(dataToSend);
-      //alert("Question ajoutée avec succès !");
+      toast.success("Question ajoutée avec succès !");
       onClose();
     } catch (err) {
       console.error("Erreur lors de l'ajout de la question :", err);
-      //alert("Une erreur est survenue lors de l'ajout de la question.");
+      toast.error("Une erreur est survenue lors de l'ajout de la question.");
     }
   };
 
