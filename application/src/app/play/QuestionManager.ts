@@ -38,7 +38,6 @@ export default class QuestionManager {
 
     this.question = response as Question;
 
-    console.log("Question : ", this.question);
 
     this.possiblereponses = [];
     this.reponseTypeSelector();
@@ -71,7 +70,6 @@ export default class QuestionManager {
   * Handles the question reponses, possible reponses, and correct reponses based on the type of question.
   */
   private reponseTypeSelector(){
-    console.log("Réponse Attendu : " + this.question?.typeReponse);
 
     switch(this.question?.typeReponse){
       case 'QCM':
@@ -122,8 +120,6 @@ export default class QuestionManager {
   * Processes the question if it is of type QCM (Multiple Choice Question).
   */
   private questionIsQCM(){
-    console.log(" *** QCM *** ");
-
     const cleanedreponses = this.question?.reponse?.split('|').map(reponse => reponse.trim()) || [];
     this.correctreponse = cleanedreponses[0] || '';
 
@@ -134,56 +130,37 @@ export default class QuestionManager {
       [this.possiblereponses[i], this.possiblereponses[j]] = [this.possiblereponses[j], this.possiblereponses[i]];
     }
 
-    console.log("Question : ", this.question?.question);
-    console.log("Bonne réponse : ", this.correctreponse);
-    console.log("Réponse mélangé : ", this.possiblereponses);
   }
 
   /**
   * Processes the question if it is of type VF (True or False).
   */
   private questionIsVF(){
-    console.log(" *** VF *** ");
-
     this.correctreponse = this.question?.reponse === 'Vrai' ? 'Vrai' : 'Faux';
     this.possiblereponses.push("Vrai");
     this.possiblereponses.push("Faux");
     
-    console.log("Question : ", this.question?.question);
-    console.log("Bonne Réponse : ", this.correctreponse);
   }
 
   /**
   * Processes the question if it is of type RDS (String reponse).
   */
   private questionIsRDS(){
-    console.log(" *** RCV *** ");
-
     this.possiblereponses = this.question?.reponse.split('|').map(reponse => reponse.trim()) || [];
 
-    console.log("Question : ", this.question?.question);
-    console.log("Bonne Réponses possibles : ", this.possiblereponses);
   }
 
   /**
   * Processes the question if it is of type RCV (Numeric reponse).
   */
   private questionIsRCV(){
-    //console.log(" *** RCV *** ");
-
     this.possiblereponses = this.question?.reponse.split('|').map(reponse => reponse.trim()) || [];
-
-    console.log("Question : ", this.question?.question);
-    console.log("Bonne Réponses : ", this.possiblereponses);
   }
 
   /**
   * Processes the question if it is of type RLD2 (Fill-in-the-Blank).
   */
   private questionIsRLD2() {
-    console.log(" *** RLD2 *** ");
-
-    
     if (!this.question?.reponse) {
         console.error("Erreur : 'reponse' est undefined ou invalide.");
         this.possiblereponses = [];
@@ -194,9 +171,6 @@ export default class QuestionManager {
         .split('|')
         .map(reponse => reponse.trim())
         .filter(part => /^\d+(\.\d+)?$/.test(part));
-
-    console.log("Question : ", this.question.question);
-    console.log("Réponses attendues (nombres uniquement) : ", this.possiblereponses);
   }
 
 
@@ -242,14 +216,9 @@ export default class QuestionManager {
   * @returns True if all the reponses are correct, false otherwise.
   */
   public checkMultipleTextreponses(userreponses: string[]): boolean {
-    console.log("Réponses utilisateur : ", userreponses);
     const sortedUserreponses = userreponses.map(reponse => reponse.trim().toLowerCase()).sort();
-    console.log("Réponses utilisateur triées : ", sortedUserreponses);
     const sortedPossiblereponses = this.possiblereponses.map(reponse => reponse.trim().toLowerCase()).sort();
-    console.log("Réponses possibles triées : ", sortedPossiblereponses);
     const isCorrect = JSON.stringify(sortedUserreponses) === JSON.stringify(sortedPossiblereponses);
-
-    console.log("Est correct : ", isCorrect);
 
     return isCorrect;
 }

@@ -19,7 +19,6 @@ export default function AdminAccessControl({ children }: AdminAccessControlProps
     const verifyAccess = async () => {
       try {
         const res = await checkAdminAccess();
-        console.log("checkAdminAccess response:", res);
         
         if (!isMounted) return;
 
@@ -39,7 +38,6 @@ export default function AdminAccessControl({ children }: AdminAccessControlProps
   }, []);
 
   useEffect(() => {
-    console.log("AdminAccessControl: isAdmin state changed:", isAdmin);
     if (isAdmin === false) {
       router.replace("/auth/login");
     }

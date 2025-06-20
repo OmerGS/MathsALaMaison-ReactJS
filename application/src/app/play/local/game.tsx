@@ -27,8 +27,7 @@ export default function LocalGame({ onFinish }: { onFinish: () => void }) {
   const [playersPlayed, setPlayersPlayed] = useState<string[]>([]);
   const [isVictory, setIsVictory] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-  const winningScorePoint = 1;
-  const winningScoreCategory = 12;
+  const winningScorePoint = 21;
 
   useEffect(() => {
     setHasMounted(true);
@@ -52,7 +51,7 @@ export default function LocalGame({ onFinish }: { onFinish: () => void }) {
       if (updated.length === players.length) {
         const winner = players.find(player => {
           const score = getPointsOfPlayer(player);
-          return score >= winningScorePoint || score >= winningScoreCategory;
+          return score >= winningScorePoint;
         });
 
         if (winner) {

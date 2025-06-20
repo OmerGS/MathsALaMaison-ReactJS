@@ -21,7 +21,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       try {
         const res = await getUserInformation();
         if (res.data) {
-          //console.log("Je suis dans la boucle");
           setUser(res.data as User);
         } else {
           setUser(null);

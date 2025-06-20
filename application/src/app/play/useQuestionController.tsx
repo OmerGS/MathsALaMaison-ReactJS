@@ -51,9 +51,7 @@ export default function useQuestionController(): UseQuestionControllerReturn {
       if (!category) {
         throw new Error('Aucune catégorie sélectionnée');
       }
-      console.log('Chargement de la question pour la catégorie :', category);
       const question = await controllerRef.current.fetchRandomQuestionByCategory(category);
-      console.log('Question chargée :', question);
       setCurrentQuestion(question);
     } catch (error) {
       console.error('Erreur lors du chargement de la question :', error);
@@ -78,7 +76,6 @@ export default function useQuestionController(): UseQuestionControllerReturn {
   }, []);
 
   const checkMultipleTextreponses = useCallback((reponses: string[]) => {
-    console.log('Checking multiple text responses:', reponses);
     if (!controllerRef.current) return false;
     return controllerRef.current.checkMultipleTextreponses(reponses);
   }, []);
